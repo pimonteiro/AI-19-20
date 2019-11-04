@@ -16,9 +16,12 @@ public class World {
     public static final int dimension = 40;
 
     public boolean isValid(int x, int y){
-        //TODO
-        //percorrer os 5 arrays para perceber se a posição está vazia
-        return false;
+        return
+          (fuel.stream().filter(p -> p.getX() == x && p.getY() == y).count() > 0) &&
+          (water.stream().filter(p -> p.getX() == x && p.getY() == y).count() > 0) &&
+          (houses.stream().filter(p -> p.getX() == x && p.getY() == y).count() > 0) &&
+          (fire.stream().filter(f -> f.getPositions().stream().filter(p -> p.getX() == x && p.getY() == y).count() > 0).count() > 0) &&
+          (fireman.stream().filter(f -> f.getActual_position().getX() == x && f.getActual_position().getY() == y).count() > 0);
     }
 
     public List<Fireman> getFireman() {
