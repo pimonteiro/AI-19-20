@@ -64,6 +64,7 @@ public class MainContainer {
 
         a.initMainContainerInPlatform("localhost", "9090", "MainContainer");
 
+        //TODO Inicializar os agentes
         // Name of the Agent + Class Path of Agent's source Code
         //a.startAgentInPlatform("manager","Agents.Manager");
         //a.startAgentInPlatform("taxi1", "Agents.Taxi");

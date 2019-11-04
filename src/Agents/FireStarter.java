@@ -1,7 +1,10 @@
 package Agents;
 
+import Logic.Fire;
 import Logic.World;
 
+import Util.Position;
+import Util.Risk;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
@@ -9,6 +12,8 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class FireStarter extends Agent {
@@ -45,14 +50,35 @@ public class FireStarter extends Agent {
                         randomY = randomGenerator.nextInt(World.dimension) + 1;
                     } while (world.isValid(randomX, randomY));
 
-                    //TODO mete fogo
-                    //percorrer no World todos os Fire, e nos Fire percorrer todas as positions
-                    //se encontrar vizinho, adiciona a posição
-                    //se não cria uma instância de Fire
-                    //avisa o quartel do que fez
+                    startFire(randomX, randomY);
                 }
             }
         });
+    }
+
+    //TODO mete fogo: ACABAR O MÉTODO
+    //percorrer no World todos os Fire, e nos Fire percorrer todas as positions
+    //se encontrar vizinho, adiciona a posição
+    //se não cria uma instância de Fire
+    //avisa o quartel do que fez
+    public void startFire(int x, int y) {
+        Position position = new Position(x, y);
+
+        //se encontrar vizinho, adiciona a posição
+        //world.getFire().stream().filter(f -> f.getPositions().stream().filter(p -> p.getX() == x && p.getY() == y).count() > 0)
+
+        //se não cria uma instância de Fire
+        List<Position> l = new ArrayList<>();
+        l.add(position);
+
+        Fire fire = new Fire(l, Risk.LOW, 0, calculateBaseExpansionRate());
+    }
+
+    //TODO calcular taxa de expansão base
+    //relacionada com o ambiente; por exemplo, se tiver próximo de uma zona
+    //com água, tem menor probabilidade
+    public int calculateBaseExpansionRate(){
+        return 0;
     }
 
     public void takeDown(){
