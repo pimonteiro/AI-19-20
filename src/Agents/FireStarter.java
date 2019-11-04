@@ -46,6 +46,10 @@ public class FireStarter extends Agent {
                     } while (world.isValid(randomX, randomY));
 
                     //TODO mete fogo
+                    //percorrer no World todos os Fire, e nos Fire percorrer todas as positions
+                    //se encontrar vizinho, adiciona a posição
+                    //se não cria uma instância de Fire
+                    //avisa o quartel do que fez
                 }
             }
         });

@@ -17,6 +17,7 @@ public class World {
 
     public boolean isValid(int x, int y){
         //TODO
+        //percorrer os 5 arrays para perceber se a posição está vazia
         return false;
     }
 
