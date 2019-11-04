@@ -11,11 +11,15 @@ public class Fire {
     private int duration_time;
     private double base_expansion_rate;
 
-    public Fire(List<Position> positions, Risk risk, int duration_time, double base_expansion_rate) {
+    public Fire(List<Position> positions, double base_expansion_rate) {
         this.positions = positions;
-        this.risk = risk;
-        this.duration_time = duration_time;
+        this.risk = Risk.LOW;
+        this.duration_time = 0;
         this.base_expansion_rate = base_expansion_rate;
+    }
+
+    public void addFirePosition(Position position){
+        this.positions.add(position);
     }
 
     public List<Position> getPositions() {

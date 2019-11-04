@@ -15,6 +15,7 @@ import jade.domain.FIPAException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class FireStarter extends Agent {
     private World world;
@@ -56,22 +57,26 @@ public class FireStarter extends Agent {
         });
     }
 
-    //TODO mete fogo: ACABAR O MÉTODO
-    //percorrer no World todos os Fire, e nos Fire percorrer todas as positions
-    //se encontrar vizinho, adiciona a posição
-    //se não cria uma instância de Fire
-    //avisa o quartel do que fez
     public void startFire(int x, int y) {
         Position position = new Position(x, y);
 
-        //se encontrar vizinho, adiciona a posição
-        //world.getFire().stream().filter(f -> f.getPositions().stream().filter(p -> p.getX() == x && p.getY() == y).count() > 0)
+        //averiguar se já existe um fogo vizinho
+        Fire fire = world.getFire().stream()
+                .filter(f -> f.getPositions().stream().
+                        anyMatch(p -> p.getX() == x && p.getY() == y))
+                .findFirst().orElse(null);
 
-        //se não cria uma instância de Fire
-        List<Position> l = new ArrayList<>();
-        l.add(position);
+        if (fire != null) {
+            //expandir fogo
+            world.expandFire(fire, position);
+        } else {
+            //criar novo fogo
+            List<Position> l = List.of(position);
+            Fire newFire = new Fire(l, calculateBaseExpansionRate(x, y));
+            world.addFire(newFire);
+        }
 
-        Fire fire = new Fire(l, Risk.LOW, 0, calculateBaseExpansionRate(x, y));
+        //TODO avisar o quartel do que fez (fogo expandiou ou criou novo fogo) (e adicionar nos fogos em espera?)
     }
 
     //Quanto mais próximo de água, menor probabilidade (retorna a percentagem)
@@ -89,6 +94,10 @@ public class FireStarter extends Agent {
 
     public void takeDown(){
 
+    }
+
+    public FireStarter() {
+        this.world = new World();
     }
 
     public World getWorld() {
