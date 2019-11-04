@@ -12,4 +12,63 @@ public class World {
     private List<Position> water;
     private List<Position> houses;
     private List<Zone> zones;
+
+    public static final int dimension = 40;
+
+    public boolean isValid(int x, int y){
+        return
+          (fuel.stream().filter(p -> p.getX() == x && p.getY() == y).count() > 0) &&
+          (water.stream().filter(p -> p.getX() == x && p.getY() == y).count() > 0) &&
+          (houses.stream().filter(p -> p.getX() == x && p.getY() == y).count() > 0) &&
+          (fire.stream().filter(f -> f.getPositions().stream().filter(p -> p.getX() == x && p.getY() == y).count() > 0).count() > 0) &&
+          (fireman.stream().filter(f -> f.getActual_position().getX() == x && f.getActual_position().getY() == y).count() > 0);
+    }
+
+    public List<Fireman> getFireman() {
+        return fireman;
+    }
+
+    public List<Fire> getFire() {
+        return fire;
+    }
+
+    public List<Position> getFuel() {
+        return fuel;
+    }
+
+    public List<Position> getWater() {
+        return water;
+    }
+
+    public List<Position> getHouses() {
+        return houses;
+    }
+
+    public List<Zone> getZones() {
+        return zones;
+    }
+
+    public void setFireman(List<Fireman> fireman) {
+        this.fireman = fireman;
+    }
+
+    public void setFire(List<Fire> fire) {
+        this.fire = fire;
+    }
+
+    public void setFuel(List<Position> fuel) {
+        this.fuel = fuel;
+    }
+
+    public void setWater(List<Position> water) {
+        this.water = water;
+    }
+
+    public void setHouses(List<Position> houses) {
+        this.houses = houses;
+    }
+
+    public void setZones(List<Zone> zones) {
+        this.zones = zones;
+    }
 }
