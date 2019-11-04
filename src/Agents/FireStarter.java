@@ -71,14 +71,20 @@ public class FireStarter extends Agent {
         List<Position> l = new ArrayList<>();
         l.add(position);
 
-        Fire fire = new Fire(l, Risk.LOW, 0, calculateBaseExpansionRate());
+        Fire fire = new Fire(l, Risk.LOW, 0, calculateBaseExpansionRate(x, y));
     }
 
-    //TODO calcular taxa de expansão base
-    //relacionada com o ambiente; por exemplo, se tiver próximo de uma zona
-    //com água, tem menor probabilidade
-    public int calculateBaseExpansionRate(){
-        return 0;
+    //Quanto mais próximo de água, menor probabilidade (retorna a percentagem)
+    public double calculateBaseExpansionRate(int x, int y){
+        for(int i = 1; i <= 3; i++) {
+            int rate = i;
+            if (world.getWater().stream().filter(p -> (p.getX() >= x - rate && p.getX() <= x + rate) ||
+                    (p.getY() >= y - rate && p.getY() <= y + rate)).count() > 0) {
+                return rate * 0.1;
+            }
+        }
+
+        return 0.4;
     }
 
     public void takeDown(){

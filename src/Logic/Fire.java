@@ -9,9 +9,9 @@ public class Fire {
     private List<Position> positions;
     private Risk risk;
     private int duration_time;
-    private int base_expansion_rate;
+    private double base_expansion_rate;
 
-    public Fire(List<Position> positions, Risk risk, int duration_time, int base_expansion_rate) {
+    public Fire(List<Position> positions, Risk risk, int duration_time, double base_expansion_rate) {
         this.positions = positions;
         this.risk = risk;
         this.duration_time = duration_time;
@@ -30,7 +30,7 @@ public class Fire {
         return duration_time;
     }
 
-    public int getBase_expansion_rate() {
+    public double getBase_expansion_rate() {
         return base_expansion_rate;
     }
 
@@ -46,7 +46,7 @@ public class Fire {
         this.duration_time = duration_time;
     }
 
-    public void setBase_expansion_rate(int base_expansion_rate) {
+    public void setBase_expansion_rate(double base_expansion_rate) {
         this.base_expansion_rate = base_expansion_rate;
     }
 }
