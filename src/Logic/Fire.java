@@ -22,6 +22,21 @@ public class Fire {
         this.positions.add(position);
     }
 
+    public boolean equals(Object object) {
+        if (this == object)
+            return true;
+
+        if (object == null || (this.getClass() != object.getClass()))
+            return false;
+
+        Fire fire = (Fire) object;
+
+        return  this.positions.equals(fire.getPositions()) &&
+                this.risk.equals(fire.getRisk()) &&
+                this.duration_time == fire.getDuration_time() &&
+                this.base_expansion_rate == fire.getBase_expansion_rate();
+    }
+
     public List<Position> getPositions() {
         return positions;
     }

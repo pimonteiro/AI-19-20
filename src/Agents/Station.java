@@ -2,6 +2,7 @@ package Agents;
 
 import Logic.Fire;
 import Logic.World;
+
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;

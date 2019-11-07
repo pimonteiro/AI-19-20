@@ -2,9 +2,8 @@ package Agents;
 
 import Logic.Fire;
 import Logic.World;
-
 import Util.Position;
-import Util.Risk;
+
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
@@ -15,7 +14,6 @@ import jade.domain.FIPAException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class FireStarter extends Agent {
     private World world;
@@ -63,7 +61,7 @@ public class FireStarter extends Agent {
         //averiguar se já existe um fogo vizinho
         Fire fire = world.getFire().stream()
                 .filter(f -> f.getPositions().stream().
-                        anyMatch(p -> p.getX() == x && p.getY() == y))
+                        anyMatch(p -> (p.getX() >= x - 1 && p.getX() <= x + 1 && p.getY() >= y - 1 && p.getY() <= y + 1)))
                 .findFirst().orElse(null);
 
         if (fire != null) {
@@ -71,7 +69,8 @@ public class FireStarter extends Agent {
             world.expandFire(fire, position);
         } else {
             //criar novo fogo
-            List<Position> l = List.of(position);
+            List<Position> l = new ArrayList<>();
+            l.add(position);
             Fire newFire = new Fire(l, calculateBaseExpansionRate(x, y));
             world.addFire(newFire);
         }
