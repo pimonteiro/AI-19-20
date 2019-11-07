@@ -75,7 +75,7 @@ public class FireStarter extends Agent {
             world.addFire(newFire);
         }
 
-        //TODO avisar o quartel do que fez (fogo expandiou ou criou novo fogo) (e adicionar nos fogos em espera?)
+        //TODO avisar o quartel do que fez (fogo expandiu ou criou novo fogo) (e adicionar nos fogos em espera?)
     }
 
     //Quanto mais próximo de água, menor probabilidade (retorna a percentagem)
