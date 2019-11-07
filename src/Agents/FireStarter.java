@@ -82,8 +82,8 @@ public class FireStarter extends Agent {
     public double calculateBaseExpansionRate(int x, int y){
         for(int i = 1; i <= 3; i++) {
             int rate = i;
-            if (world.getWater().stream().filter(p -> (p.getX() >= x - rate && p.getX() <= x + rate) ||
-                    (p.getY() >= y - rate && p.getY() <= y + rate)).count() > 0) {
+            if (world.getWater().stream().filter(p -> (p.getX() >= x - rate && p.getX() <= x + rate &&
+                    p.getY() >= y - rate && p.getY() <= y + rate)).count() > 0) {
                 return rate * 0.1;
             }
         }
