@@ -31,15 +31,6 @@ public class World {
     }
 
     public void expandFire(Fire activeFire, Position newPosition){
-        //encontrar fogo no array do fogos
-        /*
-        Fire element = this.fire.stream()
-                           .filter(f -> f.equals(activeFire))
-                           .findAny()
-                           .orElse(null);
-*/
-
-
         activeFire.addFirePosition(newPosition);
     }
 
