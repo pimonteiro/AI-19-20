@@ -22,6 +22,8 @@ public class FireStarter extends Agent {
 
     public void setup(){
         super.setup();
+        Object[] args = getArguments();
+        this.world = (World) args[0];
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
         ServiceDescription sd = new ServiceDescription();

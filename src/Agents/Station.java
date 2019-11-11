@@ -10,6 +10,8 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +22,10 @@ public class Station extends Agent {
 
     public void setup() {
         super.setup();
+        Object[] args = getArguments();
+        this.world = (World) args[0];
+        this.treatment_fire = new HashMap<>();
+        this.waiting_fire = new ArrayList<>();
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
         ServiceDescription sd = new ServiceDescription();
