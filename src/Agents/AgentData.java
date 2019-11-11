@@ -5,8 +5,6 @@ import Util.FiremanType;
 import Util.Ocupation;
 import Util.Position;
 
-import java.util.List;
-
 public class AgentData {
     private FiremanType firemanType;
     private Position std_position;
