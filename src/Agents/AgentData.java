@@ -12,10 +12,6 @@ public class AgentData {
     private Position std_position;
     private Position actual_position;
     private Zone zone;
-    private List<Position> fuel;
-    private List<Position> water;
-    private int cap_max_water;
-    private int cap_max_fuel;
     private int cap_water;
     private int cap_fuel;
     private int vel;
@@ -51,38 +47,6 @@ public class AgentData {
 
     public void setZone(Zone zone) {
         this.zone = zone;
-    }
-
-    public List<Position> getFuel() {
-        return fuel;
-    }
-
-    public void setFuel(List<Position> fuel) {
-        this.fuel = fuel;
-    }
-
-    public List<Position> getWater() {
-        return water;
-    }
-
-    public void setWater(List<Position> water) {
-        this.water = water;
-    }
-
-    public int getCap_max_water() {
-        return cap_max_water;
-    }
-
-    public void setCap_max_water(int cap_max_water) {
-        this.cap_max_water = cap_max_water;
-    }
-
-    public int getCap_max_fuel() {
-        return cap_max_fuel;
-    }
-
-    public void setCap_max_fuel(int cap_max_fuel) {
-        this.cap_max_fuel = cap_max_fuel;
     }
 
     public int getCap_water() {
