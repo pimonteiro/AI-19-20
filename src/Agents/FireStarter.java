@@ -96,10 +96,6 @@ public class FireStarter extends Agent {
 
     }
 
-    public FireStarter() {
-        this.world = new World();
-    }
-
     public World getWorld() {
         return world;
     }
