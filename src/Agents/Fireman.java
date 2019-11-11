@@ -1,18 +1,15 @@
 package Agents;
 
-import Logic.World;
 import Logic.Zone;
 import Util.Ocupation;
 import Util.Position;
 import jade.core.Agent;
-import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 
 import java.util.List;
-import java.util.Random;
 
 public abstract class Fireman extends Agent {
     private Position std_position;
