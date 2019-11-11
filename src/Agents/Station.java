@@ -1,5 +1,6 @@
 package Agents;
 
+import Agents.Behaviours.SendInitialInfo;
 import Logic.Fire;
 import Logic.World;
 
@@ -39,6 +40,7 @@ public class Station extends Agent {
             e.printStackTrace();
         }
 
+        this.addBehaviour(new SendInitialInfo(this.world));
         this.addBehaviour(new TickerBehaviour(this,1000) {
             @Override
             protected void onTick() {
