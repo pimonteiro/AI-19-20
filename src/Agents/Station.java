@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class Station extends Agent {
     private World world;
-    private Map<Fire, AgentData> treatment_fire;
+    private Map<AgentData, Fire> treatment_fire;
     private List<Fire> waiting_fire;
 
     public void setup() {
@@ -65,7 +65,7 @@ public class Station extends Agent {
         return world;
     }
 
-    public Map<Fire, AgentData> getTreatment_fire() {
+    public Map<AgentData,Fire> getTreatment_fire() {
         return treatment_fire;
     }
 
@@ -77,7 +77,7 @@ public class Station extends Agent {
         this.world = world;
     }
 
-    public void setTreatment_fire(Map<Fire, AgentData> treatment_fire) {
+    public void setTreatment_fire(Map<AgentData,Fire> treatment_fire) {
         this.treatment_fire = treatment_fire;
     }
 

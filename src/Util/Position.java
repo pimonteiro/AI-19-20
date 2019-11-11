@@ -1,6 +1,8 @@
 package Util;
 
-public class Position {
+import java.io.Serializable;
+
+public class Position implements Serializable {
     private int x;
     private int y;
 
@@ -23,5 +25,13 @@ public class Position {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    @Override
+    public String toString() {
+        return "Position{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
     }
 }

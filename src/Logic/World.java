@@ -1,14 +1,17 @@
 package Logic;
 
+import Agents.AgentData;
 import Agents.Fireman;
 import Util.Position;
+import jade.core.AID;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class World {
-    private List<Fireman> fireman;
-    private List<Fire> fire;
+    private HashMap<AID,AgentData> fireman;
+    private List<Fire> fire;                //TODO REDUNDANTE?
     private List<Position> fuel;
     private List<Position> water;
     private List<Position> houses;
@@ -22,7 +25,7 @@ public class World {
                (houses.stream().filter(p -> p.getX() == x && p.getY() == y).count() > 0) ||
                (fire.stream().filter(f -> f.getPositions().stream().filter(p -> p.getX() == x &&
                        p.getY() == y).count() > 0).count() > 0) ||
-               (fireman.stream().filter(f -> f.getActual_position().getX() == x &&
+               (fireman.values().stream().filter(f -> f.getActual_position().getX() == x &&
                        f.getActual_position().getY() == y).count() > 0);
     }
 
@@ -31,7 +34,7 @@ public class World {
     }
 
     public World() {
-        this.fireman = new ArrayList<>();
+        this.fireman = new HashMap<>();
         this.fire = new ArrayList<>();
         this.fuel = new ArrayList<>();
         this.water = new ArrayList<>();
@@ -39,7 +42,7 @@ public class World {
         this.zones = new ArrayList<>();
     }
 
-    public List<Fireman> getFireman() {
+    public HashMap<AID,AgentData> getFireman() {
         return fireman;
     }
 
@@ -63,7 +66,7 @@ public class World {
         return zones;
     }
 
-    public void setFireman(List<Fireman> fireman) {
+    public void setFireman(HashMap<AID,AgentData> fireman) {
         this.fireman = fireman;
     }
 

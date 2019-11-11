@@ -15,6 +15,17 @@ public class AgentData {
     private int vel;
     private Ocupation ocupation;
 
+    public AgentData(FiremanType firemanType, Position std_position, Position actual_position, Zone zone, int cap_water, int cap_fuel, int vel, Ocupation ocupation) {
+        this.firemanType = firemanType;
+        this.std_position = std_position;
+        this.actual_position = actual_position;
+        this.zone = zone;
+        this.cap_water = cap_water;
+        this.cap_fuel = cap_fuel;
+        this.vel = vel;
+        this.ocupation = ocupation;
+    }
+
     public FiremanType getFiremanType() {
         return firemanType;
     }

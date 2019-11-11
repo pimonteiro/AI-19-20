@@ -1,5 +1,6 @@
 package Agents;
 
+import Agents.Behaviours.HandleFiremanMessages;
 import Logic.World;
 import Logic.Zone;
 import Util.Ocupation;
@@ -29,6 +30,8 @@ public abstract class Fireman extends Agent {
         this.water = world.getWater();
         this.std_position = new Position(0,0);
         this.actual_position = new Position(0,0);
+
+        this.addBehaviour(new HandleFiremanMessages());
     }
 
     public void takeDown(){

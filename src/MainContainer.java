@@ -67,9 +67,9 @@ public class MainContainer {
         a.initMainContainerInPlatform("localhost", "9090", "MainContainer");
 
         //Agents and World Initialization
-        int n_aircraft = 10;
-        int n_drone = 10;
-        int n_truck = 10;
+        int n_aircraft = 9;
+        int n_drone = 9;
+        int n_truck = 9;
         int n_water = 3;
         int n_fuel = 1;
         int n_houses = 2;

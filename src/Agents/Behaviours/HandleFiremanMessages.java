@@ -1,12 +1,12 @@
 package Agents.Behaviours;
 
-import Agents.Communication.Message.InitialData;
+import Agents.Messages.InitialData;
 import Agents.Fireman;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 
-public class HandleMessages extends CyclicBehaviour {
+public class HandleFiremanMessages extends CyclicBehaviour {
 
     @Override
     public void action() {
@@ -31,12 +31,13 @@ public class HandleMessages extends CyclicBehaviour {
         } catch (UnreadableException e) {
             e.printStackTrace();
         }
-
     }
 
     private void handleInitialData(Fireman f, ACLMessage msg) throws UnreadableException {
         InitialData cont = (InitialData) msg.getContentObject();
         f.setActual_position(cont.getPos());
         f.setStd_position(cont.getPos());
+
+        System.out.println(f.getActual_position());
     }
 }
