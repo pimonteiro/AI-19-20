@@ -1,3 +1,5 @@
+import Logic.World;
+import Util.Simulator;
 import jade.core.Runtime;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
@@ -64,30 +66,38 @@ public class MainContainer {
 
         a.initMainContainerInPlatform("localhost", "9090", "MainContainer");
 
-        //TODO Inicializar os agentes
-        // Name of the Agent + Class Path of Agent's source Code
-        //a.startAgentInPlatform("manager","Agents.Manager");
-        //a.startAgentInPlatform("taxi1", "Agents.Taxi");
-        //a.startAgentInPlatform("client1", "Agents.Client");
+        //Agents and World Initialization
+        int n_aircraft = 10;
+        int n_drone = 10;
+        int n_truck = 10;
+        int n_water = 3;
+        int n_fuel = 1;
+        int n_houses = 2;
+        int n_zones = 9;
+        World world = new World();
+        Simulator.startSimulation_v1(world,n_fuel,n_houses,n_water,n_zones);
+        ContainerController agentContainer = a.initContainerInPlatform("localhost", "9888", "AgentsContainer");
 
-
-        // Example of Container Creation (not the main container)
-        //ContainerController newcontainer = a.initContainerInPlatform("localhost", "9888", "AgentsContainer");
-
-        // Example of Agent Start in new container
-		/*
-		try {
-			// In Agents.HelloAgent, Agents is the Java Package, HelloAgent is the Java Class File of the Agent
-			AgentController ag1 = newcontainer.createNewAgent("HelloWorld", "Agents.HelloAgent", new Object[] {});// arguments
-			AgentController ag2 = newcontainer.createNewAgent("Receiver", "Agents.ReceiverAgent", new Object[] {});// arguments
-			AgentController ag3 = newcontainer.createNewAgent("Sender", "Agents.SenderAgent", new Object[] {});// arguments
-			ag1.start();
-			ag2.start();
-			ag3.start();
-		} catch (StaleProxyException e) {
-			e.printStackTrace();
-		}
-		*/
+        try {
+            for(int i = 0; i < n_aircraft; i++){
+                AgentController ag = agentContainer.createNewAgent("aircraft_"+i, "Agents.Aircraft", new Object[] {world});// arguments
+                ag.start();
+            }
+            for(int i = 0; i < n_drone; i++){
+                AgentController ag = agentContainer.createNewAgent("drone_"+i, "Agents.Drone", new Object[] {world});// arguments
+                ag.start();
+            }
+            for(int i = 0; i < n_truck; i++){
+                AgentController ag = agentContainer.createNewAgent("truck_"+i, "Agents.FireTruck", new Object[] {world});// arguments
+                ag.start();
+            }
+            AgentController ag1 = agentContainer.createNewAgent("station", "Agents.Station", new Object[] {world});// arguments
+            ag1.start();
+            AgentController ag2 = agentContainer.createNewAgent("firestarter", "Agents.FireStarter", new Object[] {world});// arguments
+            ag2.start();
+        } catch (StaleProxyException e) {
+            e.printStackTrace();
+        }
 
     }
 }

@@ -1,5 +1,6 @@
 package Agents;
 
+import Logic.World;
 import Logic.Zone;
 import Util.Ocupation;
 import Util.Position;
@@ -26,6 +27,14 @@ public abstract class Fireman extends Agent {
 
     public void setup(){
         super.setup();
+        Object[] args = getArguments();
+        World world = (World) args[0];
+        this.fuel = world.getFuel();
+        this.water = world.getWater();
+        this.std_position = new Position(0,0);
+        this.actual_position = new Position(0,0);
+
+
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
         ServiceDescription sd = new ServiceDescription();
@@ -38,11 +47,10 @@ public abstract class Fireman extends Agent {
         } catch (FIPAException e) {
             e.printStackTrace();
         }
-
     }
 
     public void takeDown(){
-
+        //System.out.println(fuel.toString());
     }
 
     public Position getStd_position() {
