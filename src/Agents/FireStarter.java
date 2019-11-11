@@ -1,10 +1,12 @@
 package Agents;
 
+import Agents.Behaviours.SendFirePosition;
 import Logic.Fire;
 import Logic.World;
 import Util.Position;
 
 import jade.core.Agent;
+import jade.core.behaviours.SenderBehaviour;
 import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -52,6 +54,7 @@ public class FireStarter extends Agent {
                     } while (world.isValid(randomX, randomY));
 
                     startFire(new Position(randomX, randomY));
+
                 }
             }
         });
@@ -75,6 +78,7 @@ public class FireStarter extends Agent {
             List<Position> l = new ArrayList<>();
             l.add(position);
             Fire newFire = new Fire(l, calculateBaseExpansionRate(x, y));
+            this.addBehaviour(new SendFirePosition(position));
             world.getFire().add(newFire);
         }
 
