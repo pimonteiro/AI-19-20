@@ -18,10 +18,6 @@ public class Fire {
         this.base_expansion_rate = base_expansion_rate;
     }
 
-    public void addFirePosition(Position position){
-        this.positions.add(position);
-    }
-
     public boolean equals(Object object) {
         if (this == object)
             return true;

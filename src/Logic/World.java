@@ -17,21 +17,17 @@ public class World {
     public static final int dimension = 40;
 
     public boolean isValid(int x, int y){
-        return (fuel.stream().filter(p -> p.getX() == x && p.getY() == y).count() > 0) &&
-               (water.stream().filter(p -> p.getX() == x && p.getY() == y).count() > 0) &&
-               (houses.stream().filter(p -> p.getX() == x && p.getY() == y).count() > 0) &&
+        return (fuel.stream().filter(p -> p.getX() == x && p.getY() == y).count() > 0) ||
+               (water.stream().filter(p -> p.getX() == x && p.getY() == y).count() > 0) ||
+               (houses.stream().filter(p -> p.getX() == x && p.getY() == y).count() > 0) ||
                (fire.stream().filter(f -> f.getPositions().stream().filter(p -> p.getX() == x &&
-                       p.getY() == y).count() > 0).count() > 0) &&
+                       p.getY() == y).count() > 0).count() > 0) ||
                (fireman.stream().filter(f -> f.getActual_position().getX() == x &&
                        f.getActual_position().getY() == y).count() > 0);
     }
 
-    public void addFire(Fire newFire){
-        this.fire.add(newFire);
-    }
-
     public void expandFire(Fire activeFire, Position newPosition){
-        activeFire.addFirePosition(newPosition);
+        activeFire.getPositions().add(newPosition);
     }
 
     public World() {

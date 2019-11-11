@@ -49,14 +49,15 @@ public class FireStarter extends Agent {
                         randomY = randomGenerator.nextInt(World.dimension) + 1;
                     } while (world.isValid(randomX, randomY));
 
-                    startFire(randomX, randomY);
+                    startFire(new Position(randomX, randomY));
                 }
             }
         });
     }
 
-    public void startFire(int x, int y) {
-        Position position = new Position(x, y);
+    public void startFire(Position position) {
+        int x = position.getX();
+        int y = position.getY();
 
         //averiguar se já existe um fogo vizinho
         Fire fire = world.getFire().stream()
@@ -72,7 +73,7 @@ public class FireStarter extends Agent {
             List<Position> l = new ArrayList<>();
             l.add(position);
             Fire newFire = new Fire(l, calculateBaseExpansionRate(x, y));
-            world.addFire(newFire);
+            world.getFire().add(newFire);
         }
 
         //TODO avisar o quartel do que fez (fogo expandiu ou criou novo fogo) (e adicionar nos fogos em espera?)
