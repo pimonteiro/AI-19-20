@@ -2,9 +2,8 @@ package Agents;
 
 import Logic.Fire;
 import Logic.World;
-
 import Util.Position;
-import Util.Risk;
+
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
@@ -50,35 +49,47 @@ public class FireStarter extends Agent {
                         randomY = randomGenerator.nextInt(World.dimension) + 1;
                     } while (world.isValid(randomX, randomY));
 
-                    startFire(randomX, randomY);
+                    startFire(new Position(randomX, randomY));
                 }
             }
         });
     }
 
-    //TODO mete fogo: ACABAR O MÉTODO
-    //percorrer no World todos os Fire, e nos Fire percorrer todas as positions
-    //se encontrar vizinho, adiciona a posição
-    //se não cria uma instância de Fire
-    //avisa o quartel do que fez
-    public void startFire(int x, int y) {
-        Position position = new Position(x, y);
+    public void startFire(Position position) {
+        int x = position.getX();
+        int y = position.getY();
 
-        //se encontrar vizinho, adiciona a posição
-        //world.getFire().stream().filter(f -> f.getPositions().stream().filter(p -> p.getX() == x && p.getY() == y).count() > 0)
+        //averiguar se já existe um fogo vizinho
+        Fire fire = world.getFire().stream()
+                .filter(f -> f.getPositions().stream().
+                        anyMatch(p -> (p.getX() >= x - 1 && p.getX() <= x + 1 && p.getY() >= y - 1 && p.getY() <= y + 1)))
+                .findFirst().orElse(null);
 
-        //se não cria uma instância de Fire
-        List<Position> l = new ArrayList<>();
-        l.add(position);
+        if (fire != null) {
+            //expandir fogo
+            world.expandFire(fire, position);
+        } else {
+            //criar novo fogo
+            List<Position> l = new ArrayList<>();
+            l.add(position);
+            Fire newFire = new Fire(l, calculateBaseExpansionRate(x, y));
+            world.getFire().add(newFire);
+        }
 
-        Fire fire = new Fire(l, Risk.LOW, 0, calculateBaseExpansionRate());
+        //TODO avisar o quartel do que fez (fogo expandiu ou criou novo fogo) (e adicionar nos fogos em espera?)
     }
 
-    //TODO calcular taxa de expansão base
-    //relacionada com o ambiente; por exemplo, se tiver próximo de uma zona
-    //com água, tem menor probabilidade
-    public int calculateBaseExpansionRate(){
-        return 0;
+    //Quanto mais próximo de água, menor probabilidade (retorna a percentagem)
+    public double calculateBaseExpansionRate(int x, int y){
+        for(int i = 1; i <= 3; i++) {
+            int rate = i;
+            if (world.getWater().stream().filter(p -> (p.getX() >= x - rate && p.getX() <= x + rate &&
+                    p.getY() >= y - rate && p.getY() <= y + rate)).count() > 0) {
+                return rate * 0.1;
+            }
+        }
+
+        return 0.4;
     }
 
     public void takeDown(){

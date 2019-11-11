@@ -9,13 +9,28 @@ public class Fire {
     private List<Position> positions;
     private Risk risk;
     private int duration_time;
-    private int base_expansion_rate;
+    private double base_expansion_rate;
 
-    public Fire(List<Position> positions, Risk risk, int duration_time, int base_expansion_rate) {
+    public Fire(List<Position> positions, double base_expansion_rate) {
         this.positions = positions;
-        this.risk = risk;
-        this.duration_time = duration_time;
+        this.risk = Risk.LOW;
+        this.duration_time = 0;
         this.base_expansion_rate = base_expansion_rate;
+    }
+
+    public boolean equals(Object object) {
+        if (this == object)
+            return true;
+
+        if (object == null || (this.getClass() != object.getClass()))
+            return false;
+
+        Fire fire = (Fire) object;
+
+        return  this.positions.equals(fire.getPositions()) &&
+                this.risk.equals(fire.getRisk()) &&
+                this.duration_time == fire.getDuration_time() &&
+                this.base_expansion_rate == fire.getBase_expansion_rate();
     }
 
     public List<Position> getPositions() {
@@ -30,7 +45,7 @@ public class Fire {
         return duration_time;
     }
 
-    public int getBase_expansion_rate() {
+    public double getBase_expansion_rate() {
         return base_expansion_rate;
     }
 
@@ -46,7 +61,7 @@ public class Fire {
         this.duration_time = duration_time;
     }
 
-    public void setBase_expansion_rate(int base_expansion_rate) {
+    public void setBase_expansion_rate(double base_expansion_rate) {
         this.base_expansion_rate = base_expansion_rate;
     }
 }
