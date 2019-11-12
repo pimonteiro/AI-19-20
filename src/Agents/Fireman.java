@@ -1,14 +1,11 @@
 package Agents;
 
+import Agents.Behaviours.HandleFiremanMessages;
 import Logic.World;
 import Logic.Zone;
 import Util.Ocupation;
 import Util.Position;
 import jade.core.Agent;
-import jade.domain.DFService;
-import jade.domain.FIPAAgentManagement.DFAgentDescription;
-import jade.domain.FIPAAgentManagement.ServiceDescription;
-import jade.domain.FIPAException;
 
 import java.util.List;
 
@@ -34,19 +31,7 @@ public abstract class Fireman extends Agent {
         this.std_position = new Position(0,0);
         this.actual_position = new Position(0,0);
 
-
-        DFAgentDescription dfd = new DFAgentDescription();
-        dfd.setName(getAID());
-        ServiceDescription sd = new ServiceDescription();
-        sd.setName(getLocalName());
-        sd.setType("Fireman");
-        dfd.addServices(sd);
-
-        try {
-            DFService.register(this,dfd);
-        } catch (FIPAException e) {
-            e.printStackTrace();
-        }
+        this.addBehaviour(new HandleFiremanMessages());
     }
 
     public void takeDown(){
