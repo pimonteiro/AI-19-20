@@ -4,8 +4,10 @@ import Logic.Zone;
 import Util.FiremanType;
 import Util.Ocupation;
 import Util.Position;
+import jade.core.AID;
 
 public class AgentData {
+    private AID aid;
     private FiremanType firemanType;
     private Position std_position;
     private Position actual_position;
@@ -15,7 +17,8 @@ public class AgentData {
     private int vel;
     private Ocupation ocupation;
 
-    public AgentData(FiremanType firemanType, Position std_position, Position actual_position, Zone zone, int cap_water, int cap_fuel, int vel, Ocupation ocupation) {
+    public AgentData(AID aid, FiremanType firemanType, Position std_position, Position actual_position, Zone zone, int cap_water, int cap_fuel, int vel, Ocupation ocupation) {
+        this.aid = aid;
         this.firemanType = firemanType;
         this.std_position = std_position;
         this.actual_position = actual_position;

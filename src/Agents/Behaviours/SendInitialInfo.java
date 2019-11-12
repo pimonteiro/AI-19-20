@@ -77,7 +77,7 @@ public class SendInitialInfo extends OneShotBehaviour {
 
                     //Posição válida para um bombeiro
                     if(world.isValid(tx,ty)){
-                        AgentData f = new AgentData(FiremanType.FIRETRUCK,new Position(tx,ty),new Position(tx,ty),
+                        AgentData f = new AgentData(trucks[tr].getName(), FiremanType.FIRETRUCK,new Position(tx,ty),new Position(tx,ty),
                                 z,FireTruck.MAX_WATER, FireTruck.MAX_FUEL,FireTruck.VEL,Ocupation.RESTING);
                         firemans.put(trucks[tr].getName(),f);
                         //Send Message with data
@@ -100,7 +100,7 @@ public class SendInitialInfo extends OneShotBehaviour {
 
                     //Posição válida para um bombeiro
                     if(world.isValid(tx,ty)){
-                        AgentData f = new AgentData(FiremanType.DRONE,new Position(tx,ty),new Position(tx,ty),
+                        AgentData f = new AgentData(drones[dr].getName(),FiremanType.DRONE,new Position(tx,ty),new Position(tx,ty),
                                 z,Drone.MAX_WATER, Drone.MAX_FUEL,Drone.VEL,Ocupation.RESTING);
                         firemans.put(drones[dr].getName(),f);
                         //Send Message with data
@@ -123,7 +123,7 @@ public class SendInitialInfo extends OneShotBehaviour {
 
                     //Posição válida para um bombeiro
                     if(world.isValid(tx,ty)){
-                        AgentData f = new AgentData(FiremanType.AIRCRAFT,new Position(tx,ty),new Position(tx,ty),
+                        AgentData f = new AgentData(aircrs[air].getName(), FiremanType.AIRCRAFT,new Position(tx,ty),new Position(tx,ty),
                                 z,Aircraft.MAX_WATER, Aircraft.MAX_FUEL,Aircraft.VEL,Ocupation.RESTING);
                         firemans.put(trucks[air].getName(),f);
                         //Send Message with data
