@@ -22,8 +22,7 @@ public class HandleFiremanMessages extends CyclicBehaviour {
                 case(ACLMessage.INFORM):
                     if(content instanceof InitialData) {
                         handleInitialData(f, msg);
-                    }
-                    else{
+                    } else{
                         System.out.println("Wrong message content.");
                     }
                     break;
