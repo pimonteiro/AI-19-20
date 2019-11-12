@@ -17,7 +17,6 @@ public class SendFirePosition extends OneShotBehaviour {
         this.firePos = firePos;
     }
 
-
     @Override
     public void action() {
         DFAgentDescription template1 = new DFAgentDescription();
