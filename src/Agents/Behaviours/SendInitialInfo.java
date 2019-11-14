@@ -77,14 +77,13 @@ public class SendInitialInfo extends OneShotBehaviour {
 
                     //Posição válida para um bombeiro
                     if(world.isValid(tx,ty)){
-                        AgentData f = new AgentData(FiremanType.FIRETRUCK,new Position(tx,ty),new Position(tx,ty),
+                        AgentData f = new AgentData(trucks[tr].getName(),FiremanType.FIRETRUCK,new Position(tx,ty),new Position(tx,ty),
                                                     z,FireTruck.MAX_WATER, FireTruck.MAX_FUEL,FireTruck.VEL,Ocupation.RESTING);
                         firemans.put(trucks[tr].getName(),f);
                         //Send Message with data
                         ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
                         msg.setContentObject(new InitialData(new Position(tx,ty)));
                         msg.addReceiver(trucks[tr++].getName());
-                        System.out.println("Enviando posicao para: " + trucks[tr-1].getName());
                         myAgent.send(msg);
                         i++;
                     }
@@ -100,14 +99,13 @@ public class SendInitialInfo extends OneShotBehaviour {
 
                     //Posição válida para um bombeiro
                     if(world.isValid(tx,ty)){
-                        AgentData f = new AgentData(FiremanType.DRONE,new Position(tx,ty),new Position(tx,ty),
+                        AgentData f = new AgentData(drones[dr].getName(),FiremanType.DRONE,new Position(tx,ty),new Position(tx,ty),
                                 z,Drone.MAX_WATER, Drone.MAX_FUEL,Drone.VEL,Ocupation.RESTING);
                         firemans.put(drones[dr].getName(),f);
                         //Send Message with data
                         ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
                         msg.setContentObject(new InitialData(new Position(tx,ty)));
                         msg.addReceiver(drones[dr++].getName());
-                        System.out.println("Enviando posicao para: " + drones[tr-1].getName());
                         myAgent.send(msg);
                         i++;
                     }
@@ -123,14 +121,13 @@ public class SendInitialInfo extends OneShotBehaviour {
 
                     //Posição válida para um bombeiro
                     if(world.isValid(tx,ty)){
-                        AgentData f = new AgentData(FiremanType.AIRCRAFT,new Position(tx,ty),new Position(tx,ty),
+                        AgentData f = new AgentData(aircrs[air].getName(),FiremanType.AIRCRAFT,new Position(tx,ty),new Position(tx,ty),
                                 z,Aircraft.MAX_WATER, Aircraft.MAX_FUEL,Aircraft.VEL,Ocupation.RESTING);
-                        firemans.put(trucks[air].getName(),f);
+                        firemans.put(aircrs[air].getName(),f);
                         //Send Message with data
                         ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
                         msg.setContentObject(new InitialData(new Position(tx,ty)));
                         msg.addReceiver(aircrs[air++].getName());
-                        System.out.println("Enviando posicao para: " + aircrs[tr-1].getName());
                         myAgent.send(msg);
                         i++;
                     }

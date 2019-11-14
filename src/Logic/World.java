@@ -89,4 +89,15 @@ public class World {
     public void setZones(List<Zone> zones) {
         this.zones = zones;
     }
+
+    public Zone findZoneOfFire(Fire f) {
+        HashMap<Integer,Integer> total = new HashMap<>();
+        this.zones.stream().forEach(z -> total.put(z.getId(), z.contains(f.getPositions())));
+        int z = 0;
+        for(Integer i : total.keySet()){
+            if(total.get(i) > z)
+                z = i;
+        }
+        return zones.get(z);
+    }
 }
