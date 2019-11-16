@@ -1,4 +1,4 @@
-package Agents.Message;
+package Agents.Messages;
 
 import Util.Position;
 
