@@ -1,13 +1,12 @@
 package Agents.Behaviours;
 
-import Agents.Message.StartedFire;
+import Agents.Messages.StartedFire;
 import Agents.Station;
 import Logic.Fire;
 import Util.Position;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
-import javafx.geometry.Pos;
 
 import java.util.ArrayList;
 import java.util.List;
