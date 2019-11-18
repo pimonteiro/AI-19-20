@@ -4,6 +4,7 @@ import Agents.Behaviours.SendInitialInfo;
 import Logic.Fire;
 import Logic.World;
 
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
@@ -18,7 +19,7 @@ import java.util.Map;
 
 public class Station extends Agent {
     private World world;
-    private Map<AgentData, Fire> treatment_fire;
+    private Map<AID, Fire> treatment_fire;
     private List<Fire> waiting_fire;
 
     public void setup() {
@@ -65,7 +66,7 @@ public class Station extends Agent {
         return world;
     }
 
-    public Map<AgentData,Fire> getTreatment_fire() {
+    public Map<AID,Fire> getTreatment_fire() {
         return treatment_fire;
     }
 
@@ -77,7 +78,7 @@ public class Station extends Agent {
         this.world = world;
     }
 
-    public void setTreatment_fire(Map<AgentData,Fire> treatment_fire) {
+    public void setTreatment_fire(Map<AID,Fire> treatment_fire) {
         this.treatment_fire = treatment_fire;
     }
 

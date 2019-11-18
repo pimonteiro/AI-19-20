@@ -43,18 +43,18 @@ public class HandleStationMessages extends CyclicBehaviour {
     private void handleFireExtinguished(Station s, ACLMessage msg) throws UnreadableException {
         AID aid = msg.getSender();
 
-        Map<AgentData, Fire> agentAndFire = s.getTreatment_fire().entrySet().stream()
-                .filter(a -> a.getKey().getAid() == aid)
+        Map<AID, Fire> agentAndFire = s.getTreatment_fire().entrySet().stream()
+                .filter(a -> a.getKey() == aid)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         if (!agentAndFire.isEmpty()) {
             Fire extinguishedFire = agentAndFire.get(0);
-            AgentData agentData = (AgentData) agentAndFire.keySet().toArray()[0];
+            AgentData agentData = s.getWorld().getFireman().get(aid);
 
             //eliminar o fire do World
             s.getWorld().getFire().remove(extinguishedFire);
             //eliminar o par agente&fire do treatment_fire
-            s.getTreatment_fire().remove(agentData);
+            s.getTreatment_fire().remove(aid);
             //alterar o estado do fireman para "a regressar"
             agentData.setOcupation(Ocupation.RETURNING);
             //eliminar treatment fire do fireman
