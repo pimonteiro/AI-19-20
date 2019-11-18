@@ -1,6 +1,7 @@
 package Agents;
 
 import Agents.Behaviours.HandleFiremanMessages;
+
 import Logic.Fire;
 import Logic.World;
 import Logic.Zone;

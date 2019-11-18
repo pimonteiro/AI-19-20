@@ -79,6 +79,7 @@ public class SendInitialInfo extends OneShotBehaviour {
                     if(world.isValid(tx,ty)){
                         AgentData f = new AgentData(trucks[tr].getName(), FiremanType.FIRETRUCK,new Position(tx,ty),new Position(tx,ty),
                                 z,FireTruck.MAX_WATER, FireTruck.MAX_FUEL,FireTruck.VEL,Ocupation.RESTING);
+
                         firemans.put(trucks[tr].getName(),f);
                         //Send Message with data
                         ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
@@ -141,5 +142,4 @@ public class SendInitialInfo extends OneShotBehaviour {
             e.printStackTrace();
         }
     }
-
 }
