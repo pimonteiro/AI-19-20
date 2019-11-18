@@ -40,10 +40,7 @@ public class HandleStationMessages extends CyclicBehaviour {
     private void handleFireStarted(Station s, ACLMessage msg){
         try {
             StartedFire cont = (StartedFire) msg.getContentObject();
-            List<Position> fireP = new ArrayList<>();
-            fireP.add(cont.getP());
-            Fire fire = new Fire(fireP, 0.2);
-            s.getWaiting_fire().add(fire);
+            s.getWaiting_fire().add(cont.getFire());
         } catch (UnreadableException e) {
             e.printStackTrace();
         }

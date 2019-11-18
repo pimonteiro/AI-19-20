@@ -1,6 +1,6 @@
 package Agents.Behaviours;
 
-import Util.Position;
+import Logic.Fire;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -11,10 +11,10 @@ import jade.lang.acl.ACLMessage;
 import java.io.IOException;
 
 public class SendFirePosition extends OneShotBehaviour {
-    private Position firePos;
+    private Fire fire;
 
-    public SendFirePosition(Position firePos) {
-        this.firePos = firePos;
+    public SendFirePosition(Fire firePos) {
+        this.fire = firePos;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class SendFirePosition extends OneShotBehaviour {
         try{
             station = DFService.search(myAgent,template1);
             ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-            msg.setContentObject(new SendFirePosition(firePos));
+            msg.setContentObject(new SendFirePosition(fire));
             msg.addReceiver(station[0].getName());
             myAgent.send(msg);
         } catch (FIPAException | IOException e) {

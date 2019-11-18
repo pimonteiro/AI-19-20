@@ -1,21 +1,18 @@
 package Agents.Messages;
 
+import Logic.Fire;
 import Util.Position;
 
 import java.io.Serializable;
 
 public class StartedFire implements Serializable {
-    private Position p;
+    private Fire fire;
 
-    public StartedFire(Position p) {
-        this.p = p;
+    public StartedFire(Fire fire) {
+        this.fire = fire;
     }
 
-    public Position getP() {
-        return p;
-    }
-
-    public void setP(Position p) {
-        this.p = p;
+    public Fire getFire() {
+        return fire;
     }
 }

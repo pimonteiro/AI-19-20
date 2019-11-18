@@ -78,11 +78,9 @@ public class FireStarter extends Agent {
             List<Position> l = new ArrayList<>();
             l.add(position);
             Fire newFire = new Fire(l, calculateBaseExpansionRate(x, y));
-            this.addBehaviour(new SendFirePosition(position));
             world.getFire().add(newFire);
+            this.addBehaviour(new SendFirePosition(newFire));
         }
-
-        //TODO avisar o quartel do que fez (fogo expandiu ou criou novo fogo) (e adicionar nos fogos em espera?)
     }
 
     //Quanto mais próximo de água, menor probabilidade (retorna a percentagem)
