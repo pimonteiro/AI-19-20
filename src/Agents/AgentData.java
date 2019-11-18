@@ -29,6 +29,10 @@ public class AgentData {
         this.ocupation = ocupation;
     }
 
+    public AID getAid() {
+        return aid;
+    }
+
     public FiremanType getFiremanType() {
         return firemanType;
     }
