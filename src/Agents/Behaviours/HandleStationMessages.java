@@ -57,6 +57,8 @@ public class HandleStationMessages extends CyclicBehaviour {
             s.getTreatment_fire().remove(agentData);
             //alterar o estado do fireman para "a regressar"
             agentData.setOcupation(Ocupation.RETURNING);
+            //eliminar treatment fire do fireman
+            agentData.setTreating_fire(null);
         }
     }
 }
