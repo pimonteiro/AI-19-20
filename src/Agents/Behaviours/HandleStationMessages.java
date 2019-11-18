@@ -11,7 +11,7 @@ import jade.lang.acl.UnreadableException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HandleStartedFire extends CyclicBehaviour {
+public class HandleStationMessages extends CyclicBehaviour {
     @Override
     public void action() {
         Station station = (Station) myAgent;
@@ -25,17 +25,25 @@ public class HandleStartedFire extends CyclicBehaviour {
             switch (msg.getPerformative()){
                 case(ACLMessage.INFORM):
                     if(content instanceof StartedFire) {
-                        StartedFire cont = (StartedFire) content;
-                        List<Position> fireP = new ArrayList<>();
-                        fireP.add(cont.getP());
-                        Fire fire = new Fire(fireP, 0.2);
-                        station.getWaiting_fire().add(fire);
+                        handleFireStarted(station, msg);
                     }
                     else{
                         System.out.println("Wrong message content.");
                     }
                     break;
             }
+        } catch (UnreadableException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleFireStarted(Station s, ACLMessage msg){
+        try {
+            StartedFire cont = (StartedFire) msg.getContentObject();
+            List<Position> fireP = new ArrayList<>();
+            fireP.add(cont.getP());
+            Fire fire = new Fire(fireP, 0.2);
+            s.getWaiting_fire().add(fire);
         } catch (UnreadableException e) {
             e.printStackTrace();
         }
