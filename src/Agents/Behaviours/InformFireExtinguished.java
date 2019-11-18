@@ -30,11 +30,10 @@ public class InformFireExtinguished extends OneShotBehaviour {
         try {
             station = DFService.search(myAgent,template);
             ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-            msg.setContentObject(new FireExtinguished(firePos));
+            msg.setContentObject(new FireExtinguished());
             msg.addReceiver(station[0].getName());
             myAgent.send(msg);
 
-            //mudar ocupation do fire
         } catch (FIPAException | IOException e) {
             e.printStackTrace();
         }

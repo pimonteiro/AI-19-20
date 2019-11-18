@@ -1,12 +1,18 @@
 package Agents.Behaviours;
 
+import Agents.AgentData;
 import Agents.Messages.FireExtinguished;
-import Agents.Messages.InitialData;
 import Agents.Station;
-import Util.Position;
+
+import Logic.Fire;
+import Util.Ocupation;
+import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
+
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class HandleStationMessages extends CyclicBehaviour {
     @Override
@@ -35,18 +41,22 @@ public class HandleStationMessages extends CyclicBehaviour {
     }
 
     private void handleFireExtinguished(Station s, ACLMessage msg) throws UnreadableException {
-        FireExtinguished cont = (FireExtinguished) msg.getContentObject();
-        Position p = cont.getPos();
-        //ir ao station buscar o fire ao hashmap
-        //tenho que ver se o fogo apagou completamente ou
+        AID aid = msg.getSender();
 
-        //buscar o fireman
-        //TODO msg.getSender() //dá-me um AID
+        Map<AgentData, Fire> agentAndFire = s.getTreatment_fire().entrySet().stream()
+                .filter(a -> a.getKey().getAid() == aid)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-        //eliminar do world o fire
-        //s.getWorld().getFire().remove(...); //eliminar o fire da station!
+        if (!agentAndFire.isEmpty()) {
+            Fire extinguishedFire = agentAndFire.get(0);
+            AgentData agentData = (AgentData) agentAndFire.keySet().toArray()[0];
 
-        //eliminar do Station o fire do treatment_fire
-        //alterar o estado do fireman para a regressar
+            //eliminar o fire do World
+            s.getWorld().getFire().remove(extinguishedFire);
+            //eliminar o par agente&fire do treatment_fire
+            s.getTreatment_fire().remove(agentData);
+            //alterar o estado do fireman para "a regressar"
+            agentData.setOcupation(Ocupation.RETURNING);
+        }
     }
 }
