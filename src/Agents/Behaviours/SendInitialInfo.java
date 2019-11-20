@@ -126,7 +126,7 @@ public class SendInitialInfo extends OneShotBehaviour {
                     if(world.isValid(tx,ty)){
                         AgentData f = new AgentData(aircrs[air].getName(), FiremanType.AIRCRAFT,new Position(tx,ty),new Position(tx,ty),
                                 z,Aircraft.MAX_WATER, Aircraft.MAX_FUEL,Aircraft.VEL,Ocupation.RESTING);
-                        firemans.put(trucks[air].getName(),f);
+                        firemans.put(aircrs[air].getName(),f);
                         //Send Message with data
                         ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
                         msg.setContentObject(new InitialData(new Position(tx,ty)));
