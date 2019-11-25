@@ -1,5 +1,6 @@
 package Agents.Behaviours;
 
+import Agents.Messages.CancelFire;
 import Agents.Messages.ExtinguishFireData;
 import Agents.Messages.InitialData;
 import Agents.Fireman;
@@ -33,6 +34,10 @@ public class HandleFiremanMessages extends CyclicBehaviour {
                     if(content instanceof ExtinguishFireData){
                         handleExtinguishFireData(f, msg);
                     }
+                    break;
+                case(ACLMessage.CANCEL):
+                    if(content instanceof CancelFire)
+                        handleCancelFire(f, msg);
                     break;
                 default:
                     System.out.println("Wrong message content.");
@@ -79,5 +84,18 @@ public class HandleFiremanMessages extends CyclicBehaviour {
         }
     }
 
+    private void handleCancelFire(Fireman f, ACLMessage msg){
+        try {
+            Fire fire = ((CancelFire) msg.getContentObject()).getFire();
+            if(f.getTreating_fire().equals(fire)) {
+                f.setTreating_fire(null);
+                f.addBehaviour(new MovingFireman(myAgent, f.getStd_position()));
+                f.setOcupation(Ocupation.RETURNING);
+            }
+        } catch (UnreadableException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }

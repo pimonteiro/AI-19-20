@@ -6,10 +6,12 @@ import Agents.Station;
 import Logic.Fire;
 import Util.Ocupation;
 import jade.core.AID;
+import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -34,6 +36,8 @@ public class HandleStationMessages extends CyclicBehaviour {
                         handleFireExtinguished(s, msg);
                     } else if (content instanceof StartedFire) {
                         handleFireStarted(s, msg);
+                    } else if (content instanceof FireOnTheWay){
+                        handleFireOnTheWay(s, msg);
                     }
                     break;
                 case (ACLMessage.AGREE):
@@ -57,14 +61,23 @@ public class HandleStationMessages extends CyclicBehaviour {
         try {
             FireAlreadyHandled fire = (FireAlreadyHandled) msg.getContentObject();
             Set<AID> aids = s.getTreatment_fire().keySet();
+            int flag = 0;
             for (AID aid: aids) {
                 if(s.getTreatment_fire().get(aid) == fire.getFire()){
                     s.getTreatment_fire().remove(aid);
                     ACLMessage message = new ACLMessage(ACLMessage.CANCEL);
                     message.addReceiver(aid);
                     this.myAgent.send(message);
+                    flag = 1;
                     break;
                 }
+            }
+            if(flag == 0){
+                AID aid = s.getQuestioning().get(fire.getFire()).get(s.getQuestioning().get(fire.getFire()).size()-1);
+                ACLMessage message = new ACLMessage(ACLMessage.CANCEL);
+                message.addReceiver(aid);
+                this.myAgent.send(message);
+                s.getQuestioning().remove(fire.getFire());
             }
         } catch (UnreadableException e) {
             e.printStackTrace();
@@ -144,6 +157,16 @@ public class HandleStationMessages extends CyclicBehaviour {
             agentData.setOcupation(Ocupation.RETURNING);
             //eliminar treatment fire do fireman
             agentData.setTreating_fire(null);
+        }
+    }
+
+    private void handleFireOnTheWay(Station s, ACLMessage msg){
+        try {
+            FireOnTheWay fire = (FireOnTheWay) msg.getContentObject();
+            s.getTreatment_fire().put(msg.getSender(), fire.getFire());
+            s.getWorld().getFireman().get(msg.getSender()).setOcupation(Ocupation.IN_ACTION);
+        } catch (UnreadableException e) {
+            e.printStackTrace();
         }
     }
 }
