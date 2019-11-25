@@ -1,21 +1,26 @@
 package Agents;
 
+import Logic.Fire;
 import Logic.Zone;
 import Util.FiremanType;
 import Util.Ocupation;
 import Util.Position;
+import jade.core.AID;
 
 public class AgentData {
+    private AID aid;
     private FiremanType firemanType;
     private Position std_position;
     private Position actual_position;
+    private Fire treating_fire;
     private Zone zone;
     private int cap_water;
     private int cap_fuel;
     private int vel;
     private Ocupation ocupation;
 
-    public AgentData(FiremanType firemanType, Position std_position, Position actual_position, Zone zone, int cap_water, int cap_fuel, int vel, Ocupation ocupation) {
+    public AgentData(AID aid, FiremanType firemanType, Position std_position, Position actual_position, Zone zone, int cap_water, int cap_fuel, int vel, Ocupation ocupation) {
+        this.aid = aid;
         this.firemanType = firemanType;
         this.std_position = std_position;
         this.actual_position = actual_position;
@@ -24,6 +29,10 @@ public class AgentData {
         this.cap_fuel = cap_fuel;
         this.vel = vel;
         this.ocupation = ocupation;
+    }
+
+    public AID getAid() {
+        return aid;
     }
 
     public FiremanType getFiremanType() {
@@ -48,6 +57,14 @@ public class AgentData {
 
     public void setActual_position(Position actual_position) {
         this.actual_position = actual_position;
+    }
+
+    public Fire getTreating_fire() {
+        return treating_fire;
+    }
+
+    public void setTreating_fire(Fire treating_fire) {
+        this.treating_fire = treating_fire;
     }
 
     public Zone getZone() {
