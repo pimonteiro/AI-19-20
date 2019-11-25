@@ -1,6 +1,8 @@
 package Agents;
 
 import Agents.Behaviours.HandleFiremanMessages;
+
+import Logic.Fire;
 import Logic.World;
 import Logic.Zone;
 import Util.Ocupation;
@@ -13,6 +15,7 @@ import java.util.List;
 public abstract class Fireman extends Agent {
     private Position std_position;
     private Position actual_position;
+    private Fire treating_fire;
     private Zone zone;
     private List<Position> fuel;
     private List<Position> water;
@@ -46,6 +49,10 @@ public abstract class Fireman extends Agent {
 
     public Position getActual_position() {
         return actual_position;
+    }
+
+    public Fire getTreating_fire() {
+        return treating_fire;
     }
 
     public Zone getZone() {
@@ -90,6 +97,10 @@ public abstract class Fireman extends Agent {
 
     public void setActual_position(Position actual_position) {
         this.actual_position = actual_position;
+    }
+
+    public void setTreating_fire(Fire treating_fire) {
+        this.treating_fire = treating_fire;
     }
 
     public void setZone(Zone zone) {

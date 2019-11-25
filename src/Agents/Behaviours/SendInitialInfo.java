@@ -138,5 +138,4 @@ public class SendInitialInfo extends OneShotBehaviour {
             e.printStackTrace();
         }
     }
-
 }
