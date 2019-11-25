@@ -1,10 +1,15 @@
 package Agents.Behaviours;
 
+import Agents.Messages.ExtinguishFireData;
 import Agents.Messages.InitialData;
 import Agents.Fireman;
+import Logic.Fire;
+import Util.Ocupation;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
+
+import java.io.IOException;
 
 public class HandleFiremanMessages extends CyclicBehaviour {
 
@@ -22,9 +27,15 @@ public class HandleFiremanMessages extends CyclicBehaviour {
                 case(ACLMessage.INFORM):
                     if(content instanceof InitialData) {
                         handleInitialData(f, msg);
-                    } else{
-                        System.out.println("Wrong message content.");
                     }
+                    break;
+                case(ACLMessage.REQUEST):
+                    if(content instanceof ExtinguishFireData){
+                        handleExtinguishFireData(f, msg);
+                    }
+                    break;
+                default:
+                    System.out.println("Wrong message content.");
                     break;
             }
         } catch (UnreadableException e) {
@@ -32,11 +43,41 @@ public class HandleFiremanMessages extends CyclicBehaviour {
         }
     }
 
-    private void handleInitialData(Fireman f, ACLMessage msg) throws UnreadableException {
-        InitialData cont = (InitialData) msg.getContentObject();
-        f.setActual_position(cont.getPos());
-        f.setStd_position(cont.getPos());
+    private void handleExtinguishFireData(Fireman f, ACLMessage msg) {
+        try {
+            ExtinguishFireData cont = (ExtinguishFireData) msg.getContentObject();
+            ACLMessage res = new ACLMessage();
+            res.setContentObject(new ExtinguishFireData(cont.getFire()));
+            res.addReceiver(msg.getSender());
 
-        System.out.println(f.getActual_position());
+            if(f.getOcupation() == Ocupation.RESTING || f.getOcupation() == Ocupation.RETURNING){
+                res.setPerformative(ACLMessage.AGREE);
+                this.myAgent.send(res);
+
+                f.setOcupation(Ocupation.MOVING);
+                Fire fire = ((ExtinguishFireData) msg.getContentObject()).getFire();
+                this.myAgent.addBehaviour(new MovingFireman(this.myAgent, fire.getPositions().get(0)));
+
+            }
+            else{
+                res.setPerformative(ACLMessage.REFUSE);
+                this.myAgent.send(res);
+            }
+        } catch (UnreadableException | IOException e) {
+            e.printStackTrace();
+        }
     }
+
+    private void handleInitialData(Fireman f, ACLMessage msg) {
+        try {
+            InitialData cont = (InitialData) msg.getContentObject();
+            f.setActual_position(cont.getPos());
+            f.setStd_position(cont.getPos());
+            f.setStation(msg.getSender());
+        } catch (UnreadableException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

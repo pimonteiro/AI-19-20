@@ -16,6 +16,8 @@ public class AgentData {
     private Zone zone;
     private int cap_water;
     private int cap_fuel;
+    private int cap_max_water;
+    private int cap_max_fuel;
     private int vel;
     private Ocupation ocupation;
 
@@ -27,6 +29,8 @@ public class AgentData {
         this.zone = zone;
         this.cap_water = cap_water;
         this.cap_fuel = cap_fuel;
+        this.cap_max_water = cap_water;
+        this.cap_max_fuel = cap_fuel;
         this.vel = vel;
         this.ocupation = ocupation;
     }
@@ -35,6 +39,10 @@ public class AgentData {
         return aid;
     }
 
+    public void setAid(AID aid) {
+        this.aid = aid;
+    }
+  
     public FiremanType getFiremanType() {
         return firemanType;
     }
@@ -105,5 +113,21 @@ public class AgentData {
 
     public void setOcupation(Ocupation ocupation) {
         this.ocupation = ocupation;
+    }
+
+    public int getCap_max_water() {
+        return cap_max_water;
+    }
+
+    public void setCap_max_water(int cap_max_water) {
+        this.cap_max_water = cap_max_water;
+    }
+
+    public int getCap_max_fuel() {
+        return cap_max_fuel;
+    }
+
+    public void setCap_max_fuel(int cap_max_fuel) {
+        this.cap_max_fuel = cap_max_fuel;
     }
 }

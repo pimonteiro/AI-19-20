@@ -7,6 +7,7 @@ import Logic.World;
 import Logic.Zone;
 import Util.Ocupation;
 import Util.Position;
+import jade.core.AID;
 import jade.core.Agent;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public abstract class Fireman extends Agent {
     private int cap_fuel;
     private int vel;
     private Ocupation ocupation;
+    private AID station;
 
     public void setup(){
         super.setup();
@@ -135,5 +137,13 @@ public abstract class Fireman extends Agent {
 
     public void setOcupation(Ocupation ocupation) {
         this.ocupation = ocupation;
+    }
+
+    public AID getStation() {
+        return station;
+    }
+
+    public void setStation(AID station) {
+        this.station = station;
     }
 }

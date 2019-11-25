@@ -2,6 +2,8 @@ package Logic;
 
 import Util.Position;
 
+import java.util.List;
+
 public class Zone {
     private int id;
     private Position p1;
@@ -65,5 +67,17 @@ public class Zone {
 
     public void setOcupation_rate(float ocupation_rate) {
         this.ocupation_rate = ocupation_rate;
+    }
+
+    public Integer contains(List<Position> positions) {
+        int total = 0;
+        for (Position p : positions) {
+            if (p.getX() > p1.getX() && p.getX() < p2.getX()) {
+                if (p.getY() > p1.getY() && p.getY() < p2.getY()) {
+                    total++;
+                }
+            }
+        }
+        return total;
     }
 }
