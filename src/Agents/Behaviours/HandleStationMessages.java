@@ -1,11 +1,9 @@
 package Agents.Behaviours;
 
 import Agents.AgentData;
-import Agents.Messages.ExtinguishFireData;
-import Agents.Messages.UpdateData;
+import Agents.Messages.*;
 import Agents.Station;
-import Logic.Fire;import Agents.Messages.StartedFire;
-import Agents.Messages.FireExtinguished;
+import Logic.Fire;
 import Util.Ocupation;
 import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
@@ -14,6 +12,7 @@ import jade.lang.acl.UnreadableException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class HandleStationMessages extends CyclicBehaviour {
@@ -54,7 +53,25 @@ public class HandleStationMessages extends CyclicBehaviour {
         }
     }
 
-        //TODO verificar quando nao há ninguem que resolva o fogo
+    private  void informFireHandled(Station s, ACLMessage msg){
+        try {
+            FireAlreadyHandled fire = (FireAlreadyHandled) msg.getContentObject();
+            Set<AID> aids = s.getTreatment_fire().keySet();
+            for (AID aid: aids) {
+                if(s.getTreatment_fire().get(aid) == fire.getFire()){
+                    s.getTreatment_fire().remove(aid);
+                    ACLMessage message = new ACLMessage(ACLMessage.CANCEL);
+                    message.addReceiver(aid);
+                    this.myAgent.send(message);
+                    break;
+                }
+            }
+        } catch (UnreadableException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //TODO verificar quando nao há ninguem que resolva o fogo
     private void handleRefuseFireRequest(Station s, ACLMessage msg) {
         try {
             ExtinguishFireData cont = (ExtinguishFireData) msg.getContentObject();
