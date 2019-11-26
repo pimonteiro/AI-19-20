@@ -1,3 +1,4 @@
+import GUI.Map;
 import Logic.World;
 import Util.Simulator;
 import jade.core.Runtime;

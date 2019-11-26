@@ -24,6 +24,7 @@ public class Station extends Agent {
     private Map<AID, Fire> treatment_fire;
     private List<Fire> waiting_fire;
     private Map<Fire,List<AID>> questioning;
+    private GUI.Map map_gui;
 
     public void setup() {
         super.setup();
@@ -32,6 +33,7 @@ public class Station extends Agent {
         this.treatment_fire = new HashMap<>();
         this.waiting_fire = new ArrayList<>();
         questioning = new HashMap<>();
+        this.map_gui = new GUI.Map(world);
 
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
@@ -54,6 +56,12 @@ public class Station extends Agent {
             protected void onTick() {
                 //TODO expandir fogo
                 //para cada fogo da lista, calcula a probabilidade de expandir e se sim expande
+            }
+        });
+        this.addBehaviour(new TickerBehaviour(this, 1000) {
+            @Override
+            protected void onTick() {
+                map_gui.update(world);
             }
         });
     }
