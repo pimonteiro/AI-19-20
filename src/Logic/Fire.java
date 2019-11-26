@@ -3,9 +3,11 @@ package Logic;
 import Util.Position;
 import Util.Risk;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
-public class Fire {
+public class Fire implements Serializable {
     private List<Position> positions;
     private Risk risk;
     private int duration_time;
@@ -63,5 +65,24 @@ public class Fire {
 
     public void setBase_expansion_rate(double base_expansion_rate) {
         this.base_expansion_rate = base_expansion_rate;
+    }
+
+    @Override
+    public String toString() {
+        return "Fire{" +
+                "positions=" + positions +
+                ", risk=" + risk +
+                ", duration_time=" + duration_time +
+                ", base_expansion_rate=" + base_expansion_rate +
+                '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(positions, risk, duration_time, base_expansion_rate);
+    }
+
+    public void increaseTime() {
+        this.duration_time++;
     }
 }

@@ -91,6 +91,7 @@ public class HandleStationMessages extends CyclicBehaviour {
             Fire f = cont.getFire();
             Map<Fire, List<AID>> questioning = s.getQuestioning();
             List<AID> unavailable = questioning.get(f);
+            System.out.println("Someone refused, searching another one...");
             AID agent = s.findBestFireman(f,unavailable);
 
             ACLMessage res = new ACLMessage(ACLMessage.REQUEST);
@@ -109,9 +110,13 @@ public class HandleStationMessages extends CyclicBehaviour {
             ExtinguishFireData cont = (ExtinguishFireData) msg.getContentObject();
             Map<AID, Fire> treatment_fire = s.getTreatment_fire();
             treatment_fire.put(msg.getSender(), cont.getFire());
+            AgentData ag = s.getWorld().getFireman().get(msg.getSender());
+            ag.setOcupation(Ocupation.MOVING);
+            ag.setTreating_fire(cont.getFire());
 
             s.getQuestioning().remove(cont.getFire());
             s.getWaiting_fire().remove(cont.getFire());
+
         } catch (UnreadableException e) {
             e.printStackTrace();
         }
@@ -124,6 +129,7 @@ public class HandleStationMessages extends CyclicBehaviour {
             ag.setActual_position(cont.getP());
             ag.setCap_fuel(cont.getFuel());
             ag.setCap_water(cont.getWater());
+            ag.setOcupation(cont.getOcupation());
         } catch (UnreadableException e) {
             e.printStackTrace();
         }
@@ -133,6 +139,7 @@ public class HandleStationMessages extends CyclicBehaviour {
         try {
             StartedFire cont = (StartedFire) msg.getContentObject();
             s.getWaiting_fire().add(cont.getFire());
+            System.out.println("[STATION] Novo fogo: " + cont.getFire().toString());
         } catch (UnreadableException e) {
             e.printStackTrace();
         }

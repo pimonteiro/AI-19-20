@@ -35,6 +35,7 @@ public abstract class Fireman extends Agent {
         this.water = world.getWater();
         this.std_position = new Position(0,0);
         this.actual_position = new Position(0,0);
+        this.ocupation = Ocupation.RESTING;
 
         this.addBehaviour(new HandleFiremanMessages());
     }

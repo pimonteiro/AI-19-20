@@ -2,6 +2,7 @@ package Agents.Behaviours;
 
 import Agents.Fireman;
 import Agents.Messages.UpdateData;
+import Util.Ocupation;
 import Util.Position;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
@@ -30,7 +31,9 @@ public class MovingFireman extends TickerBehaviour {
                 f.setCap_fuel(f.getCap_fuel()-1);
 
                 ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-                msg.setContentObject(new UpdateData(next,f.getCap_fuel(),f.getCap_water()));
+                //TODO COmo serapar os diferentes estados CATARINA
+                Ocupation ocu = Ocupation.MOVING;
+                msg.setContentObject(new UpdateData(next,f.getCap_fuel(),f.getCap_water(),ocu));
                 msg.addReceiver(f.getStation());
                 this.myAgent.send(msg);
             } catch (IOException e) {

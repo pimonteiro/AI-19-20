@@ -25,12 +25,14 @@ public class CheckWaitingFires extends CyclicBehaviour {
         }
         else{
             Fire f = waiting_fire.get(0);
+            System.out.println("Searching fireman to handle fire...");
             AID a = s.findBestFireman(f, new ArrayList<>());
             try {
                 ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
                 msg.setContentObject(new ExtinguishFireData(f));
                 msg.addReceiver(a);
                 this.myAgent.send(msg);
+                System.out.println("[STATION] Asking " + a.getName() + " to handle fire at " + f.getPositions().toString());
 
                 ArrayList<AID> tmp = new ArrayList<>();
                 tmp.add(a);
