@@ -52,6 +52,7 @@ public class HandleFiremanMessages extends CyclicBehaviour {
 
             if(f.getOcupation() == Ocupation.RESTING || f.getOcupation() == Ocupation.RETURNING){
                 res.setPerformative(ACLMessage.AGREE);
+                System.out.println("[FIREMAN " + f.getName() + "] Accepted Fire " + cont.getFire().toString());
                 this.myAgent.send(res);
 
                 f.setOcupation(Ocupation.MOVING);
@@ -61,6 +62,7 @@ public class HandleFiremanMessages extends CyclicBehaviour {
             }
             else{
                 res.setPerformative(ACLMessage.REFUSE);
+                System.out.println("[FIREMAN " + f.getName() + "] Refused Fire " + cont.getFire().toString());
                 this.myAgent.send(res);
             }
         } catch (UnreadableException | IOException e) {
@@ -74,6 +76,7 @@ public class HandleFiremanMessages extends CyclicBehaviour {
             f.setActual_position(cont.getPos());
             f.setStd_position(cont.getPos());
             f.setStation(msg.getSender());
+            System.out.println("[FIREMAN " + f.getName() + "] Posição: " + f.getActual_position().toString());
         } catch (UnreadableException e) {
             e.printStackTrace();
         }
