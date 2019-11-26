@@ -23,6 +23,7 @@ public class Station extends Agent {
     private Map<AID, Fire> treatment_fire;
     private List<Fire> waiting_fire;
     private Map<Fire,List<AID>> questioning;
+    private GUI.Map map_gui;
 
     public void setup() {
         super.setup();
@@ -31,6 +32,7 @@ public class Station extends Agent {
         this.treatment_fire = new HashMap<>();
         this.waiting_fire = new ArrayList<>();
         questioning = new HashMap<>();
+        this.map_gui = new GUI.Map(world);
 
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
@@ -62,6 +64,12 @@ public class Station extends Agent {
                 waiting_fire.forEach(f -> System.out.println(f.toString()));
                 System.out.println("-------Fires being questioned-------");
                 questioning.keySet().forEach(f -> System.out.println(f.toString()));
+            }
+        });
+        this.addBehaviour(new TickerBehaviour(this, 1000) {
+            @Override
+            protected void onTick() {
+                map_gui.update(world);
             }
         });
     }
