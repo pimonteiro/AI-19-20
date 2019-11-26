@@ -2,6 +2,7 @@ package Agents.Behaviours;
 
 import Agents.Messages.FireExtinguished;
 import Util.Position;
+
 import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;

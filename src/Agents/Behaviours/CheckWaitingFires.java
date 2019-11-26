@@ -1,15 +1,12 @@
 package Agents.Behaviours;
 
-import Agents.AgentData;
 import Agents.Messages.ExtinguishFireData;
 import Agents.Station;
 import Logic.Fire;
-import jade.core.AID;
-import jade.core.behaviours.Behaviour;
-import jade.core.behaviours.CyclicBehaviour;
-import jade.core.behaviours.TickerBehaviour;
-import jade.lang.acl.ACLMessage;
 
+import jade.core.AID;
+import jade.core.behaviours.CyclicBehaviour;
+import jade.lang.acl.ACLMessage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

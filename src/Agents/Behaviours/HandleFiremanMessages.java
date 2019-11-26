@@ -6,6 +6,7 @@ import Agents.Messages.InitialData;
 import Agents.Fireman;
 import Logic.Fire;
 import Util.Ocupation;
+
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;

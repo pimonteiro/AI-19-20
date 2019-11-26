@@ -4,7 +4,11 @@ import Agents.AgentData;
 import Agents.Messages.*;
 import Agents.Station;
 import Logic.Fire;
+
+import Agents.Messages.StartedFire;
+import Agents.Messages.FireExtinguished;
 import Util.Ocupation;
+
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
