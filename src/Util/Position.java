@@ -6,6 +6,7 @@ import static Logic.World.dimension;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Objects;
 import java.util.List;
 
 public class Position implements Serializable {
