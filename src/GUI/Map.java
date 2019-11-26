@@ -28,11 +28,15 @@ public class Map {
     public Map(World world) {
         String[] colors = {
                 "#f9ebea",
+<<<<<<< HEAD
                 "#ebdef0",
                 "#e8daef",
                 "#fdedec",
                 "#f5b7b1",
                 "#d7bde2",
+=======
+                "#fdedec",
+>>>>>>> Testing and fix some bugs from base project.
                 "#f5eef8",
                 "#f4ecf7",
                 "#f2d7d5",
@@ -40,6 +44,11 @@ public class Map {
                 "#ebdef0",
                 "#e8daef",
                 "#e6b0aa",
+<<<<<<< HEAD
+=======
+                "#f5b7b1",
+                "#d7bde2",
+>>>>>>> Testing and fix some bugs from base project.
                 "#d2b4de",
         };
         objects = new HashMap<>();
@@ -126,7 +135,19 @@ public class Map {
             else if(a.getFiremanType() == FiremanType.DRONE)
                 this.data[p.getY()][p.getX()] = this.objects.get("drone");
             else
+<<<<<<< HEAD
                 this.data[p.getY()][p.getX()] = this.objects.get("truck");
+=======
+                this.data[p.getY()][p.getX()] = truck;
+        }
+
+        for(int i = 0; i < World.dimension; i++){
+            for(int j = 0; j < World.dimension; j++) {
+                if ((data[i][j] != null)) {
+                    this.model_table.setValueAt(data[i][j], i, j);
+                }
+            }
+>>>>>>> Testing and fix some bugs from base project.
         }
     }
 }
