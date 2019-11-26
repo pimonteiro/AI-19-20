@@ -26,6 +26,7 @@ public class Station extends Agent {
     private Map<AID, Fire> treatment_fire;
     private List<Fire> waiting_fire;
     private Map<Fire,List<AID>> questioning;
+    private GUI.Map map_gui;
     private Metric metrics;
 
     public void setup() {
@@ -36,6 +37,7 @@ public class Station extends Agent {
         this.waiting_fire = new ArrayList<>();
         this.metrics = new Metric();
         questioning = new HashMap<>();
+        this.map_gui = new GUI.Map(world);
 
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
@@ -69,6 +71,12 @@ public class Station extends Agent {
                 waiting_fire.forEach(f -> System.out.println(f.toString()));
                 System.out.println("-------Fires being questioned-------");
                 questioning.keySet().forEach(f -> System.out.println(f.toString()));
+            }
+        });
+        this.addBehaviour(new TickerBehaviour(this, 1000) {
+            @Override
+            protected void onTick() {
+                map_gui.update(world);
             }
         });
     }
@@ -128,7 +136,10 @@ public class Station extends Agent {
 
         List<AgentData> firemans = this.world.getFireman().values().stream().filter(b -> b.getZone().getId() == z.getId()).collect(Collectors.toList());
         for(AID d : unavailable){
-            firemans.removeIf(a -> a.getAid().equals(d));
+            for(AgentData a : firemans){
+                if(a.getAid().equals(d))
+                    firemans.remove(a);
+            }
         }
         firemans.sort((a1, a2) -> {
             Position p_a1 = a1.getActual_position();
