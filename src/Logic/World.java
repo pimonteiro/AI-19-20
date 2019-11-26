@@ -7,7 +7,6 @@ import jade.core.AID;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class World {
     private HashMap<AID,AgentData> fireman;
@@ -17,7 +16,7 @@ public class World {
     private List<Position> houses;
     private List<Zone> zones;
 
-    public static final int dimension = 40;
+    public static final int dimension = 500;
 
     public void expandFire(Fire activeFire, Position newPosition){
         activeFire.getPositions().add(newPosition);

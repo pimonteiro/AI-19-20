@@ -6,13 +6,11 @@ import Logic.World;
 import Util.Position;
 
 import jade.core.Agent;
-import jade.core.behaviours.SenderBehaviour;
 import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

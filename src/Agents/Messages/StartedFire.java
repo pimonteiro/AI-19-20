@@ -1,7 +1,6 @@
 package Agents.Messages;
 
 import Logic.Fire;
-import Util.Position;
 
 import java.io.Serializable;
 

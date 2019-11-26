@@ -5,9 +5,9 @@ import Agents.Behaviours.HandleStationMessages;
 import Agents.Behaviours.SendInitialInfo;
 import Logic.Fire;
 import Logic.World;
-
 import Logic.Zone;
 import Util.Position;
+
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
@@ -15,7 +15,6 @@ import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
-
 import java.util.*;
 import java.util.stream.Collectors;
 

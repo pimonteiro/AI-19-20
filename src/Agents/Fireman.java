@@ -1,15 +1,14 @@
 package Agents;
 
 import Agents.Behaviours.HandleFiremanMessages;
-
 import Logic.Fire;
 import Logic.World;
 import Logic.Zone;
 import Util.Ocupation;
 import Util.Position;
+
 import jade.core.AID;
 import jade.core.Agent;
-
 import java.util.List;
 
 public abstract class Fireman extends Agent {
