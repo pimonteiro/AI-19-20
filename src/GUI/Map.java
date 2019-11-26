@@ -25,18 +25,18 @@ public class Map {
 
     public Map(World world) {
         String[] colors = {
-                 "#f9ebea",
-                 "#fdedec",
-                 "#f5eef8",
-                 "#f4ecf7",
-                 "#f2d7d5",
-                 "#fadbd8",
-                 "#ebdef0",
-                 "#e8daef",
-                 "#e6b0aa",
-                 "#f5b7b1",
-                 "#d7bde2",
-                 "#d2b4de",
+                "#f9ebea",
+                "#fdedec",
+                "#f5eef8",
+                "#f4ecf7",
+                "#f2d7d5",
+                "#fadbd8",
+                "#ebdef0",
+                "#e8daef",
+                "#e6b0aa",
+                "#f5b7b1",
+                "#d7bde2",
+                "#d2b4de",
         };
 
         this.frame = new JFrame("Fire Simulation");
@@ -156,7 +156,7 @@ public class Map {
             for(int j = 0; j < World.dimension; j++) {
                 if ((data[i][j] != null)) {
                     this.model_table.setValueAt(data[i][j], i, j);
-                 }
+                }
             }
         }
     }
