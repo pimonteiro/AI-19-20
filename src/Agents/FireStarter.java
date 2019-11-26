@@ -16,6 +16,7 @@ import jade.domain.FIPAException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class FireStarter extends Agent {
     private World world;
@@ -48,13 +49,15 @@ public class FireStarter extends Agent {
                 if(startFire) {
                     int randomX = 0;
                     int randomY = 0;
+                    Position position = new Position(randomX, randomY);
                     do {
                         randomX = randomGenerator.nextInt(World.dimension) + 1;
                         randomY = randomGenerator.nextInt(World.dimension) + 1;
-                    } while (world.isValid(randomX, randomY));
-
-                    startFire(new Position(randomX, randomY));
-
+                        position.setX(randomX);
+                        position.setY(randomY);
+                    } while (position.isValid(world.getFire(), world.getFuel(), world.getWater(),
+                                              world.getHouses(), new ArrayList<>(world.getFireman().values())));
+                    startFire(position);
                 }
             }
         });

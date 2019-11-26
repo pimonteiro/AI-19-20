@@ -5,6 +5,7 @@ import Agents.Aircraft;
 import Agents.Messages.InitialData;
 import Agents.Drone;
 import Agents.FireTruck;
+import Logic.Fire;
 import Logic.World;
 import Logic.Zone;
 import Util.FiremanType;
@@ -20,6 +21,7 @@ import jade.lang.acl.ACLMessage;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 public class SendInitialInfo extends OneShotBehaviour {
@@ -49,6 +51,14 @@ public class SendInitialInfo extends OneShotBehaviour {
         DFAgentDescription[] trucks;
         DFAgentDescription[] drones;
         DFAgentDescription[] aircrs;
+
+        List<Fire> fire = world.getFire();
+        List<Position> fuel = world.getFuel();
+        List<Position> water = world.getWater();
+        List<Position> houses = world.getHouses();
+        List<AgentData> fireman = (List<AgentData>) world.getFireman().values();
+        Position position = new Position(0,0);
+
         try{
             trucks = DFService.search(myAgent,template1);
             drones = DFService.search(myAgent,template2);
@@ -75,8 +85,11 @@ public class SendInitialInfo extends OneShotBehaviour {
                     int tx = r.nextInt(x_max - x_min) + x_min;
                     int ty = r.nextInt(y_max - y_min) + y_min;
 
+                    position.setX(tx);
+                    position.setY(ty);
+
                     //Posição válida para um bombeiro
-                    if(world.isValid(tx,ty)){
+                    if(position.isValid(fire, fuel, water, houses, fireman)){
                         AgentData f = new AgentData(trucks[tr].getName(),FiremanType.FIRETRUCK,new Position(tx,ty),new Position(tx,ty),
                                                     z,FireTruck.MAX_WATER, FireTruck.MAX_FUEL,FireTruck.VEL,Ocupation.RESTING);
                         firemans.put(trucks[tr].getName(),f);
@@ -97,8 +110,11 @@ public class SendInitialInfo extends OneShotBehaviour {
                     int tx = r.nextInt(x_max - x_min) + x_min;
                     int ty = r.nextInt(y_max - y_min) + y_min;
 
+                    position.setX(tx);
+                    position.setY(ty);
+
                     //Posição válida para um bombeiro
-                    if(world.isValid(tx,ty)){
+                    if(position.isValid(fire, fuel, water, houses, fireman)){
                         AgentData f = new AgentData(drones[dr].getName(),FiremanType.DRONE,new Position(tx,ty),new Position(tx,ty),
                                 z,Drone.MAX_WATER, Drone.MAX_FUEL,Drone.VEL,Ocupation.RESTING);
                         firemans.put(drones[dr].getName(),f);
@@ -119,8 +135,11 @@ public class SendInitialInfo extends OneShotBehaviour {
                     int tx = r.nextInt(x_max - x_min) + x_min;
                     int ty = r.nextInt(y_max - y_min) + y_min;
 
+                    position.setX(tx);
+                    position.setY(ty);
+
                     //Posição válida para um bombeiro
-                    if(world.isValid(tx,ty)){
+                    if(position.isValid(fire, fuel, water, houses, fireman)){
                         AgentData f = new AgentData(aircrs[air].getName(),FiremanType.AIRCRAFT,new Position(tx,ty),new Position(tx,ty),
                                 z,Aircraft.MAX_WATER, Aircraft.MAX_FUEL,Aircraft.VEL,Ocupation.RESTING);
                         firemans.put(aircrs[air].getName(),f);

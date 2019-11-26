@@ -1,7 +1,6 @@
 package Logic;
 
 import Agents.AgentData;
-import Agents.Fireman;
 import Util.Position;
 import jade.core.AID;
 
@@ -18,7 +17,7 @@ public class World {
     private List<Zone> zones;
 
     public static final int dimension = 40;
-    
+
     public void expandFire(Fire activeFire, Position newPosition){
         activeFire.getPositions().add(newPosition);
     }
