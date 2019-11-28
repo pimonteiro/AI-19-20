@@ -20,6 +20,7 @@ import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -56,7 +57,7 @@ public class SendInitialInfo extends OneShotBehaviour {
         List<Position> fuel = world.getFuel();
         List<Position> water = world.getWater();
         List<Position> houses = world.getHouses();
-        List<AgentData> fireman = (List<AgentData>) world.getFireman().values();
+        List<AgentData> fireman = new ArrayList<>(world.getFireman().values());
         Position position = new Position(0,0);
 
         try{
@@ -93,6 +94,7 @@ public class SendInitialInfo extends OneShotBehaviour {
                         AgentData f = new AgentData(trucks[tr].getName(),FiremanType.FIRETRUCK,new Position(tx,ty),new Position(tx,ty),
                                                     z,FireTruck.MAX_WATER, FireTruck.MAX_FUEL,FireTruck.VEL,Ocupation.RESTING);
                         firemans.put(trucks[tr].getName(),f);
+                        System.out.println("[STATION] Posição inicial para agente " + trucks[tr].getName() + ": (" + tx + "," + ty + ")");
                         //Send Message with data
                         ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
                         msg.setContentObject(new InitialData(new Position(tx,ty)));
@@ -118,6 +120,7 @@ public class SendInitialInfo extends OneShotBehaviour {
                         AgentData f = new AgentData(drones[dr].getName(),FiremanType.DRONE,new Position(tx,ty),new Position(tx,ty),
                                 z,Drone.MAX_WATER, Drone.MAX_FUEL,Drone.VEL,Ocupation.RESTING);
                         firemans.put(drones[dr].getName(),f);
+                        System.out.println("[STATION] Posição inicial para agente " + drones[dr].getName() + ": (" + tx + "," + ty + ")");
                         //Send Message with data
                         ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
                         msg.setContentObject(new InitialData(new Position(tx,ty)));
@@ -143,6 +146,7 @@ public class SendInitialInfo extends OneShotBehaviour {
                         AgentData f = new AgentData(aircrs[air].getName(),FiremanType.AIRCRAFT,new Position(tx,ty),new Position(tx,ty),
                                 z,Aircraft.MAX_WATER, Aircraft.MAX_FUEL,Aircraft.VEL,Ocupation.RESTING);
                         firemans.put(aircrs[air].getName(),f);
+                        System.out.println("[STATION] Posição inicial para agente " + aircrs[air].getName() + ": (" + tx + "," + ty + ")");
                         //Send Message with data
                         ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
                         msg.setContentObject(new InitialData(new Position(tx,ty)));

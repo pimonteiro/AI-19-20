@@ -54,6 +54,15 @@ public class Station extends Agent {
             protected void onTick() {
                 //TODO expandir fogo
                 //para cada fogo da lista, calcula a probabilidade de expandir e se sim expande
+                treatment_fire.values().forEach(Fire::increaseTime);
+                waiting_fire.forEach(Fire::increaseTime);
+                questioning.keySet().forEach(Fire::increaseTime);
+                System.out.println("-------Fires being treated-------");
+                treatment_fire.values().forEach(f -> System.out.println(f.toString()));
+                System.out.println("-------Fires waiting to be treated-------");
+                waiting_fire.forEach(f -> System.out.println(f.toString()));
+                System.out.println("-------Fires being questioned-------");
+                questioning.keySet().forEach(f -> System.out.println(f.toString()));
             }
         });
     }
@@ -100,20 +109,16 @@ public class Station extends Agent {
 
     // TODO o que acontece quando um fogo expande e alguem está a caminho/a tratar dele?
     public AID findBestFireman(Fire f, List<AID> unavailable){
-        this.waiting_fire.add(f);
         List<Position> p = f.getPositions();
         int size_of_fire = p.size();
         Zone z = this.world.findZoneOfFire(f);
-        int fire_x = f.getPositions().stream().map(Position::getX).reduce(0, Integer::sum) / size_of_fire;
-        int fire_y = f.getPositions().stream().map(Position::getY).reduce(0, Integer::sum) / size_of_fire;
+        int fire_x = p.stream().map(Position::getX).reduce(0, Integer::sum) / size_of_fire;
+        int fire_y = p.stream().map(Position::getY).reduce(0, Integer::sum) / size_of_fire;
 
 
         List<AgentData> firemans = this.world.getFireman().values().stream().filter(b -> b.getZone().getId() == z.getId()).collect(Collectors.toList());
         for(AID d : unavailable){
-            for(AgentData a : firemans){
-                if(a.getAid().equals(d))
-                    firemans.remove(a);
-            }
+            firemans.removeIf(a -> a.getAid().equals(d));
         }
         firemans.sort((a1, a2) -> {
             Position p_a1 = a1.getActual_position();

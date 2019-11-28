@@ -1,5 +1,6 @@
 package Agents.Behaviours;
 
+import Agents.Messages.StartedFire;
 import Logic.Fire;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.DFService;
@@ -28,8 +29,9 @@ public class SendFirePosition extends OneShotBehaviour {
         try{
             station = DFService.search(myAgent,template1);
             ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-            msg.setContentObject(new SendFirePosition(fire));
+            msg.setContentObject(new StartedFire(fire));
             msg.addReceiver(station[0].getName());
+            System.out.println("[FireStarter] Novo fogo: " + this.fire.toString());
             myAgent.send(msg);
         } catch (FIPAException | IOException e) {
             e.printStackTrace();
