@@ -20,6 +20,7 @@ import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -56,7 +57,7 @@ public class SendInitialInfo extends OneShotBehaviour {
         List<Position> fuel = world.getFuel();
         List<Position> water = world.getWater();
         List<Position> houses = world.getHouses();
-        List<AgentData> fireman = (List<AgentData>) world.getFireman().values();
+        List<AgentData> fireman = new ArrayList<>(world.getFireman().values());
         Position position = new Position(0,0);
 
         try{

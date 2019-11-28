@@ -115,8 +115,6 @@ public class HandleStationMessages extends CyclicBehaviour {
             ag.setTreating_fire(cont.getFire());
 
             s.getQuestioning().remove(cont.getFire());
-            s.getWaiting_fire().remove(cont.getFire());
-
         } catch (UnreadableException e) {
             e.printStackTrace();
         }

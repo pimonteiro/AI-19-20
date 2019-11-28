@@ -52,7 +52,7 @@ public class HandleFiremanMessages extends CyclicBehaviour {
         try {
             ExtinguishFireData cont = (ExtinguishFireData) msg.getContentObject();
             ACLMessage res = new ACLMessage();
-            res.setContentObject(new ExtinguishFireData(cont.getFire()));
+            res.setContentObject(cont);
             res.addReceiver(msg.getSender());
 
             if(f.getOcupation() == Ocupation.RESTING || f.getOcupation() == Ocupation.RETURNING){

@@ -57,7 +57,12 @@ public class Station extends Agent {
                 treatment_fire.values().forEach(Fire::increaseTime);
                 waiting_fire.forEach(Fire::increaseTime);
                 questioning.keySet().forEach(Fire::increaseTime);
-
+                System.out.println("-------Fires being treated-------");
+                treatment_fire.values().forEach(f -> System.out.println(f.toString()));
+                System.out.println("-------Fires waiting to be treated-------");
+                waiting_fire.forEach(f -> System.out.println(f.toString()));
+                System.out.println("-------Fires being questioned-------");
+                questioning.keySet().forEach(f -> System.out.println(f.toString()));
             }
         });
     }
