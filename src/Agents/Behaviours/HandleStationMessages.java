@@ -4,18 +4,13 @@ import Agents.AgentData;
 import Agents.Messages.*;
 import Agents.Station;
 import Logic.Fire;
-
-import Agents.Messages.StartedFire;
-import Agents.Messages.FireExtinguished;
 import Util.Ocupation;
 
 import jade.core.AID;
-import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
