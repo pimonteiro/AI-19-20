@@ -16,7 +16,7 @@ public class World {
     private List<Position> houses;
     private List<Zone> zones;
 
-    public static final int dimension = 8;
+    public static final int dimension = 100;
 
     public void expandFire(Fire activeFire, Position newPosition){
         activeFire.getPositions().add(newPosition);
@@ -88,5 +88,24 @@ public class World {
                 z = i;
         }
         return zones.get(z);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder a = new StringBuilder("\n----WORLD:----\n");
+        a.append("[FUELS]:\n");
+        for(Position p: fuel){
+            a.append("[Fuel] em (" + p.getX() + "," + p.getY() + ")\n");
+        }
+        a.append("[WATER]:\n");
+        for(Position p: water){
+            a.append("[Water] em (" + p.getX() + "," + p.getY() + ")\n");
+        }
+        a.append("[HOUSES]:\n");
+        for(Position p: houses){
+            a.append("[Houses] em (" + p.getX() + "," + p.getY() + ")\n");
+        }
+
+        return a.toString();
     }
 }
