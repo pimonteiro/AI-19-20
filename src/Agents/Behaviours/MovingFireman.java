@@ -73,7 +73,6 @@ public class MovingFireman extends TickerBehaviour {
         return fuel_path_aux;
     }
 
-    //TODO verificar combustivel, fogos à beira e se precisa de abastecer
     public Position decideNewPosition(Fireman f, Position fire){
         int distance_fuel;
         int distance_destiny;
@@ -92,6 +91,7 @@ public class MovingFireman extends TickerBehaviour {
                                             //FIXME bombeiro precisa de saber onde estão os outros fogos e bombeiros
         distance_destiny = destiny_path.getFirst();
         destiny = destiny_path.getSecond();
+        System.out.println("[FIREMAN] O fogo está a " + distance_destiny + " posições");
 
         // Informações bombeiro abastecer
         Pair<Integer, Position> destiny_fuel_path = maxPairValue(actual_position, velocity, new ArrayList<>(),
@@ -99,6 +99,7 @@ public class MovingFireman extends TickerBehaviour {
                                           //FIXME bombeiro precisa de saber onde estão os outros fogos e bombeiros
         distance_fuel = destiny_fuel_path.getFirst();
         destiny_fuel = destiny_fuel_path.getSecond();
+        System.out.println("[FIREMAN] A bomba de gasolina está a " + distance_destiny + " posições");
 
         // Informações bombeiro apagar fogo + abastecer
         Pair<Integer, Position> distance_destiny_fuel_path = maxPairValue(fire, velocity, new ArrayList<>(),
@@ -114,4 +115,3 @@ public class MovingFireman extends TickerBehaviour {
             return destiny_fuel;
     }
 }
-
