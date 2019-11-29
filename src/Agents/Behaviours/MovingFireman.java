@@ -2,13 +2,19 @@ package Agents.Behaviours;
 
 import Agents.Fireman;
 import Agents.Messages.UpdateData;
+
 import Util.Ocupation;
+
+import Logic.World;
+import Util.Pair;
 import Util.Position;
+
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
-
 import java.io.IOException;
+
+import static Util.FindShortestPath.findShortestPath;
 
 public class MovingFireman extends TickerBehaviour {
     private Position destiny;
@@ -23,10 +29,11 @@ public class MovingFireman extends TickerBehaviour {
         Fireman f = (Fireman) this.myAgent;
         if(f.getActual_position().equals(this.destiny)) {
             this.myAgent.removeBehaviour(this);
+            //alterar ocupação do FIREMAN .... não é bem só isso
         }
         else{
-            try {   //TODO verificar combustivel, fogos à beira e se precisa de abastecer
-                Position next = this.destiny; //TODO decideNewPosition()
+            try {
+                //Position next = decideNewPosition(f, this.destiny);
                 f.setActual_position(next);
                 f.setCap_fuel(f.getCap_fuel()-1);
 
@@ -39,8 +46,27 @@ public class MovingFireman extends TickerBehaviour {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
+    }
 
+    //TODO verificar combustivel, fogos à beira e se precisa de abastecer
+    public Position decideNewPosition(World world, Fireman f, Position fire){
+        int distance_fuel;
+        int distance_destiny;
+        int distance_destiny_fuel;
+        Position fuel;
+        Position destiny;
+        int actual_cap_fuel = f.getCap_fuel();
+
+        // Informações caso o bombeiro opte por ir apagar o fogo
+        Pair<Integer, Position> destiny_path = findShortestPath(world, f.getActual_position(), fire, f.getVel());
+        distance_destiny = destiny_path.getFirst();
+        destiny = destiny_path.getSecond();
+
+        // Informações caso o bombeiro opte por ir abastecer
+
+
+        return new Position(0,0);
     }
 }
+
