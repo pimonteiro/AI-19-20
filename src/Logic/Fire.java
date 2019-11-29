@@ -9,11 +9,13 @@ import java.util.Objects;
 
 public class Fire implements Serializable {
     private List<Position> positions;
+    private int zone_id;
     private Risk risk;
     private int duration_time;
     private double base_expansion_rate;
 
-    public Fire(List<Position> positions, double base_expansion_rate) {
+    public Fire(List<Position> positions, double base_expansion_rate, int zone_id) {
+        this.zone_id = zone_id;
         this.positions = positions;
         this.risk = Risk.LOW;
         this.duration_time = 0;
@@ -32,7 +34,16 @@ public class Fire implements Serializable {
         return  this.positions.equals(fire.getPositions()) &&
                 this.risk.equals(fire.getRisk()) &&
                 this.duration_time == fire.getDuration_time() &&
-                this.base_expansion_rate == fire.getBase_expansion_rate();
+                this.base_expansion_rate == fire.getBase_expansion_rate() &&
+                this.zone_id == fire.getZone_id();
+    }
+
+    public int getZone_id() {
+        return zone_id;
+    }
+
+    public void setZone_id(int zone_id) {
+        this.zone_id = zone_id;
     }
 
     public List<Position> getPositions() {

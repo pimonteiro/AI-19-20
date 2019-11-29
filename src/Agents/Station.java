@@ -2,6 +2,7 @@ package Agents;
 
 import Agents.Behaviours.CheckWaitingFires;
 import Agents.Behaviours.HandleStationMessages;
+import Agents.Behaviours.MetricController;
 import Agents.Behaviours.SendInitialInfo;
 import Logic.Fire;
 import Logic.World;
@@ -49,6 +50,7 @@ public class Station extends Agent {
         this.addBehaviour(new SendInitialInfo(this.world));
         this.addBehaviour(new HandleStationMessages());
         this.addBehaviour(new CheckWaitingFires());
+        this.addBehaviour(new MetricController(this, 5000));
         this.addBehaviour(new TickerBehaviour(this,1000) {
             @Override
             protected void onTick() {
