@@ -1,5 +1,7 @@
 package Util;
 
+import Agents.AgentData;
+import Logic.Fire;
 import Logic.World;
 
 import java.util.ArrayDeque;
@@ -17,7 +19,8 @@ public class FindShortestPath {
 
 
     // Find shortest route in the matrix from source cell to destination cell
-    public static Node findPath(int matrix[][], World world, int x, int y, int x_dest, int y_dest) {
+    public static Node findPath(int matrix[][], List<Fire> fire, List<Position> fuel, List<Position> water,
+                                List<Position> houses, List<AgentData> fireman, int x, int y, int x_dest, int y_dest) {
         // create a queue and enqueue first node
         Queue<Node> q = new ArrayDeque<>();
         Node src = new Node(x, y, null);
@@ -47,14 +50,17 @@ public class FindShortestPath {
                 // value of velocity
                 int n = matrix[i][j];
                 //check for max velocity and to min velocity if necessary
+                Position position = new Position(0,0);
                 for (; n > 0; n--) {
                     // get next position coordinates using value of velocity
                     x = i + row[k] * n;
                     y = j + col[k] * n;
+                    position.setX(x);
+                    position.setY(y);
 
                     // check if it is possible to go to next position
                     // from current position
-                    if (world.isValid(x, y)) {
+                    if (position.isValid(fire, fuel, water, houses, fireman)){
                         // construct next cell node
                         Node next = new Node(x, y, curr);
 
@@ -85,7 +91,9 @@ public class FindShortestPath {
         return len + 1;
     }
 
-    public static Pair<Integer, Position> findShortestPath(World world, Position current, Position destination, int velocity) {
+    public static Pair<Integer, Position> findShortestPath(Position current, Position destination, int velocity,
+                                                           List<Fire> fire, List<Position> fuel, List<Position> water,
+                                                           List<Position> houses, List<AgentData> fireman) {
         int dimension = World.dimension;
         int[][] matrix = new int[dimension][dimension];
 
@@ -96,7 +104,8 @@ public class FindShortestPath {
         }
 
         // Find a route in the matrix from source cell to destination cell
-        Node node = findPath(matrix, world, current.getX(), current.getY(), destination.getX(), destination.getY());
+        Node node = findPath(matrix, fire, fuel, water, houses, fireman, current.getX(), current.getY(),
+                             destination.getX(), destination.getY());
 
         int len = printPath(node) - 1;
 
@@ -110,6 +119,7 @@ public class FindShortestPath {
             return new Pair<>(len, path.get(1));
         } else {
             System.out.println("Destination not found");
+            System.exit(5); //FIXME melhorar isto
             return null;
         }
     }
