@@ -73,7 +73,7 @@ public class Station extends Agent {
                 questioning.keySet().forEach(f -> System.out.println(f.toString()));
             }
         });
-        this.addBehaviour(new TickerBehaviour(this, 1000) {
+        this.addBehaviour(new TickerBehaviour(this, 1000) { //GUI
             @Override
             protected void onTick() {
                 map_gui.update(world);

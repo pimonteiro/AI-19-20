@@ -2,6 +2,7 @@ package Logic;
 
 import Util.Position;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Zone {
@@ -79,5 +80,15 @@ public class Zone {
             }
         }
         return total;
+    }
+
+    public ArrayList<Position> getAllPositions() {
+        ArrayList<Position> ret = new ArrayList<>();
+        for(int i = this.p1.getX(); i < this.p2.getX(); i++){
+            for(int j = this.p1.getY(); j < this.p2.getY(); j++){
+                ret.add(new Position(i,j));
+            }
+        }
+        return ret;
     }
 }
