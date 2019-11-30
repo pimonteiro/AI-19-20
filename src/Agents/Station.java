@@ -73,6 +73,12 @@ public class Station extends Agent {
                 map_gui.update(world);
             }
         });
+        this.addBehaviour(new TickerBehaviour(this, 1000) {
+            @Override
+            protected void onTick() {
+                map_gui.update(world);
+            }
+        });
     }
 
     public void takeDown(){
