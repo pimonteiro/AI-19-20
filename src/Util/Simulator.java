@@ -19,7 +19,7 @@ public class Simulator {
 
         int n = World.dimension / zone_side;
         int index = 0;
-        for(int i = 0; i < zone_side; i++){
+        for(int i = 0; i < zone_side; i++){     //TODO fix repeated cells
             int x = i * n;
             for(int h = 0; h < zone_side; h++){
                 int y = h * n;
