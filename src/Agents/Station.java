@@ -5,6 +5,7 @@ import Agents.Behaviours.HandleStationMessages;
 import Agents.Behaviours.MetricController;
 import Agents.Behaviours.SendInitialInfo;
 import Logic.Fire;
+import Logic.Metric;
 import Logic.World;
 
 import Logic.Zone;
@@ -25,6 +26,7 @@ public class Station extends Agent {
     private Map<AID, Fire> treatment_fire;
     private List<Fire> waiting_fire;
     private Map<Fire,List<AID>> questioning;
+    private Metric metrics;
 
     public void setup() {
         super.setup();
@@ -32,6 +34,7 @@ public class Station extends Agent {
         this.world = (World) args[0];
         this.treatment_fire = new HashMap<>();
         this.waiting_fire = new ArrayList<>();
+        this.metrics = new Metric();
         questioning = new HashMap<>();
 
         DFAgentDescription dfd = new DFAgentDescription();
@@ -57,6 +60,7 @@ public class Station extends Agent {
                 //TODO expandir fogo
                 //para cada fogo da lista, calcula a probabilidade de expandir e se sim expande
                 treatment_fire.values().forEach(Fire::increaseTime);
+                treatment_fire.values().forEach(Fire::increaseTimeBeingResolved);
                 waiting_fire.forEach(Fire::increaseTime);
                 questioning.keySet().forEach(Fire::increaseTime);
                 System.out.println("-------Fires being treated-------");
@@ -107,6 +111,10 @@ public class Station extends Agent {
 
     public void setQuestioning(Map<Fire, List<AID>> questioning) {
         this.questioning = questioning;
+    }
+
+    public Metric getMetrics() {
+        return metrics;
     }
 
     // TODO o que acontece quando um fogo expande e alguem está a caminho/a tratar dele?

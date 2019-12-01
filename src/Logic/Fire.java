@@ -13,6 +13,7 @@ public class Fire implements Serializable {
     private Risk risk;
     private int duration_time;
     private double base_expansion_rate;
+    private int being_resolved_time;
 
     public Fire(List<Position> positions, double base_expansion_rate, int zone_id) {
         this.zone_id = zone_id;
@@ -20,6 +21,7 @@ public class Fire implements Serializable {
         this.risk = Risk.LOW;
         this.duration_time = 0;
         this.base_expansion_rate = base_expansion_rate;
+        this.being_resolved_time = 0;
     }
 
     public boolean equals(Object object) {
@@ -35,7 +37,8 @@ public class Fire implements Serializable {
                 this.risk.equals(fire.getRisk()) &&
                 this.duration_time == fire.getDuration_time() &&
                 this.base_expansion_rate == fire.getBase_expansion_rate() &&
-                this.zone_id == fire.getZone_id();
+                this.zone_id == fire.getZone_id() &&
+                this.being_resolved_time == fire.getBeing_resolved_time();
     }
 
     public int getZone_id() {
@@ -78,6 +81,14 @@ public class Fire implements Serializable {
         this.base_expansion_rate = base_expansion_rate;
     }
 
+    public int getBeing_resolved_time() {
+        return being_resolved_time;
+    }
+
+    public void setBeing_resolved_time(int being_resolved_time) {
+        this.being_resolved_time = being_resolved_time;
+    }
+
     @Override
     public String toString() {
         return "Fire{" +
@@ -85,6 +96,7 @@ public class Fire implements Serializable {
                 ", risk=" + risk +
                 ", duration_time=" + duration_time +
                 ", base_expansion_rate=" + base_expansion_rate +
+                ", being_resolved_time=" + being_resolved_time +
                 '}';
     }
 
@@ -95,5 +107,9 @@ public class Fire implements Serializable {
 
     public void increaseTime() {
         this.duration_time++;
+    }
+
+    public void increaseTimeBeingResolved(){
+        this.being_resolved_time++;
     }
 }

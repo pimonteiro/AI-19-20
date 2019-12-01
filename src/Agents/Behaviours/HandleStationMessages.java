@@ -1,9 +1,12 @@
 package Agents.Behaviours;
 
 import Agents.AgentData;
+import Agents.Fireman;
 import Agents.Messages.*;
 import Agents.Station;
 import Logic.Fire;
+import Logic.Metric;
+import Util.FiremanType;
 import Util.Ocupation;
 import jade.core.AID;
 import jade.core.Agent;
@@ -107,10 +110,23 @@ public class HandleStationMessages extends CyclicBehaviour {
 
     private void handleAcceptRequest(Station s, ACLMessage msg) {
         try {
+            Metric c = s.getMetrics();
             ExtinguishFireData cont = (ExtinguishFireData) msg.getContentObject();
+            c.addNewFireAssigned(cont.getFire());
             Map<AID, Fire> treatment_fire = s.getTreatment_fire();
             treatment_fire.put(msg.getSender(), cont.getFire());
             AgentData ag = s.getWorld().getFireman().get(msg.getSender());
+            switch (ag.getFiremanType()) {
+                case AIRCRAFT:
+                    c.addAircraftsUsage();
+                    break;
+                case DRONE:
+                    c.addDroneUsage();
+                    break;
+                case FIRETRUCK:
+                    c.addTrucksUsage();
+                    break;
+            }
             ag.setOcupation(Ocupation.MOVING);
             ag.setTreating_fire(cont.getFire());
 
@@ -122,6 +138,8 @@ public class HandleStationMessages extends CyclicBehaviour {
 
     public void handleUpdateData(Station s, ACLMessage msg){
         try {
+            Metric c = s.getMetrics();
+            c.addFuelUsage();
             UpdateData cont = (UpdateData) msg.getContentObject();
             AgentData ag = s.getWorld().getFireman().get(msg.getSender());
             ag.setActual_position(cont.getP());
@@ -152,6 +170,8 @@ public class HandleStationMessages extends CyclicBehaviour {
 
         if (!agentAndFire.isEmpty()) {
             Fire extinguishedFire = agentAndFire.get(0);
+            Metric c = s.getMetrics();
+            c.addNewFireResolved(extinguishedFire);
             AgentData agentData = s.getWorld().getFireman().get(aid);
 
             //eliminar o fire do World
