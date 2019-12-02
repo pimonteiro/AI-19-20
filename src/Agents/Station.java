@@ -2,8 +2,10 @@ package Agents;
 
 import Agents.Behaviours.CheckWaitingFires;
 import Agents.Behaviours.HandleStationMessages;
+import Agents.Behaviours.MetricController;
 import Agents.Behaviours.SendInitialInfo;
 import Logic.Fire;
+import Logic.Metric;
 import Logic.World;
 
 import Logic.Zone;
@@ -24,6 +26,8 @@ public class Station extends Agent {
     private Map<AID, Fire> treatment_fire;
     private List<Fire> waiting_fire;
     private Map<Fire,List<AID>> questioning;
+    private GUI.Map map_gui;
+    private Metric metrics;
 
     public void setup() {
         super.setup();
@@ -31,7 +35,9 @@ public class Station extends Agent {
         this.world = (World) args[0];
         this.treatment_fire = new HashMap<>();
         this.waiting_fire = new ArrayList<>();
+        this.metrics = new Metric();
         questioning = new HashMap<>();
+        this.map_gui = new GUI.Map(world);
 
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
@@ -49,12 +55,14 @@ public class Station extends Agent {
         this.addBehaviour(new SendInitialInfo(this.world));
         this.addBehaviour(new HandleStationMessages());
         this.addBehaviour(new CheckWaitingFires());
+        this.addBehaviour(new MetricController(this, 5000));
         this.addBehaviour(new TickerBehaviour(this,1000) {
             @Override
             protected void onTick() {
                 //TODO expandir fogo
                 //para cada fogo da lista, calcula a probabilidade de expandir e se sim expande
                 treatment_fire.values().forEach(Fire::increaseTime);
+                treatment_fire.values().forEach(Fire::increaseTimeBeingResolved);
                 waiting_fire.forEach(Fire::increaseTime);
                 questioning.keySet().forEach(Fire::increaseTime);
                 System.out.println("-------Fires being treated-------");
@@ -63,6 +71,12 @@ public class Station extends Agent {
                 waiting_fire.forEach(f -> System.out.println(f.toString()));
                 System.out.println("-------Fires being questioned-------");
                 questioning.keySet().forEach(f -> System.out.println(f.toString()));
+            }
+        });
+        this.addBehaviour(new TickerBehaviour(this, 1000) { //GUI
+            @Override
+            protected void onTick() {
+                map_gui.update(world);
             }
         });
     }
@@ -107,6 +121,10 @@ public class Station extends Agent {
         this.questioning = questioning;
     }
 
+    public Metric getMetrics() {
+        return metrics;
+    }
+
     // TODO o que acontece quando um fogo expande e alguem está a caminho/a tratar dele?
     public AID findBestFireman(Fire f, List<AID> unavailable){
         List<Position> p = f.getPositions();
@@ -118,7 +136,10 @@ public class Station extends Agent {
 
         List<AgentData> firemans = this.world.getFireman().values().stream().filter(b -> b.getZone().getId() == z.getId()).collect(Collectors.toList());
         for(AID d : unavailable){
-            firemans.removeIf(a -> a.getAid().equals(d));
+            for(AgentData a : firemans){
+                if(a.getAid().equals(d))
+                    firemans.remove(a);
+            }
         }
         firemans.sort((a1, a2) -> {
             Position p_a1 = a1.getActual_position();

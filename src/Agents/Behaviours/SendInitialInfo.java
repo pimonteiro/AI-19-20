@@ -57,7 +57,6 @@ public class SendInitialInfo extends OneShotBehaviour {
         List<Position> fuel = world.getFuel();
         List<Position> water = world.getWater();
         List<Position> houses = world.getHouses();
-        List<AgentData> fireman = new ArrayList<>(world.getFireman().values());
         Position position = new Position(0,0);
 
         try{
@@ -65,16 +64,13 @@ public class SendInitialInfo extends OneShotBehaviour {
             drones = DFService.search(myAgent,template2);
             aircrs = DFService.search(myAgent,template3);
 
-            int t_l = trucks.length;
-            int z_l = world.getZones().size();
-            int per_zone_truck = world.getZones().size() / trucks.length;
-            int per_zone_drone = world.getZones().size() / drones.length;
-            int per_zone_aircr = world.getZones().size() / aircrs.length;
+            int per_zone_truck =  trucks.length / world.getZones().size();
+            int per_zone_drone = drones.length / world.getZones().size();
+            int per_zone_aircr = aircrs.length / world.getZones().size();
             int trucks_left = per_zone_truck;
             int drones_letf = per_zone_drone;
             int airc_left = per_zone_aircr;
-
-
+          
             Random r = new Random();
             int tr = 0;
             int dr = 0;
@@ -94,7 +90,7 @@ public class SendInitialInfo extends OneShotBehaviour {
                     position.setY(ty);
 
                     //Posição válida para um bombeiro
-                    if(position.isValid(fire, fuel, water, houses, fireman)){
+                    if(position.isValid(fire, fuel, water, houses, new ArrayList<>(firemans.values()))){
                         AgentData f = new AgentData(trucks[tr].getName(),FiremanType.FIRETRUCK,new Position(tx,ty),new Position(tx,ty),
                                                     z,FireTruck.MAX_WATER, FireTruck.MAX_FUEL,FireTruck.VEL,Ocupation.RESTING);
                         firemans.put(trucks[tr].getName(),f);
@@ -121,7 +117,7 @@ public class SendInitialInfo extends OneShotBehaviour {
                     position.setY(ty);
 
                     //Posição válida para um bombeiro
-                    if(position.isValid(fire, fuel, water, houses, fireman)){
+                    if(position.isValid(fire, fuel, water, houses, new ArrayList<>(firemans.values()))){
                         AgentData f = new AgentData(drones[dr].getName(),FiremanType.DRONE,new Position(tx,ty),new Position(tx,ty),
                                 z,Drone.MAX_WATER, Drone.MAX_FUEL,Drone.VEL,Ocupation.RESTING);
                         firemans.put(drones[dr].getName(),f);
@@ -148,10 +144,11 @@ public class SendInitialInfo extends OneShotBehaviour {
                     position.setY(ty);
 
                     //Posição válida para um bombeiro
-                    if (position.isValid(fire, fuel, water, houses, fireman)) {
-                        AgentData f = new AgentData(aircrs[air].getName(), FiremanType.AIRCRAFT, new Position(tx, ty), new Position(tx, ty),
-                                z, Aircraft.MAX_WATER, Aircraft.MAX_FUEL, Aircraft.VEL, Ocupation.RESTING);
-                        firemans.put(aircrs[air].getName(), f);
+                    if(position.isValid(fire, fuel, water, houses, new ArrayList<>(firemans.values()))){
+                        AgentData f = new AgentData(aircrs[air].getName(),FiremanType.AIRCRAFT,new Position(tx,ty),new Position(tx,ty),
+                                z,Aircraft.MAX_WATER, Aircraft.MAX_FUEL,Aircraft.VEL,Ocupation.RESTING);
+                        firemans.put(aircrs[air].getName(),f);
+
                         System.out.println("[STATION] Posição inicial para agente " + aircrs[air].getName() + ": (" + tx + "," + ty + ")");
                         //Send Message with data
                         ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
@@ -177,7 +174,7 @@ public class SendInitialInfo extends OneShotBehaviour {
                     position.setY(ty);
 
                     //Posição válida para um bombeiro
-                    if(position.isValid(fire, fuel, water, houses, fireman)){
+                    if(position.isValid(fire, fuel, water, houses, new ArrayList<>(firemans.values()))){
                         AgentData f = new AgentData(trucks[tr].getName(),FiremanType.FIRETRUCK,new Position(tx,ty),new Position(tx,ty),
                                 z,FireTruck.MAX_WATER, FireTruck.MAX_FUEL,FireTruck.VEL,Ocupation.RESTING);
                         firemans.put(trucks[tr].getName(),f);
@@ -206,7 +203,7 @@ public class SendInitialInfo extends OneShotBehaviour {
                     position.setY(ty);
 
                     //Posição válida para um bombeiro
-                    if (position.isValid(fire, fuel, water, houses, fireman)) {
+                    if (position.isValid(fire, fuel, water, houses, new ArrayList<>(firemans.values()))) {
                         AgentData f = new AgentData(drones[dr].getName(), FiremanType.DRONE, new Position(tx, ty), new Position(tx, ty),
                                 z, Drone.MAX_WATER, Drone.MAX_FUEL, Drone.VEL, Ocupation.RESTING);
                         firemans.put(drones[dr].getName(), f);
@@ -235,7 +232,7 @@ public class SendInitialInfo extends OneShotBehaviour {
                     position.setY(ty);
 
                     //Posição válida para um bombeiro
-                    if (position.isValid(fire, fuel, water, houses, fireman)) {
+                    if (position.isValid(fire, fuel, water, houses, new ArrayList<>(firemans.values()))) {
                         AgentData f = new AgentData(aircrs[air].getName(), FiremanType.AIRCRAFT, new Position(tx, ty), new Position(tx, ty),
                                 z, Aircraft.MAX_WATER, Aircraft.MAX_FUEL, Aircraft.VEL, Ocupation.RESTING);
                         firemans.put(aircrs[air].getName(), f);
