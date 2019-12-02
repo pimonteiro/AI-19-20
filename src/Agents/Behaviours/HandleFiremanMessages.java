@@ -4,14 +4,17 @@ import Agents.Messages.CancelFire;
 import Agents.Messages.ExtinguishFireData;
 import Agents.Messages.InitialData;
 import Agents.Fireman;
+import Agents.Messages.UpdateFire;
 import Logic.Fire;
 import Util.Ocupation;
 
+import Util.Position;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class HandleFiremanMessages extends CyclicBehaviour {
 
@@ -30,6 +33,9 @@ public class HandleFiremanMessages extends CyclicBehaviour {
                     if(content instanceof InitialData) {
                         handleInitialData(f, msg);
                     }
+                    else if(content instanceof UpdateFire){
+                        handleUpdateFire(f, msg);
+                    }
                     break;
                 case(ACLMessage.REQUEST):
                     if(content instanceof ExtinguishFireData){
@@ -43,6 +49,21 @@ public class HandleFiremanMessages extends CyclicBehaviour {
                 default:
                     System.out.println("Wrong message content.");
                     break;
+            }
+        } catch (UnreadableException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleUpdateFire(Fireman f, ACLMessage msg) {
+        try {
+            ArrayList<Position> pos = (ArrayList<Position>) f.getBad_positions();
+            UpdateFire cont = (UpdateFire) msg.getContentObject();
+            if(cont.isType()){
+                pos.addAll(cont.getPos());
+            }
+            else{
+                pos.removeAll(cont.getPos());
             }
         } catch (UnreadableException e) {
             e.printStackTrace();

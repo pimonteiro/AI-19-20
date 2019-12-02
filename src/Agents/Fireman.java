@@ -9,6 +9,8 @@ import Util.Position;
 
 import jade.core.AID;
 import jade.core.Agent;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Fireman extends Agent {
@@ -26,6 +28,7 @@ public abstract class Fireman extends Agent {
     private int vel;
     private Ocupation ocupation;
     private AID station;
+    private List<Position> bad_positions;
 
     public void setup(){
         super.setup();
@@ -37,12 +40,21 @@ public abstract class Fireman extends Agent {
         this.std_position = new Position(0,0);
         this.actual_position = new Position(0,0);
         this.ocupation = Ocupation.RESTING;
+        this.bad_positions = new ArrayList<>();
 
         this.addBehaviour(new HandleFiremanMessages());
     }
 
     public void takeDown(){
         //System.out.println(fuel.toString());
+    }
+
+    public List<Position> getBad_positions() {
+        return bad_positions;
+    }
+
+    public void setBad_positions(List<Position> bad_positions) {
+        this.bad_positions = bad_positions;
     }
 
     public Position getStd_position() {
