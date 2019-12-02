@@ -11,6 +11,8 @@ import jade.core.AID;
 import jade.core.Agent;
 
 import java.util.ArrayList;
+import jade.core.behaviours.OneShotBehaviour;
+
 import java.util.List;
 
 public abstract class Fireman extends Agent {
@@ -43,6 +45,12 @@ public abstract class Fireman extends Agent {
         this.bad_positions = new ArrayList<>();
 
         this.addBehaviour(new HandleFiremanMessages());
+        this.addBehaviour(new OneShotBehaviour() {
+            @Override
+            public void action() {
+
+            }
+        });
     }
 
     public void takeDown(){

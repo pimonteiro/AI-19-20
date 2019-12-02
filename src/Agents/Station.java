@@ -130,6 +130,7 @@ public class Station extends Agent {
 
 
         List<AgentData> firemans = this.world.getFireman().values().stream().filter(b -> b.getZone().getId() == z.getId()).collect(Collectors.toList());
+        assert firemans == null;
         for(AID d : unavailable){
             firemans.removeIf(a -> a.getAid().equals(d));
         }

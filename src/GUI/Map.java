@@ -62,11 +62,12 @@ public class Map {
             }
             j++;
         }
-        CellColorRenderer renderer = new CellColorRenderer(zones);
+        //CellColorRenderer renderer = new CellColorRenderer(zones);
+        this.table.setGridColor(Color.BLUE);
         this.table.setRowHeight(30);
         TableColumnModel columnModel = this.table.getColumnModel();
         for(int i = 0; i < World.dimension; i++){
-            columnModel.getColumn(i).setCellRenderer(renderer);
+            //columnModel.getColumn(i).setCellRenderer(renderer);
             columnModel.getColumn(i).setPreferredWidth(30);
         }
         this.table.setPreferredScrollableViewportSize(table.getPreferredSize());

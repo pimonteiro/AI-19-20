@@ -110,12 +110,7 @@ public class FindShortestPath {
         int len = printPath(node) - 1;
 
         if (node != null) {
-            System.out.print("Shortest path is: ");
-            for(Position p: path){
-                System.out.print("(" + p.getX() + "," + p.getY() + ") ");
-            }
-            System.out.println("\nShortest path length is " + len);
-
+            System.out.println("Next: " + path.get(1).toString() + "------ se o destino é:" + destination.toString());
             return new Pair<>(len, path.get(1));
         } else {
             System.out.println("Destination not found");

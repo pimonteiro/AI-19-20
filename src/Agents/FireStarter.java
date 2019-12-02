@@ -53,7 +53,7 @@ public class FireStarter extends Agent {
                         randomY = randomGenerator.nextInt(World.dimension);
                         position.setX(randomX);
                         position.setY(randomY);
-                    } while (position.isValid(world.getFire(), world.getFuel(), world.getWater(),
+                    } while (!position.isValid(world.getFire(), world.getFuel(), world.getWater(),
                                               world.getHouses(), new ArrayList<>(world.getFireman().values())));
                     startFire(position);
                 }

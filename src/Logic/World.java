@@ -16,7 +16,7 @@ public class World {
     private List<Position> houses;
     private List<Zone> zones;
 
-    public static final int dimension = 40;
+    public static final int dimension = 200;
 
     public void expandFire(Fire activeFire, Position newPosition){
         activeFire.getPositions().add(newPosition);

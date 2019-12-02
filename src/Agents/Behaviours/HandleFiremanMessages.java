@@ -51,6 +51,7 @@ public class HandleFiremanMessages extends CyclicBehaviour {
                     break;
             }
         } catch (UnreadableException e) {
+            System.out.println(msg.toString());
             e.printStackTrace();
         }
     }
