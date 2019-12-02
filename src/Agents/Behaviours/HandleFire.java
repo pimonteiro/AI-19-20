@@ -25,9 +25,11 @@ public class HandleFire extends TickerBehaviour {
         Fireman f = (Fireman) myAgent;
         List<Position> pos = f.getTreating_fire().getPositions();
         if(pos.size() > 1){
+            System.out.println("[FIREMAN " + f.getName() + "] Cleaning " + pos.get(pos.size()-1).toString());
             pos.remove(pos.size()-1);
         } else {
             if (pos.size() == 1) {
+                System.out.println("[FIREMAN " + f.getName() + "] Finishing Cleaning " + pos.get(pos.size()-1).toString());
                 pos.remove(pos.size() - 1);
                 DFAgentDescription template = new DFAgentDescription();
                 ServiceDescription sd1 = new ServiceDescription();
@@ -47,6 +49,7 @@ public class HandleFire extends TickerBehaviour {
                     e.printStackTrace();
                 }
                 myAgent.removeBehaviour(this);
+                //TODO add movement to the standard position
             }
         }
 

@@ -28,16 +28,18 @@ public class Map {
     public Map(World world) {
         String[] colors = {
                  "#f9ebea",
+                "#ebdef0",
+                "#e8daef",
                  "#fdedec",
-                 "#f5eef8",
+                "#f5b7b1",
+                "#d7bde2",
+                "#f5eef8",
                  "#f4ecf7",
                  "#f2d7d5",
                  "#fadbd8",
                  "#ebdef0",
                  "#e8daef",
                  "#e6b0aa",
-                 "#f5b7b1",
-                 "#d7bde2",
                  "#d2b4de",
         };
         objects = new HashMap<>();
@@ -140,7 +142,7 @@ class CellColorRenderer extends DefaultTableCellRenderer {
 
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,   boolean hasFocus, int row, int column) {
         Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        String color = data[column][row] == null ? this.zones.get(new Position(column,row)) : data[column][row];
+        String color = data[row][column] == null ? this.zones.get(new Position(row,column)) : data[row][column];
         cell.setBackground(Color.decode(color));
         return cell;
     }

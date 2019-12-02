@@ -71,11 +71,6 @@ public class Station extends Agent {
                 waiting_fire.forEach(f -> System.out.println(f.toString()));
                 System.out.println("-------Fires being questioned-------");
                 questioning.keySet().forEach(f -> System.out.println(f.toString()));
-            }
-        });
-        this.addBehaviour(new TickerBehaviour(this, 1000) { //GUI
-            @Override
-            protected void onTick() {
                 map_gui.update(world);
             }
         });
@@ -136,10 +131,7 @@ public class Station extends Agent {
 
         List<AgentData> firemans = this.world.getFireman().values().stream().filter(b -> b.getZone().getId() == z.getId()).collect(Collectors.toList());
         for(AID d : unavailable){
-            for(AgentData a : firemans){
-                if(a.getAid().equals(d))
-                    firemans.remove(a);
-            }
+            firemans.removeIf(a -> a.getAid().equals(d));
         }
         firemans.sort((a1, a2) -> {
             Position p_a1 = a1.getActual_position();
