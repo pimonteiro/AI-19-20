@@ -2,7 +2,9 @@ package Agents.Messages;
 
 import Logic.Fire;
 
-public class FireAlreadyHandled {
+import java.io.Serializable;
+
+public class FireAlreadyHandled implements Serializable {
     Fire fire;
 
     public FireAlreadyHandled(Fire f){
