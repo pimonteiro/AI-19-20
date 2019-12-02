@@ -13,6 +13,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.ui.ApplicationFrame;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class MetricController extends TickerBehaviour {
@@ -115,6 +116,7 @@ public class MetricController extends TickerBehaviour {
 
 
         this.window.setSize( 1024 , 768 );
+        this.window.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         this.window.setVisible( true );
     }
 }

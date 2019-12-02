@@ -21,7 +21,9 @@ public class Map {
     private JTable table;
     private JScrollPane tableContainer;
     private DefaultTableModel model_table;
-    private Icon[][] data;
+    private String[][] data;
+    private HashMap<String,String> objects;
+
 
     public Map(World world) {
         String[] colors = {
@@ -38,11 +40,19 @@ public class Map {
                  "#d7bde2",
                  "#d2b4de",
         };
+        objects = new HashMap<>();
+        objects.put("water", "#1446e2");
+        objects.put("fuel", "#b4a18f");
+        objects.put("house", "#ffffff");
+        objects.put("fire", "#f20505");
+        objects.put("drone", "#f7e52b");
+        objects.put("aircraft", "#1de8cc");
+        objects.put("truck", "#a336f9");
 
         this.frame = new JFrame("Fire Simulation");
         this.panel = new JPanel();
         this.panel.setLayout(new BorderLayout());
-        this.data = new ImageIcon[World.dimension][World.dimension];
+        this.data = new String[World.dimension][World.dimension];
         this.model_table = new DefaultTableModel(World.dimension,World.dimension);
         update(world);
         this.table = new JTable(this.model_table)
@@ -53,21 +63,21 @@ public class Map {
             }
         };
 
-        HashMap<Position,Color> zones = new HashMap<>();
+        HashMap<Position,String> zones = new HashMap<>();
         int j = 0;
         for(Zone z : world.getZones()){
             ArrayList<Position> pos = z.getAllPositions();
             for (Position p : pos) {
-                zones.put(p, Color.decode(colors[j]));
+                zones.put(p, colors[j]);
             }
             j++;
         }
-        CellColorRenderer renderer = new CellColorRenderer(zones);
-        this.table.setRowHeight(30);
+        CellColorRenderer renderer = new CellColorRenderer(zones, this.data);
+        this.table.setRowHeight(15);
         TableColumnModel columnModel = this.table.getColumnModel();
         for(int i = 0; i < World.dimension; i++){
             columnModel.getColumn(i).setCellRenderer(renderer);
-            columnModel.getColumn(i).setPreferredWidth(30);
+            columnModel.getColumn(i).setPreferredWidth(15);
         }
         this.table.setPreferredScrollableViewportSize(table.getPreferredSize());
 
@@ -83,41 +93,6 @@ public class Map {
     }
 
     public void update(World world) {
-        ImageIcon imageIcon = new ImageIcon(getClass().getResource("assets/house.png")); // load the image to a imageIcon
-        Image image = imageIcon.getImage(); // transform it
-        Image newimg = image.getScaledInstance(30,30,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-        Icon house = new ImageIcon(newimg);  // transform it back
-
-        imageIcon = new ImageIcon(getClass().getResource("assets/water.png"));
-        image = imageIcon.getImage();
-        newimg = image.getScaledInstance(30, 30,  java.awt.Image.SCALE_SMOOTH);
-        Icon water = new ImageIcon(newimg);
-
-        imageIcon = new ImageIcon(getClass().getResource("assets/fuel.png"));
-        image = imageIcon.getImage();
-        newimg = image.getScaledInstance(30, 30,  java.awt.Image.SCALE_SMOOTH);
-        Icon fuel = new ImageIcon(newimg);
-
-        imageIcon = new ImageIcon(getClass().getResource("assets/fire.png"));
-        image = imageIcon.getImage();
-        newimg = image.getScaledInstance(30, 30,  java.awt.Image.SCALE_SMOOTH);
-        Icon fire = new ImageIcon(newimg);
-
-        imageIcon = new ImageIcon(getClass().getResource("assets/truck.png"));
-        image = imageIcon.getImage();
-        newimg = image.getScaledInstance(30, 30,  java.awt.Image.SCALE_SMOOTH);
-        Icon truck = new ImageIcon(newimg);
-
-        imageIcon = new ImageIcon(getClass().getResource("assets/drone.png"));
-        image = imageIcon.getImage();
-        newimg = image.getScaledInstance(30, 30,  java.awt.Image.SCALE_SMOOTH);
-        Icon drone = new ImageIcon(newimg);
-
-        imageIcon = new ImageIcon(getClass().getResource("assets/aircraft.png"));
-        image = imageIcon.getImage();
-        newimg = image.getScaledInstance(30, 30,  java.awt.Image.SCALE_SMOOTH);
-        Icon aircraft = new ImageIcon(newimg);
-
         for(int i = 0; i < World.dimension; i++){
             for(int j = 0; j < World.dimension; j++) {
                 this.data[i][j] = null;
@@ -126,52 +101,47 @@ public class Map {
 
         //Populate Buildings
         for(Position p : world.getHouses()){
-            this.data[p.getY()][p.getX()] = house;
+            this.data[p.getY()][p.getX()] = this.objects.get("house");
         }
         //Populate Water
         for(Position p : world.getWater()){
-            this.data[p.getY()][p.getX()] = water;
+            this.data[p.getY()][p.getX()] = this.objects.get("water");
         }
         //Populate Gas
         for(Position p : world.getFuel()){
-            this.data[p.getY()][p.getX()] = fuel;
+            this.data[p.getY()][p.getX()] = this.objects.get("fuel");
         }
         //Populate Fires
         for(Fire f : world.getFire()){
             for(Position p : f.getPositions())
-                this.data[p.getY()][p.getX()] = fire;
+                this.data[p.getY()][p.getX()] = this.objects.get("fire");
         }
         //Populate Firemans
         for(AgentData a : world.getFireman().values()){
             Position p = a.getActual_position();
             if(a.getFiremanType() == FiremanType.AIRCRAFT)
-                this.data[p.getY()][p.getX()] = aircraft;
+                this.data[p.getY()][p.getX()] = this.objects.get("aircraft");
             else if(a.getFiremanType() == FiremanType.DRONE)
-                this.data[p.getY()][p.getX()] = drone;
+                this.data[p.getY()][p.getX()] = this.objects.get("drone");
             else
-                this.data[p.getY()][p.getX()] = truck;
-        }
-
-        for(int i = 0; i < World.dimension; i++){
-            for(int j = 0; j < World.dimension; j++) {
-                if ((data[i][j] != null)) {
-                    this.model_table.setValueAt(data[i][j], i, j);
-                 }
-            }
+                this.data[p.getY()][p.getX()] = this.objects.get("truck");
         }
     }
 }
 
 class CellColorRenderer extends DefaultTableCellRenderer {
-    private HashMap<Position, Color> zones;
-    CellColorRenderer(HashMap<Position, Color> zones) {
+    private HashMap<Position, String> zones;
+    private String[][] data;
+    CellColorRenderer(HashMap<Position, String> zones, String[][] data) {
         super();
         this.zones = zones;
+        this.data = data;
     }
-    //TODO Fix not appearing the images
+
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,   boolean hasFocus, int row, int column) {
         Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        cell.setBackground(this.zones.get(new Position(column,row)));
+        String color = data[column][row] == null ? this.zones.get(new Position(column,row)) : data[column][row];
+        cell.setBackground(Color.decode(color));
         return cell;
     }
 }
