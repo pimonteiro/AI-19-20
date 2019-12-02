@@ -5,9 +5,8 @@ import Agents.Fireman;
 import Agents.Messages.UpdateData;
 
 import Logic.Fire;
+import Util.FindShortestPath;
 import Util.Ocupation;
-
-import Logic.World;
 import Util.Pair;
 import Util.Position;
 
@@ -18,10 +17,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static Util.FindShortestPath.findShortestPath;
-
 public class MovingFireman extends TickerBehaviour {
     private Position destiny;
+    private FindShortestPath fsp = new FindShortestPath();
 
     public MovingFireman(Agent myagent, Position position) {
         super(myagent,1000);
@@ -66,7 +64,8 @@ public class MovingFireman extends TickerBehaviour {
             List<Position> fuel_without_destiny = new ArrayList<>();
             fuel_without_destiny.addAll(fuel);
             fuel_without_destiny.remove(p);
-            fuel_path = findShortestPath(actual_position, p, velocity, fire, fuel_without_destiny, water, houses, fireman);
+            fsp.setPath(new ArrayList<>());
+            fuel_path = fsp.findShortestPath(actual_position, p, velocity, fire, fuel_without_destiny, water, houses, fireman);
             if(distance_fuel_aux == 0)
                 distance_fuel_aux = fuel_path.getFirst();
             if(fuel_path.getFirst() < distance_fuel_aux){
@@ -88,10 +87,12 @@ public class MovingFireman extends TickerBehaviour {
         int actual_cap_fuel = f.getCap_fuel();
         int velocity = f.getVel();
         Position actual_position = f.getActual_position();
+        System.out.println("Estou a tentar a partir de " + actual_position);
         List<Position> fuel = f.getFuel();
 
         // Informações bombeiro apagar o fogo
-        Pair<Integer, Position> destiny_path = findShortestPath(actual_position, fire, velocity, new ArrayList<>(),
+        fsp.setPath(new ArrayList<>());
+        Pair<Integer, Position> destiny_path = fsp.findShortestPath(actual_position, fire, velocity, new ArrayList<>(),
                                                 f.getFuel(), f.getWater(), f.getHouses(), new ArrayList<>());
                                             //FIXME bombeiro precisa de saber onde estão os outros fogos
         distance_destiny = destiny_path.getFirst();

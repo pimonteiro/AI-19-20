@@ -15,8 +15,11 @@ public class FindShortestPath {
     // Below arrays details all 4 possible movements from a cell
     private static int[] row = { -1, 0, 0, 1 };
     private static int[] col = { 0, -1, 1, 0 };
-    private static List<Position> path = new ArrayList<>();
+    private List<Position> path = new ArrayList<>();
 
+    public void setPath(List<Position> path) {
+        this.path = path;
+    }
 
     // Find shortest route in the matrix from source cell to destination cell
     public static Node findPath(int matrix[][], List<Fire> fire, List<Position> fuel, List<Position> water,
@@ -82,18 +85,18 @@ public class FindShortestPath {
     }
 
     // Utility function to print path from source to destination
-    private static int printPath(Node node) {
+    private int printPath(Node node) {
         if (node == null) {
             return 0;
         }
         int len = printPath(node.getParent());
-        path.add(new Position(node.getX(),node.getY()));
+        this.path.add(new Position(node.getX(),node.getY()));
         return len + 1;
     }
 
-    public static Pair<Integer, Position> findShortestPath(Position current, Position destination, int velocity,
-                                                           List<Fire> fire, List<Position> fuel, List<Position> water,
-                                                           List<Position> houses, List<AgentData> fireman) {
+    public Pair<Integer, Position> findShortestPath(Position current, Position destination, int velocity,
+                                                    List<Fire> fire, List<Position> fuel, List<Position> water,
+                                                    List<Position> houses, List<AgentData> fireman) {
         int dimension = World.dimension;
         int[][] matrix = new int[dimension][dimension];
 
@@ -110,7 +113,8 @@ public class FindShortestPath {
         int len = printPath(node) - 1;
 
         if (node != null) {
-            System.out.println("Next: " + path.get(1).toString() + "------ se o destino é:" + destination.toString());
+            System.out.println("Next: " + this.path.get(1).toString() + "------ se o destino é:" + destination.toString());
+            System.out.println("Caminho: " + this.path.toString());
             return new Pair<>(len, path.get(1));
         } else {
             System.out.println("Destination not found");

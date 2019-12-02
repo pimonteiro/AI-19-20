@@ -95,7 +95,7 @@ public class MainContainer {
             AgentController ag1 = agentContainer.createNewAgent("station", "Agents.Station", new Object[] {world});// arguments
             ag1.start();
 
-            Thread.sleep(1000);
+            Thread.sleep(5000);
 
             AgentController ag2 = agentContainer.createNewAgent("firestarter", "Agents.FireStarter", new Object[] {world});// arguments
             ag2.start();
