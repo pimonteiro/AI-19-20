@@ -94,21 +94,21 @@ public class World {
     public String toString() {
         StringBuilder a = new StringBuilder("\n----WORLD:----\n");
         a.append("[FUELS]:\n");
-        for(Position p: fuel){
+        for (Position p : fuel) {
             a.append("[Fuel] em (" + p.getX() + "," + p.getY() + ")\n");
         }
         a.append("[WATER]:\n");
-        for(Position p: water){
+        for (Position p : water) {
             a.append("[Water] em (" + p.getX() + "," + p.getY() + ")\n");
         }
         a.append("[HOUSES]:\n");
-        for(Position p: houses){
+        for (Position p : houses) {
             a.append("[Houses] em (" + p.getX() + "," + p.getY() + ")\n");
         }
 
         return a.toString();
     }
-  
+
     public int getZoneOfPosition(Position position) {
         ArrayList<Position> positions = new ArrayList<>();
         positions.add(position);
