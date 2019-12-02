@@ -67,7 +67,10 @@ public class SendInitialInfo extends OneShotBehaviour {
             int per_zone_truck =  trucks.length / world.getZones().size();
             int per_zone_drone = drones.length / world.getZones().size();
             int per_zone_aircr = aircrs.length / world.getZones().size();
-
+            int trucks_left = per_zone_truck;
+            int drones_letf = per_zone_drone;
+            int airc_left = per_zone_aircr;
+          
             Random r = new Random();
             int tr = 0;
             int dr = 0;
@@ -98,6 +101,7 @@ public class SendInitialInfo extends OneShotBehaviour {
                         msg.addReceiver(trucks[tr++].getName());
                         myAgent.send(msg);
                         i++;
+                        trucks_left--;
                     }
                 }
                 i = 0;
@@ -124,10 +128,11 @@ public class SendInitialInfo extends OneShotBehaviour {
                         msg.addReceiver(drones[dr++].getName());
                         myAgent.send(msg);
                         i++;
+                        drones_letf--;
                     }
                 }
                 i = 0;
-                while(i < per_zone_aircr){ //TODO what if it is an odd number of agents per zone?
+                while(i < per_zone_aircr) { //TODO what if it is an odd number of agents per zone?
                     int x_max = z.getP2().getX();
                     int x_min = z.getP1().getX();
                     int y_max = z.getP2().getY();
@@ -143,13 +148,101 @@ public class SendInitialInfo extends OneShotBehaviour {
                         AgentData f = new AgentData(aircrs[air].getName(),FiremanType.AIRCRAFT,new Position(tx,ty),new Position(tx,ty),
                                 z,Aircraft.MAX_WATER, Aircraft.MAX_FUEL,Aircraft.VEL,Ocupation.RESTING);
                         firemans.put(aircrs[air].getName(),f);
+
                         System.out.println("[STATION] Posição inicial para agente " + aircrs[air].getName() + ": (" + tx + "," + ty + ")");
                         //Send Message with data
                         ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-                        msg.setContentObject(new InitialData(new Position(tx,ty)));
+                        msg.setContentObject(new InitialData(new Position(tx, ty)));
                         msg.addReceiver(aircrs[air++].getName());
                         myAgent.send(msg);
                         i++;
+                        airc_left--;
+                    }
+                }
+            }
+            if(trucks_left > 0){
+                for(int i = 0; trucks_left > 0; i++){
+                    Zone z = world.getZones().get(i);
+                    int x_max = z.getP2().getX();
+                    int x_min = z.getP1().getX();
+                    int y_max = z.getP2().getY();
+                    int y_min = z.getP1().getY();
+                    int tx = r.nextInt(x_max - x_min) + x_min;
+                    int ty = r.nextInt(y_max - y_min) + y_min;
+
+                    position.setX(tx);
+                    position.setY(ty);
+
+                    //Posição válida para um bombeiro
+                    if(position.isValid(fire, fuel, water, houses, new ArrayList<>(firemans.values()))){
+                        AgentData f = new AgentData(trucks[tr].getName(),FiremanType.FIRETRUCK,new Position(tx,ty),new Position(tx,ty),
+                                z,FireTruck.MAX_WATER, FireTruck.MAX_FUEL,FireTruck.VEL,Ocupation.RESTING);
+                        firemans.put(trucks[tr].getName(),f);
+                        System.out.println("[STATION] Posição inicial para agente " + trucks[tr].getName() + ": (" + tx + "," + ty + ")");
+                        //Send Message with data
+                        ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+                        msg.setContentObject(new InitialData(new Position(tx,ty)));
+                        msg.addReceiver(trucks[tr++].getName());
+                        myAgent.send(msg);
+                        trucks_left--;
+                    }
+                }
+            }
+
+            if(drones_letf > 0) {
+                for (int i = 0; drones_letf > 0; i++) {
+                    Zone z = world.getZones().get(i);
+                    int x_max = z.getP2().getX();
+                    int x_min = z.getP1().getX();
+                    int y_max = z.getP2().getY();
+                    int y_min = z.getP1().getY();
+                    int tx = r.nextInt(x_max - x_min) + x_min;
+                    int ty = r.nextInt(y_max - y_min) + y_min;
+
+                    position.setX(tx);
+                    position.setY(ty);
+
+                    //Posição válida para um bombeiro
+                    if (position.isValid(fire, fuel, water, houses, new ArrayList<>(firemans.values()))) {
+                        AgentData f = new AgentData(drones[dr].getName(), FiremanType.DRONE, new Position(tx, ty), new Position(tx, ty),
+                                z, Drone.MAX_WATER, Drone.MAX_FUEL, Drone.VEL, Ocupation.RESTING);
+                        firemans.put(drones[dr].getName(), f);
+                        System.out.println("[STATION] Posição inicial para agente " + drones[dr].getName() + ": (" + tx + "," + ty + ")");
+                        //Send Message with data
+                        ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+                        msg.setContentObject(new InitialData(new Position(tx, ty)));
+                        msg.addReceiver(drones[dr++].getName());
+                        myAgent.send(msg);
+                        drones_letf--;
+                    }
+                }
+            }
+
+            if(airc_left > 0){
+                for (int i = 0; airc_left > 0; i++) {
+                    Zone z = world.getZones().get(i);
+                    int x_max = z.getP2().getX();
+                    int x_min = z.getP1().getX();
+                    int y_max = z.getP2().getY();
+                    int y_min = z.getP1().getY();
+                    int tx = r.nextInt(x_max - x_min) + x_min;
+                    int ty = r.nextInt(y_max - y_min) + y_min;
+
+                    position.setX(tx);
+                    position.setY(ty);
+
+                    //Posição válida para um bombeiro
+                    if (position.isValid(fire, fuel, water, houses, new ArrayList<>(firemans.values()))) {
+                        AgentData f = new AgentData(aircrs[air].getName(), FiremanType.AIRCRAFT, new Position(tx, ty), new Position(tx, ty),
+                                z, Aircraft.MAX_WATER, Aircraft.MAX_FUEL, Aircraft.VEL, Ocupation.RESTING);
+                        firemans.put(aircrs[air].getName(), f);
+                        System.out.println("[STATION] Posição inicial para agente " + aircrs[air].getName() + ": (" + tx + "," + ty + ")");
+                        //Send Message with data
+                        ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+                        msg.setContentObject(new InitialData(new Position(tx, ty)));
+                        msg.addReceiver(aircrs[air++].getName());
+                        myAgent.send(msg);
+                        airc_left--;
                     }
                 }
             }
