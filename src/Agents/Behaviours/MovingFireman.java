@@ -97,7 +97,7 @@ public class MovingFireman extends TickerBehaviour {
                                             //FIXME bombeiro precisa de saber onde estão os outros fogos
         distance_destiny = destiny_path.getFirst();
         destiny = destiny_path.getSecond();
-        System.out.println("[FIREMAN] O fogo está a " + distance_destiny + " posições");
+        System.out.println("\n\n\n[FIREMAN] O fogo está a " + distance_destiny + " posições\n\n\n");
 
         // Informações bombeiro abastecer
         Pair<Integer, Position> destiny_fuel_path = maxPairValue(actual_position, velocity, new ArrayList<>(),
@@ -105,22 +105,25 @@ public class MovingFireman extends TickerBehaviour {
                                           //FIXME bombeiro precisa de saber onde estão os outros fogos
         distance_fuel = destiny_fuel_path.getFirst();
         destiny_fuel = destiny_fuel_path.getSecond();
-        System.out.println("[FIREMAN] A bomba de gasolina está a " + distance_destiny + " posições");
+        System.out.println("\n\n\n[FIREMAN] A bomba de gasolina está a " + distance_destiny + " posições\n\n\n");
 
         // Informações bombeiro apagar fogo + abastecer
         Pair<Integer, Position> distance_destiny_fuel_path = maxPairValue(fire, velocity, new ArrayList<>(),
                 f.getFuel(), f.getWater(), f.getHouses(), new ArrayList<>(), fuel);
                                         //FIXME bombeiro precisa de saber onde estão os outros fogos
+        Position apagar = distance_destiny_fuel_path.getSecond();
         distance_destiny_fuel = distance_destiny + distance_destiny_fuel_path.getFirst();
 
         // Se bombeiro tem fuel suficiente para apagar o fogo e abastecer
+        System.out.println("Cap. fuel do bombeiro:" + actual_cap_fuel);
+        System.out.println("Cap. fogo+fuel do bombeiro: (" + distance_destiny + " + " + distance_destiny_fuel_path.getFirst() + "=)" + distance_destiny_fuel);
         if (actual_cap_fuel >= distance_destiny_fuel) {
-            System.out.println("\nVOU APAGAR O FOGOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO\n");
+            System.out.println("\nVOU APAGAR O FOGOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" + fuel.toString() + " : " + destiny.toString() + "\n");
             return destiny;
         }
         // Caso o bombeiro tenha que ir abastecer primeiro
         else {
-            System.out.println("\nVOU METER GASOLINAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
+            System.out.println("\nVOU METER GASOLINAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:" + apagar.toString() + " : " + destiny_fuel.toString() + "\n");
             return destiny_fuel;
         }
     }
