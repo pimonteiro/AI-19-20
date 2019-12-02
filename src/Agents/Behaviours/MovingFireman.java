@@ -37,7 +37,9 @@ public class MovingFireman extends TickerBehaviour {
         }
         else{
             try {
+                System.out.println("\nPosição atual: " + f.getActual_position().toString());
                 Position next = decideNewPosition(f, this.destiny);
+                System.out.println("\nA ir para " + next.toString());
                 f.setActual_position(next);
                 f.setCap_fuel(f.getCap_fuel()-1);
 
