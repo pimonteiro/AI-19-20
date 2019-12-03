@@ -127,14 +127,14 @@ public class MovingFireman extends TickerBehaviour {
                                         //FIXME bombeiro precisa de saber onde estão os outros fogos
         destiny_fuel_fire = distance_destiny_fuel_path.getSecond();
         distance_fuel_fire = distance_destiny + distance_destiny_fuel_path.getFirst();
-        System.out.println("\n\n\n[FIREMAN] A bomba de gasolina mais próxima do fogo está a " + distance_fuel + " posições\n\n\n");
+        System.out.println("\n\n\n[FIREMAN] A bomba de gasolina mais próxima do fogo está a " + distance_fuel_fire + " posições\n\n\n");
 
         // Informações bombeiro apagar fogo e abastecer no final
         distance_destiny_fuel = distance_destiny + distance_fuel_fire;
 
         // Se bombeiro tem fuel suficiente para apagar o fogo e abastecer
         System.out.println("Cap. fuel do bombeiro:" + actual_cap_fuel);
-        System.out.println("Cap. fogo+fuel do bombeiro: (" + distance_destiny + " + " + distance_destiny_fuel_path.getFirst() + "=)" + distance_destiny_fuel);
+        System.out.println("Cap. fogo+fuel do bombeiro: (" + distance_destiny + " + " + distance_fuel_fire + "=)" + distance_destiny_fuel);
         if (actual_cap_fuel >= distance_destiny_fuel) {
             System.out.println("\nVOU APAGAR O FOGOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO " + fuel.toString() + " : " + destiny.toString() + "\n");
             return destiny;

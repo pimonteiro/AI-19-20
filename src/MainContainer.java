@@ -72,7 +72,7 @@ public class MainContainer {
         int n_drone = 9;
         int n_truck = 9;
         int n_water = 3;
-        int n_fuel = 1;
+        int n_fuel = 3;
         int n_houses = 2;
         int n_zones = 9;
         World world = new World();

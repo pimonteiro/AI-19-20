@@ -113,7 +113,6 @@ public class FindShortestPath {
         int len = printPath(node) - 1;
 
         if (node != null) {
-            System.out.println("Caminho: " + this.path.toString());
             if(this.path.size() >= 2) {
                 System.out.println("Next: " + this.path.get(1).toString() + "------ se o destino é:" + destination.toString());
                 return new Pair<>(len, this.path.get(1));
