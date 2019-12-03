@@ -136,7 +136,7 @@ public class MovingFireman extends TickerBehaviour {
         System.out.println("Cap. fuel do bombeiro:" + actual_cap_fuel);
         System.out.println("Cap. fogo+fuel do bombeiro: (" + distance_destiny + " + " + distance_fuel_fire + "=)" + distance_destiny_fuel);
         if (actual_cap_fuel >= distance_destiny_fuel) {
-            System.out.println("\nVOU APAGAR O FOGOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO " + fuel.toString() + " : " + destiny.toString() + "\n");
+            System.out.println("\nVOU APAGAR O FOGOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO : " + destiny.toString() + "\n");
             return destiny;
         }
         // Caso o bombeiro tenha que ir abastecer primeiro
