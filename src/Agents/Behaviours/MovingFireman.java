@@ -35,18 +35,30 @@ public class MovingFireman extends TickerBehaviour {
         }
         else{
             try {
-                System.out.println("\nPosição atual: " + f.getActual_position().toString());
-                Position next = decideNewPosition(f, this.destiny);
-                System.out.println("\n------------------A ir para " + next.toString() + "------------------");
-                f.setActual_position(next);
-                f.setCap_fuel(f.getCap_fuel()-1);
+                Position next = f.getActual_position();
+                //A abastecer fuel
+                if(f.getFuel().stream().filter(p -> p.equals(f.getActual_position())).count() > 0 && (f.getCap_fuel() != f.getCap_max_fuel())){
+                    System.out.println("\n\n\nAbasteci!\n\n\n");
+                    f.setCap_fuel(f.getCap_max_fuel());
+                } else {
+                    //Mover para uma posição do fogo
+                    System.out.println("\nPosição atual: " + f.getActual_position().toString());
+                    System.out.println("\nTenho combustível= " + f.getCap_fuel());
+                    next = decideNewPosition(f, this.destiny);
+                    System.out.println("\n------------------A ir para " + next.toString() + "------------------");
+                    f.setActual_position(next);
+                    f.setCap_fuel(f.getCap_fuel() - 1);
+                }
 
                 ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-                //TODO COmo serapar os diferentes estados CATARINA
                 Ocupation ocu = Ocupation.MOVING;
+
                 msg.setContentObject(new UpdateData(next,f.getCap_fuel(),f.getCap_water(),ocu));
                 msg.addReceiver(f.getStation());
                 this.myAgent.send(msg);
+
+                //TODO COmo serapar os diferentes estados CATARINA
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -105,7 +117,7 @@ public class MovingFireman extends TickerBehaviour {
                                           //FIXME bombeiro precisa de saber onde estão os outros fogos
         distance_fuel = destiny_fuel_path.getFirst();
         destiny_fuel = destiny_fuel_path.getSecond();
-        System.out.println("\n\n\n[FIREMAN] A bomba de gasolina está a " + distance_destiny + " posições\n\n\n");
+        System.out.println("\n\n\n[FIREMAN] A bomba de gasolina está a " + distance_fuel + " posições\n\n\n");
 
         // Informações bombeiro apagar fogo + abastecer
         Pair<Integer, Position> distance_destiny_fuel_path = maxPairValue(fire, velocity, new ArrayList<>(),

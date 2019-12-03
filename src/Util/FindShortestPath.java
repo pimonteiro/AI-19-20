@@ -113,9 +113,13 @@ public class FindShortestPath {
         int len = printPath(node) - 1;
 
         if (node != null) {
-            System.out.println("Next: " + this.path.get(1).toString() + "------ se o destino é:" + destination.toString());
             System.out.println("Caminho: " + this.path.toString());
-            return new Pair<>(len, this.path.get(1));
+            if(this.path.size() >= 2) {
+                System.out.println("Next: " + this.path.get(1).toString() + "------ se o destino é:" + destination.toString());
+                return new Pair<>(len, this.path.get(1));
+            } else { //quando ele está a abastecer
+                return new Pair<>(len, this.path.get(0));
+            }
         } else {
             System.out.println("Destination not found");
             System.exit(5); //FIXME melhorar isto
