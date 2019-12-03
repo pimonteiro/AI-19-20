@@ -79,7 +79,7 @@ public class FireStarter extends Agent {
             //criar novo fogo
             List<Position> l = new ArrayList<>();
             l.add(position);
-            Fire newFire = new Fire(l, calculateBaseExpansionRate(x, y));
+            Fire newFire = new Fire(l, calculateBaseExpansionRate(x, y), this.world.getZoneOfPosition(position));
             world.getFire().add(newFire);
             this.addBehaviour(new SendFirePosition(newFire));
         }

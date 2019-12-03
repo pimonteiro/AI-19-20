@@ -108,4 +108,15 @@ public class World {
 
         return a.toString();
     }
+  
+    public int getZoneOfPosition(Position position) {
+        ArrayList<Position> positions = new ArrayList<>();
+        positions.add(position);
+        for(Zone z : zones){
+            if(z.contains(positions) > 0){
+                return z.getId();
+            }
+        }
+        return -1;
+    }
 }

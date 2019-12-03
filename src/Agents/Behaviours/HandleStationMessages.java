@@ -1,9 +1,12 @@
 package Agents.Behaviours;
 
 import Agents.AgentData;
+import Agents.Fireman;
 import Agents.Messages.*;
 import Agents.Station;
 import Logic.Fire;
+import Logic.Metric;
+import Util.FiremanType;
 import Util.Ocupation;
 
 import Util.Position;
@@ -108,10 +111,23 @@ public class HandleStationMessages extends CyclicBehaviour {
 
     private void handleAcceptRequest(Station s, ACLMessage msg) {
         try {
+            Metric c = s.getMetrics();
             ExtinguishFireData cont = (ExtinguishFireData) msg.getContentObject();
+            c.addNewFireAssigned(cont.getFire());
             Map<AID, Fire> treatment_fire = s.getTreatment_fire();
             treatment_fire.put(msg.getSender(), cont.getFire());
             AgentData ag = s.getWorld().getFireman().get(msg.getSender());
+            switch (ag.getFiremanType()) {
+                case AIRCRAFT:
+                    c.addAircraftsUsage();
+                    break;
+                case DRONE:
+                    c.addDroneUsage();
+                    break;
+                case FIRETRUCK:
+                    c.addTrucksUsage();
+                    break;
+            }
             ag.setOcupation(Ocupation.MOVING);
             ag.setTreating_fire(cont.getFire());
 
@@ -123,6 +139,8 @@ public class HandleStationMessages extends CyclicBehaviour {
 
     public void handleUpdateData(Station s, ACLMessage msg){
         try {
+            Metric c = s.getMetrics();
+            c.addFuelUsage();
             UpdateData cont = (UpdateData) msg.getContentObject();
             AgentData ag = s.getWorld().getFireman().get(msg.getSender());
             ag.setActual_position(cont.getP());
@@ -161,29 +179,19 @@ public class HandleStationMessages extends CyclicBehaviour {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         if (!agentAndFire.isEmpty()) {
-            try {
-                Fire extinguishedFire = agentAndFire.get(0);
-                AgentData agentData = s.getWorld().getFireman().get(aid);
+            Fire extinguishedFire = agentAndFire.get(0);
+            Metric c = s.getMetrics();
+            c.addNewFireResolved(extinguishedFire);
+            AgentData agentData = s.getWorld().getFireman().get(aid);
 
-                UpdateFire co = new UpdateFire((ArrayList<Position>) extinguishedFire.getPositions(),false);
-                ACLMessage message = new ACLMessage(ACLMessage.INFORM);
-                message.setContentObject(co);
-                for(AID ag : s.getWorld().getFireman().keySet()){
-                    message.addReceiver(ag);
-                }
-                this.myAgent.send(message);
-
-                //eliminar o fire do World
-                s.getWorld().getFire().remove(extinguishedFire);
-                //eliminar o par agente&fire do treatment_fire
-                s.getTreatment_fire().remove(aid);
-                //alterar o estado do fireman para "a regressar"
-                agentData.setOcupation(Ocupation.RETURNING);
-                //eliminar treatment fire do fireman
-                agentData.setTreating_fire(null);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            //eliminar o fire do World
+            s.getWorld().getFire().remove(extinguishedFire);
+            //eliminar o par agente&fire do treatment_fire
+            s.getTreatment_fire().remove(aid);
+            //alterar o estado do fireman para "a regressar"
+            agentData.setOcupation(Ocupation.RETURNING);
+            //eliminar treatment fire do fireman
+            agentData.setTreating_fire(null);
         }
     }
 
