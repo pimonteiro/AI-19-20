@@ -72,6 +72,7 @@ public class Station extends Agent {
                 System.out.println("-------Fires being questioned-------");
                 questioning.keySet().forEach(f -> System.out.println(f.toString()));
                 map_gui.update(world);
+                map_gui.updateGUI();
             }
         });
     }

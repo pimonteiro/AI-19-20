@@ -1,6 +1,5 @@
-import GUI.Map;
 import Logic.World;
-import Util.Simulator;
+import Logic.Simulator;
 import jade.core.Runtime;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
