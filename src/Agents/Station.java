@@ -1,9 +1,6 @@
 package Agents;
 
-import Agents.Behaviours.CheckWaitingFires;
-import Agents.Behaviours.HandleStationMessages;
-import Agents.Behaviours.MetricController;
-import Agents.Behaviours.SendInitialInfo;
+import Agents.Behaviours.*;
 import Logic.Fire;
 import Logic.Metric;
 import Logic.World;
@@ -56,6 +53,7 @@ public class Station extends Agent {
         this.addBehaviour(new HandleStationMessages());
         this.addBehaviour(new CheckWaitingFires());
         this.addBehaviour(new MetricController(this, 5000));
+        this.addBehaviour(new CalculateRisk(this));
         this.addBehaviour(new TickerBehaviour(this,1000) {
             @Override
             protected void onTick() {
@@ -66,7 +64,8 @@ public class Station extends Agent {
                 waiting_fire.forEach(Fire::increaseTime);
                 questioning.keySet().forEach(Fire::increaseTime);
                 System.out.println("-------Fires being treated-------");
-                treatment_fire.values().forEach(f -> System.out.println(f.toString()));
+                treatment_fire.keySet().forEach(a -> System.out.println("Fire " + treatment_fire.get(a).getPositions()
+                .get(0).toString() + " by " + a.getName()));
                 System.out.println("-------Fires waiting to be treated-------");
                 waiting_fire.forEach(f -> System.out.println(f.toString()));
                 System.out.println("-------Fires being questioned-------");
@@ -97,24 +96,8 @@ public class Station extends Agent {
         return waiting_fire;
     }
 
-    public void setWorld(World world) {
-        this.world = world;
-    }
-
-    public void setTreatment_fire(Map<AID,Fire> treatment_fire) {
-        this.treatment_fire = treatment_fire;
-    }
-
-    public void setWaiting_fire(List<Fire> waiting_fire) {
-        this.waiting_fire = waiting_fire;
-    }
-
     public Map<Fire, List<AID>> getQuestioning() {
         return questioning;
-    }
-
-    public void setQuestioning(Map<Fire, List<AID>> questioning) {
-        this.questioning = questioning;
     }
 
     public Metric getMetrics() {

@@ -16,19 +16,20 @@ public class World {
     private List<Position> houses;
     private List<Zone> zones;
 
-    public static final int dimension = 40;
+    public static int dimension;
 
     public void expandFire(Fire activeFire, Position newPosition){
         activeFire.getPositions().add(newPosition);
     }
 
-    public World() {
+    public World(int dimension) {
         this.fireman = new HashMap<>();
         this.fire = new ArrayList<>();
         this.fuel = new ArrayList<>();
         this.water = new ArrayList<>();
         this.houses = new ArrayList<>();
         this.zones = new ArrayList<>();
+        World.dimension = dimension;
     }
 
     public HashMap<AID,AgentData> getFireman() {
