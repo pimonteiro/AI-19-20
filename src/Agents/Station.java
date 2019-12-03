@@ -26,6 +26,7 @@ public class Station extends Agent {
     private Map<AID, Fire> treatment_fire;
     private List<Fire> waiting_fire;
     private Map<Fire,List<AID>> questioning;
+    private GUI.Map map_gui;
     private Metric metrics;
 
     public void setup() {
@@ -36,6 +37,7 @@ public class Station extends Agent {
         this.waiting_fire = new ArrayList<>();
         this.metrics = new Metric();
         questioning = new HashMap<>();
+        this.map_gui = new GUI.Map(world);
 
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
@@ -69,6 +71,7 @@ public class Station extends Agent {
                 waiting_fire.forEach(f -> System.out.println(f.toString()));
                 System.out.println("-------Fires being questioned-------");
                 questioning.keySet().forEach(f -> System.out.println(f.toString()));
+                map_gui.update(world);
             }
         });
     }
