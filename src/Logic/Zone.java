@@ -1,7 +1,6 @@
 package Logic;
 
 import Util.Position;
-import javafx.geometry.Pos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,7 +110,7 @@ public class Zone {
                 side1 = p4.getY() - p1.getY();
             } else
                 side1 = p1.getY() - p4.getY();
-            if(p3.getX() < p4.getX()){
+            if(p3.getX() < p2.getX()){
                 side2 = p2.getX() - p3.getX();
             } else
                 side2 = p3.getX() - p2.getX();
@@ -131,27 +130,27 @@ public class Zone {
                 side1 = p2.getY() - p4.getY();
             } else
                 side1 = p4.getY() - p2.getY();
-            if(p3.getX() < p4.getX()){
+            if(p3.getX() < p1.getX()){
                 side2 = p1.getX() - p3.getX();
             } else
                 side2 = p3.getX() - p1.getX();
         }
         if(p2.getX() == p3.getX() && p3.getY() == p1.getY()){
-            if(p1.getY() < p4.getY()){
+            if(p2.getY() < p3.getY()){
                 side1 = p3.getY() - p2.getY();
             } else
                 side1 = p2.getY() - p3.getY();
-            if(p3.getX() < p4.getX()){
+            if(p3.getX() < p1.getX()){
                 side2 = p1.getX() - p3.getX();
             } else
                 side2 = p3.getX() - p1.getX();
         }
         if(p4.getX() == p3.getX() && p2.getY() == p1.getY()){
-            if(p1.getY() < p3.getY()){
+            if(p4.getY() < p3.getY()){
                 side1 = p3.getY() - p4.getY();
             } else
                 side1 = p4.getY() - p3.getY();
-            if(p2.getX() < p4.getX()){
+            if(p2.getX() < p1.getX()){
                 side2 = p1.getX() - p2.getX();
             } else
                 side2 = p2.getX() - p1.getX();
