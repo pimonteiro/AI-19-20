@@ -3,6 +3,7 @@ package Logic;
 import Agents.AgentData;
 import Util.Position;
 import jade.core.AID;
+import jade.core.Agent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -104,12 +105,18 @@ public class World {
     public void updateOcupationRate(){
         for(Zone z: zones){
             int fires = 0;
+            int firemen = 0;
             for (Fire f: fire){
-                if(f.getZone_id() == z.getId()){
+                if(f.getZone_id() == z.getId()) {
                     fires++;
                 }
             }
-            z.setOcupation_rate(Math.round(fires/z.zoneArea()));
+            for (AgentData a: fireman.values()){
+                if(z.equals(a.getZone())){
+                    firemen++;
+                }
+            }
+            z.setOcupation_rate(Math.round(firemen/fires));
         }
     }
 }
