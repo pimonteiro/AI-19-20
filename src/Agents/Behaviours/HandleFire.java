@@ -24,6 +24,8 @@ public class HandleFire extends TickerBehaviour {
     protected void onTick() {
         Fireman f = (Fireman) myAgent;
         List<Position> pos = f.getTreating_fire().getPositions();
+        ((Fireman) myAgent).setCap_water(((Fireman) myAgent).getCap_water() - 1);
+
         if(f.getTreating_fire().getPositions().size() > 1){
             System.out.println("[FIREMAN " + f.getName() + "] Cleaning " + pos.get(pos.size()-1).toString());
             f.getTreating_fire().getPositions().remove(pos.size()-1);
@@ -49,6 +51,7 @@ public class HandleFire extends TickerBehaviour {
                     e.printStackTrace();
                 }
                 myAgent.removeBehaviour(this);
+                //this.myAgent.addBehaviour(new MovingFireman(this.myAgent, );
                 //TODO add movement to the standard position
             }
         }

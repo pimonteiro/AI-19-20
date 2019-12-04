@@ -30,13 +30,11 @@ public class MovingFireman extends TickerBehaviour {
     protected void onTick() {
         Fireman f = (Fireman) this.myAgent;
         if(f.getActual_position().equals(this.destiny)) {
-            //alterar ocupação do FIREMAN .... não é bem só isso
             ((Fireman) this.myAgent).setOcupation(Ocupation.IN_ACTION);
-            // é preciso fazer set do Treating Fire do
             this.myAgent.addBehaviour(new HandleFire(this.myAgent,1000));
             this.myAgent.removeBehaviour(this);
         }
-        else{
+        else {
             try {
                 Position next = f.getActual_position();
                 Ocupation ocu = Ocupation.MOVING;
