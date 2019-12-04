@@ -19,6 +19,7 @@ public abstract class Fireman extends Agent {
     private Zone zone;
     private List<Position> fuel;
     private List<Position> water;
+    private List<Position> houses;
     private int cap_max_water;
     private int cap_max_fuel;
     private int cap_water;
@@ -33,6 +34,7 @@ public abstract class Fireman extends Agent {
         World world = (World) args[0];
         this.fuel = world.getFuel();
         this.water = world.getWater();
+        this.houses = world.getHouses();
         this.std_position = new Position(0,0);
         this.actual_position = new Position(0,0);
         this.ocupation = Ocupation.RESTING;
@@ -66,6 +68,10 @@ public abstract class Fireman extends Agent {
 
     public List<Position> getWater() {
         return water;
+    }
+
+    public List<Position> getHouses() {
+        return houses;
     }
 
     public int getCap_max_water() {
@@ -114,6 +120,10 @@ public abstract class Fireman extends Agent {
 
     public void setWater(List<Position> water) {
         this.water = water;
+    }
+
+    public void setHouses(List<Position> houses) {
+        this.houses = houses;
     }
 
     public void setCap_max_water(int cap_max_water) {
