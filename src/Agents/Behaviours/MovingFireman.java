@@ -30,17 +30,23 @@ public class MovingFireman extends TickerBehaviour {
     protected void onTick() {
         Fireman f = (Fireman) this.myAgent;
         if(f.getActual_position().equals(this.destiny)) {
-            this.myAgent.removeBehaviour(this);
             //alterar ocupação do FIREMAN .... não é bem só isso
-
+            ((Fireman) this.myAgent).setOcupation(Ocupation.IN_ACTION);
+            // é preciso fazer set do Treating Fire do
+            this.myAgent.addBehaviour(new HandleFire(this.myAgent,1000));
+            this.myAgent.removeBehaviour(this);
         }
         else{
             try {
                 Position next = f.getActual_position();
+                Ocupation ocu = Ocupation.MOVING;
                 //A abastecer fuel
                 if(f.getFuel().stream().filter(p -> p.equals(f.getActual_position())).count() > 0 && (f.getCap_fuel() != f.getCap_max_fuel())){
                     System.out.println("\n\n\nAbasteci!\n\n\n");
                     f.setCap_fuel(f.getCap_max_fuel());
+                } else if (f.getActual_position().equals(this.destiny)){ //A combater um incêndio
+                    ocu = Ocupation.IN_ACTION;
+                    this.myAgent.addBehaviour(new HandleFire(this.myAgent,1000));
                 } else {
                     //Mover para uma posição do fogo
                     System.out.println("\nPosição atual: " + f.getActual_position().toString());
@@ -53,13 +59,10 @@ public class MovingFireman extends TickerBehaviour {
 
                 ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
                 //TODO COmo serapar os diferentes estados CATARINA
-                Ocupation ocu = Ocupation.MOVING;
+
                 msg.setContentObject(new UpdateData(next,f.getCap_fuel(),f.getCap_water(),ocu));
                 msg.addReceiver(f.getStation());
                 this.myAgent.send(msg);
-
-                //TODO COmo serapar os diferentes estados CATARINA
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
