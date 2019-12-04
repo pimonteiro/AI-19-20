@@ -100,4 +100,16 @@ public class World {
         }
         return -1;
     }
+
+    public void updateOcupationRate(){
+        for(Zone z: zones){
+            int fires = 0;
+            for (Fire f: fire){
+                if(f.getZone_id() == z.getId()){
+                    fires++;
+                }
+            }
+            z.setOcupation_rate(Math.round(fires/z.zoneArea()));
+        }
+    }
 }
