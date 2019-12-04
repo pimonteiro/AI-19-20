@@ -168,12 +168,15 @@ public class HandleStationMessages extends CyclicBehaviour {
                 .filter(a -> a.getKey() == aid)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
+        System.out.println("\n\n\n\n\n\nENTREI");
+
         if (!agentAndFire.isEmpty()) {
             Fire extinguishedFire = agentAndFire.get(0);
             Metric c = s.getMetrics();
             c.addNewFireResolved(extinguishedFire);
             AgentData agentData = s.getWorld().getFireman().get(aid);
 
+            System.out.println("\n\n\n\n\n\nApagar da station");
             //eliminar o fire do World
             s.getWorld().getFire().remove(extinguishedFire);
             //eliminar o par agente&fire do treatment_fire

@@ -24,13 +24,13 @@ public class HandleFire extends TickerBehaviour {
     protected void onTick() {
         Fireman f = (Fireman) myAgent;
         List<Position> pos = f.getTreating_fire().getPositions();
-        if(pos.size() > 1){
+        if(f.getTreating_fire().getPositions().size() > 1){
             System.out.println("[FIREMAN " + f.getName() + "] Cleaning " + pos.get(pos.size()-1).toString());
-            pos.remove(pos.size()-1);
+            f.getTreating_fire().getPositions().remove(pos.size()-1);
         } else {
-            if (pos.size() == 1) {
+            if (f.getTreating_fire().getPositions().size() == 1) {
                 System.out.println("[FIREMAN " + f.getName() + "] Finishing Cleaning " + pos.get(pos.size()-1).toString());
-                pos.remove(pos.size() - 1);
+                f.getTreating_fire().getPositions().remove(pos.size() - 1);
                 DFAgentDescription template = new DFAgentDescription();
                 ServiceDescription sd1 = new ServiceDescription();
                 sd1.setType("Station");

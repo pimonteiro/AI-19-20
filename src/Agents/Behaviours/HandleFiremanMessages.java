@@ -2,6 +2,7 @@ package Agents.Behaviours;
 
 import Agents.Messages.CancelFire;
 import Agents.Messages.ExtinguishFireData;
+import Agents.Messages.FireOnTheWay;
 import Agents.Messages.InitialData;
 import Agents.Fireman;
 import Logic.Fire;
@@ -62,6 +63,7 @@ public class HandleFiremanMessages extends CyclicBehaviour {
 
                 f.setOcupation(Ocupation.MOVING);
                 Fire fire = ((ExtinguishFireData) msg.getContentObject()).getFire();
+                f.setTreating_fire(fire);
                 this.myAgent.addBehaviour(new MovingFireman(this.myAgent, fire.getPositions().get(0)));
 
             }
