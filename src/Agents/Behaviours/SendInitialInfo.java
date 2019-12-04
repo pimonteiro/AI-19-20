@@ -253,6 +253,7 @@ public class SendInitialInfo extends OneShotBehaviour {
                 }
             }
             this.world.setFireman(firemans);
+            System.out.println(this.world.toString());
         } catch (FIPAException | IOException e) {
             e.printStackTrace();
         }

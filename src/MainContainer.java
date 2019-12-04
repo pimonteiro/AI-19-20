@@ -72,7 +72,7 @@ public class MainContainer {
         int n_drone = 9;
         int n_truck = 9;
         int n_water = 3;
-        int n_fuel = 1;
+        int n_fuel = 3;
         int n_houses = 2;
         int n_zones = 4;
         World world = new World();
@@ -94,9 +94,14 @@ public class MainContainer {
             }
             AgentController ag1 = agentContainer.createNewAgent("station", "Agents.Station", new Object[] {world});// arguments
             ag1.start();
+
+            Thread.sleep(5000);
+
             AgentController ag2 = agentContainer.createNewAgent("firestarter", "Agents.FireStarter", new Object[] {world});// arguments
             ag2.start();
         } catch (StaleProxyException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
 

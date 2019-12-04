@@ -6,6 +6,7 @@ import Logic.World;
 import Util.Position;
 
 import jade.core.Agent;
+import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SenderBehaviour;
 import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 public class FireStarter extends Agent {
     private World world;
 
-    private static final double startFireProbability = 0.2;
+    private static final double startFireProbability = 1;
 
     public void setup(){
         super.setup();
@@ -40,9 +41,9 @@ public class FireStarter extends Agent {
             e.printStackTrace();
         }
 
-        this.addBehaviour(new TickerBehaviour(this, 1000) {
+        this.addBehaviour(new OneShotBehaviour(this) {
             @Override
-            protected void onTick() {
+            public void action() {
                 Random randomGenerator = new Random();
                 boolean startFire = randomGenerator.nextFloat() < startFireProbability;
 
@@ -55,7 +56,7 @@ public class FireStarter extends Agent {
                         randomY = randomGenerator.nextInt(World.dimension);
                         position.setX(randomX);
                         position.setY(randomY);
-                    } while (position.isValid(world.getFire(), world.getFuel(), world.getWater(),
+                    } while (!position.isValid(world.getFire(), world.getFuel(), world.getWater(),
                                               world.getHouses(), new ArrayList<>(world.getFireman().values())));
                     startFire(position);
                 }
