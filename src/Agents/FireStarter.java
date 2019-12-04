@@ -102,12 +102,4 @@ public class FireStarter extends Agent {
     public void takeDown(){
 
     }
-
-    public World getWorld() {
-        return world;
-    }
-
-    public void setWorld(World world) {
-        this.world = world;
-    }
 }

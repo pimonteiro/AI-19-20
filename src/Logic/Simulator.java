@@ -1,7 +1,6 @@
-package Util;
+package Logic;
 
-import Logic.World;
-import Logic.Zone;
+
 import Util.Position;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ public class Simulator {
 
         int n = World.dimension / zone_side;
         int index = 0;
-        for(int i = 0; i < zone_side; i++){     //TODO fix repeated cells
+        for(int i = 0; i < zone_side; i++){
             int x = i * n;
             for(int h = 0; h < zone_side; h++){
                 int y = h * n;
@@ -31,7 +30,7 @@ public class Simulator {
                 zones.add(z);
 
                 int j = 0;
-                while(j < n_water / zone_side){
+                while(j < n_water / n){
                     int tx = r.nextInt(((x+n) - x)) + x;
                     int ty = r.nextInt(((y+n) - y)) + y;
                     Position p = new Position(tx,ty);
@@ -41,7 +40,7 @@ public class Simulator {
                     }
                 }
                 j = 0;
-                while(j < n_fuel){
+                while(j < n_fuel / n){
                     int tx = r.nextInt(((x+n) - x)) + x;
                     int ty = r.nextInt(((y+n) - y)) + y;
                     Position p = new Position(tx,ty);
@@ -51,7 +50,7 @@ public class Simulator {
                     }
                 }
                 j = 0;
-                while(j < n_houses){
+                while(j < n_houses / n){
                     int tx = r.nextInt(((x+n) - x)) + x;
                     int ty = r.nextInt(((y+n) - y)) + y;
                     Position p = new Position(tx,ty);

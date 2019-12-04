@@ -1,6 +1,5 @@
-import GUI.Map;
 import Logic.World;
-import Util.Simulator;
+import Logic.Simulator;
 import jade.core.Runtime;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
@@ -75,7 +74,7 @@ public class MainContainer {
         int n_fuel = 1;
         int n_houses = 2;
         int n_zones = 4;
-        World world = new World();
+        World world = new World(10);
         Simulator.startSimulation_v1(world,n_fuel,n_houses,n_water,n_zones);
         ContainerController agentContainer = a.initContainerInPlatform("localhost", "9888", "AgentsContainer");
 
