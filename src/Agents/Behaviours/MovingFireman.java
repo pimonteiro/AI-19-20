@@ -12,6 +12,7 @@ import jade.lang.acl.ACLMessage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MovingFireman extends TickerBehaviour {
     private Position destiny;
@@ -93,7 +94,6 @@ public class MovingFireman extends TickerBehaviour {
             }
 
         }
-
     }
 
     public Tuple<Integer, Position, Position> maxPairValue(Position actual_position, int velocity, List<Fire> fire,
@@ -116,9 +116,8 @@ public class MovingFireman extends TickerBehaviour {
             places_without_destiny = new ArrayList<>();
             places_without_destiny.addAll(places);
             places_without_destiny.remove(p);
-            fsp.setPath(new ArrayList<>());
 
-            if(searching_water){
+            if (searching_water) {
                 path = fsp.findShortestPath(actual_position, p, velocity, fire, fuel, places_without_destiny, houses, fireman);
             } else {
                 path = fsp.findShortestPath(actual_position, p, velocity, fire, places_without_destiny, water, houses, fireman);
@@ -142,33 +141,36 @@ public class MovingFireman extends TickerBehaviour {
         int velocity = f.getVel();
         Position actual_position = f.getActual_position();
 
+        List<Fire> fires_without_goal = f.getFires().stream().filter(a -> a.getPositions().
+                removeIf(b -> b.getX() == goal.getX() && b.getY() == goal.getY())).collect(Collectors.toList());
+
         // Descobrir bomba de gasolina mais próxima do bombeiro
-        Tuple<Integer, Position, Position> destiny_fuel_path = maxPairValue(actual_position, velocity, f.getFires(),
+        Tuple<Integer, Position, Position> destiny_fuel_path = maxPairValue(actual_position, velocity, fires_without_goal,
                 f.getFuel(), f.getWater(), f.getHouses(), new ArrayList<>(), false);
         int distance_fuel = destiny_fuel_path.getFirst();
         Position destiny_fuel = destiny_fuel_path.getSecond();
         System.out.println("[FIREMAN] A bomba de gasolina " + destiny_fuel_path.getThird() + " mais próxima está a " + distance_fuel + " posições");
 
-        if(extinguish_fire) {
-            return goingToGoalPosition(f, goal, actual_position, velocity, actual_cap_fuel, destiny_fuel, false);
+        if (extinguish_fire) {
+            return goingToGoalPosition(f, goal, actual_position, velocity, actual_cap_fuel, destiny_fuel, fires_without_goal, false);
         } else if (refill_water) {
             return goingRefillWater(f, actual_position, velocity, actual_cap_fuel, destiny_fuel);
         } else {
-            return goingToGoalPosition(f, goal, actual_position, velocity, actual_cap_fuel, destiny_fuel, true);
+            return goingToGoalPosition(f, goal, actual_position, velocity, actual_cap_fuel, destiny_fuel, fires_without_goal, true);
         }
     }
 
     public Position goingToGoalPosition(Fireman f, Position goal, Position actual_position, int velocity,
-                                        int actual_cap_fuel, Position destiny_fuel, boolean home){
+                                        int actual_cap_fuel, Position destiny_fuel, List<Fire> fires_without_goal, boolean home){
         // Informações bombeiro ir para goal (posição fogo ou standard position->home)
-        Pair<Integer, Position> destiny_path = fsp.findShortestPath(actual_position, goal, velocity, f.getFires(),
+        Pair<Integer, Position> destiny_path = fsp.findShortestPath(actual_position, goal, velocity, fires_without_goal,
                 f.getFuel(), f.getWater(), f.getHouses(), new ArrayList<>());
         int distance_destiny = destiny_path.getFirst();
         Position next_to_destiny = destiny_path.getSecond();
         System.out.println("[FIREMAN] O goal está a " + distance_destiny + " posições");
 
         // Informações bombeiro abastecer na bomba de gasolina mais próxima do goal
-        Tuple<Integer, Position, Position> information_destiny_fuel_path = maxPairValue(goal, velocity, f.getFires(),
+        Tuple<Integer, Position, Position> information_destiny_fuel_path = maxPairValue(goal, velocity, fires_without_goal,
                 f.getFuel(), f.getWater(), f.getHouses(), new ArrayList<>(), false);
         Position fuel_position = information_destiny_fuel_path.getThird();
         int distance_fuel_nearest_goal = information_destiny_fuel_path.getFirst();
@@ -180,7 +182,7 @@ public class MovingFireman extends TickerBehaviour {
         fuel_copy.remove(fuel_position);
 
         Pair<Integer, Position> distance_destiny_fuel_path = fsp.findShortestPath(actual_position, fuel_position, velocity,
-                f.getFires(), fuel_copy, f.getWater(), f.getHouses(), new ArrayList<>());
+                fires_without_goal, fuel_copy, f.getWater(), f.getHouses(), new ArrayList<>());
         Position destiny_fuel_goal = distance_destiny_fuel_path.getSecond();
         int distance_fuel_goal = distance_destiny_fuel_path.getFirst();
         System.out.println("[FIREMAN] A bomba de gasolina mais próxima do goal está a " + distance_fuel_goal + " posições do bombeiro\n");
