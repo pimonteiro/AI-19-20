@@ -80,10 +80,6 @@ public class Station extends Agent {
 
     }
 
-    //TODO calcular risco dentro de um incêndio
-    //que varia de acordo com a distância às habitações, e que estará
-    //constantemente a ser reavaliada
-
     public World getWorld() {
         return world;
     }
@@ -122,31 +118,38 @@ public class Station extends Agent {
             Position p_a2 = a2.getActual_position();
             int dist_a1 = (int) Math.sqrt(Math.sqrt(p_a1.getX() - fire_x) + Math.sqrt(p_a1.getY() - fire_y));
             int dist_a2 = (int) Math.sqrt(Math.sqrt(p_a2.getX() - fire_x) + Math.sqrt(p_a2.getY() - fire_y));
+            int val1 = (dist_a1 / a1.getVel()) - (dist_a2 / a2.getVel());
 
-            return (dist_a1 / a1.getVel()) - (dist_a2 / a2.getVel());
-        });
-        firemans.sort((a1, a2) -> {
             int w_a1 = a1.getCap_max_water();
             int w_a2 = a2.getCap_max_water();
-
             int r_a1 = w_a1 - size_of_fire;
             int r_a2 = w_a2 - size_of_fire;
-
+            int val2;
             if (r_a1 > 0) {
                 if (r_a2 > 0)
-                    return r_a1 - r_a2;
+                    val2 = r_a1 - r_a2;
                 else
-                    return r_a1;
+                    val2 = r_a1;
             } else {
-                if (r_a2 > 0)
-                    return r_a2;
-                else
-                    return 0;
+                val2 = Math.max(r_a2, 0);
             }
+            return (int)(val1 * 0.9 + val2 * 0.1);
         });
+
         if(firemans.size() == 0){
-            // TODO ir buscar agente a outro sitio
-            return null;
+            ArrayList<Zone> t = new ArrayList<>(world.getZones());
+            t.sort((c1,c2) -> (int)(c1.getOcupation_rate() - c2.getOcupation_rate()));
+            Zone n = t.get(0);
+            List<AgentData> remaining = this.world.getFireman().values().stream().filter(b -> b.getZone().getId() == n.getId()).collect(Collectors.toList());
+            remaining.sort((a1, a2) -> {
+                Position p_a1 = a1.getActual_position();
+                Position p_a2 = a2.getActual_position();
+                int dist_a1 = (int) Math.sqrt(Math.sqrt(p_a1.getX() - fire_x) + Math.sqrt(p_a1.getY() - fire_y));
+                int dist_a2 = (int) Math.sqrt(Math.sqrt(p_a2.getX() - fire_x) + Math.sqrt(p_a2.getY() - fire_y));
+
+                return (dist_a1 / a1.getVel()) - (dist_a2 / a2.getVel());
+            });
+            return remaining.get(0).getAid();
         }
         else
             return firemans.get(0).getAid();

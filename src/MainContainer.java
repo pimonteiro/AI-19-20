@@ -67,14 +67,14 @@ public class MainContainer {
         a.initMainContainerInPlatform("localhost", "9090", "MainContainer");
 
         //Agents and World Initialization
-        int n_aircraft = 9;
-        int n_drone = 9;
-        int n_truck = 9;
-        int n_water = 3;
-        int n_fuel = 3;
-        int n_houses = 2;
+        int n_aircraft = 10;
+        int n_drone = 10;
+        int n_truck = 10;
+        int n_water = 12;
+        int n_fuel = 9;
+        int n_houses = 10;
         int n_zones = 4;
-        World world = new World(40);
+        World world = new World(60);
         Simulator.startSimulation_v1(world,n_fuel,n_houses,n_water,n_zones);
         ContainerController agentContainer = a.initContainerInPlatform("localhost", "9888", "AgentsContainer");
 

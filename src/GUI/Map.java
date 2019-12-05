@@ -90,6 +90,7 @@ public class Map {
 
         this.frame.pack();
         this.frame.setVisible(true);
+        this.frame.setAlwaysOnTop(true);
     }
 
     public void update(World world) {
