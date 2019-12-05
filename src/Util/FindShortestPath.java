@@ -2,7 +2,6 @@ package Util;
 
 import Agents.AgentData;
 import Logic.Fire;
-import Logic.World;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -10,7 +9,6 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 import java.util.HashSet;
-import java.util.stream.IntStream;
 
 public class FindShortestPath {
     // Below arrays details all 4 possible movements from a cell

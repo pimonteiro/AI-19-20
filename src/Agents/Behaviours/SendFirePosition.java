@@ -2,13 +2,13 @@ package Agents.Behaviours;
 
 import Agents.Messages.StartedFire;
 import Logic.Fire;
+
 import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
-
 import java.io.IOException;
 
 public class SendFirePosition extends OneShotBehaviour {

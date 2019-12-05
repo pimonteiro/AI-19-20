@@ -2,7 +2,6 @@ package Agents.Behaviours;
 
 import Agents.Messages.CancelFire;
 import Agents.Messages.ExtinguishFireData;
-import Agents.Messages.FireOnTheWay;
 import Agents.Messages.InitialData;
 import Agents.Fireman;
 import Logic.Fire;
