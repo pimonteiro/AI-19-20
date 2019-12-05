@@ -128,10 +128,7 @@ public class MovingFireman extends TickerBehaviour {
             tuple.setSecond(path.getSecond());
             tuple.setThird(p);
 
-            if (distance_fuel_min == 0) {
-                distance_fuel_min = path.getFirst();
-            }
-            if (path.getFirst() < distance_fuel_min) {
+            if (distance_fuel_min == 0 || path.getFirst() < distance_fuel_min) {
                 tuple_min = tuple;
                 distance_fuel_min = tuple.getFirst();
             }
