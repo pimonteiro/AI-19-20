@@ -248,7 +248,7 @@ public class MovingFireman extends TickerBehaviour {
         System.out.println("[FIREMAN] A bomba de gasolina mais próxima do posto de água (goal) está a " + distance_fuel_nearest_water + " posições do bombeiro");
 
         // Informações bombeiro reabaster água e abastecer combustível no final
-        int distance_fuel_after_water = distance_water + distance_fuel_nearest_water;
+        int distance_fuel_after_water = distance_water + distance_fuel_nearest_goal;
 
         // Se bombeiro tem fuel suficiente para reabastecer água e reabastecer combustível
         if (actual_cap_fuel >= distance_fuel_after_water) {
