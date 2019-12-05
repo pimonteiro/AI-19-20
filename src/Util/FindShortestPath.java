@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.stream.IntStream;
 
 public class FindShortestPath {
     // Below arrays details all 4 possible movements from a cell
@@ -22,14 +23,14 @@ public class FindShortestPath {
     }
 
     // Find shortest route in the matrix from source cell to destination cell
-    public static Node findPath(int matrix[][], List<Fire> fire, List<Position> fuel, List<Position> water,
+    public static Node findPath(int velocity, List<Fire> fire, List<Position> fuel, List<Position> water,
                                 List<Position> houses, List<AgentData> fireman, int x, int y, int x_dest, int y_dest) {
         // create a queue and enqueue first node
         Queue<Node> q = new ArrayDeque<>();
         Node src = new Node(x, y, null);
         q.add(src);
 
-        // set to check if matrix cell is visited before or not
+        // set to check if cell is visited before or not
         Set<String> visited = new HashSet<>();
 
         String key = src.getX() + "," + src.getY();
@@ -51,7 +52,7 @@ public class FindShortestPath {
             // and recur for each valid movement
             for (int k = 0; k < 4; k++) {
                 // value of velocity
-                int n = matrix[i][j];
+                int n = velocity;
                 //check for max velocity and to min velocity if necessary
                 Position position = new Position(0,0);
                 for (; n > 0; n--) {
@@ -97,23 +98,16 @@ public class FindShortestPath {
     public Pair<Integer, Position> findShortestPath(Position current, Position destination, int velocity,
                                                     List<Fire> fire, List<Position> fuel, List<Position> water,
                                                     List<Position> houses, List<AgentData> fireman) {
-        int dimension = World.dimension;
-        int[][] matrix = new int[dimension][dimension];
-
-        for (int r = 0; r < dimension; r ++) {
-            for (int c = 0; c < dimension; c++) {
-                matrix[r][c] = velocity;
-            }
-        }
-
-        // Find a route in the matrix from source cell to destination cell
-        Node node = findPath(matrix, fire, fuel, water, houses, fireman, current.getX(), current.getY(),
+        this.setPath(new ArrayList<>());
+        // Find a route from source cell to destination cell
+        Node node = findPath(velocity, fire, fuel, water, houses, fireman, current.getX(), current.getY(),
                 destination.getX(), destination.getY());
 
         int len = printPath(node) - 1;
 
         if (node != null) {
             if(this.path.size() >= 2) {
+                //System.out.println("Caminho: " + path.toString());
                 //System.out.println("Next: " + this.path.get(1).toString() + "------ se o destino é:" + destination.toString());
                 return new Pair<>(len, this.path.get(1));
             } else { //quando ele está a abastecer

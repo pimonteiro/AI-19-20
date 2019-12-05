@@ -2,6 +2,7 @@ package Agents.Behaviours;
 
 import Agents.Fireman;
 import Agents.Messages.FireExtinguished;
+import Util.Ocupation;
 import Util.Position;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
@@ -24,7 +25,7 @@ public class HandleFire extends TickerBehaviour {
     protected void onTick() {
         Fireman f = (Fireman) myAgent;
         List<Position> pos = f.getTreating_fire().getPositions();
-        ((Fireman) myAgent).setCap_water(((Fireman) myAgent).getCap_water() - 1);
+        f.setCap_water(f.getCap_water() - 1);
 
         if(f.getTreating_fire().getPositions().size() > 1){
             System.out.println("[FIREMAN " + f.getName() + "] Cleaning " + pos.get(pos.size()-1).toString());
@@ -50,9 +51,10 @@ public class HandleFire extends TickerBehaviour {
                 } catch (FIPAException | IOException e) {
                     e.printStackTrace();
                 }
-                myAgent.removeBehaviour(this);
-                //this.myAgent.addBehaviour(new MovingFireman(this.myAgent, );
-                //TODO add movement to the standard position
+
+                f.setOcupation(Ocupation.RETURNING);
+                this.myAgent.addBehaviour(new MovingFireman(this.myAgent, f.getStd_position()));
+                this.myAgent.removeBehaviour(this);
             }
         }
 

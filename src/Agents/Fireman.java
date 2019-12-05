@@ -157,4 +157,16 @@ public abstract class Fireman extends Agent {
     public void setStation(AID station) {
         this.station = station;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\nFireman Information: \n");
+        sb.append("- Std position: " + this.getStd_position() + "\n");
+        sb.append("- Actual position: " + this.getActual_position() + "\n");
+        sb.append("- Actual Fuel: " + this.getCap_fuel() + "\n");
+        sb.append("- Actual Water: " + this.getCap_water() + "\n\n");
+
+        return sb.toString();
+    }
 }
