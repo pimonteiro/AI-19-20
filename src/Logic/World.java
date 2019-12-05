@@ -3,6 +3,7 @@ package Logic;
 import Agents.AgentData;
 import Util.Position;
 import jade.core.AID;
+import jade.core.Agent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,19 +17,20 @@ public class World {
     private List<Position> houses;
     private List<Zone> zones;
 
-    public static final int dimension = 40;
+    public static int dimension;
 
     public void expandFire(Fire activeFire, Position newPosition){
         activeFire.getPositions().add(newPosition);
     }
 
-    public World() {
+    public World(int dimension) {
         this.fireman = new HashMap<>();
         this.fire = new ArrayList<>();
         this.fuel = new ArrayList<>();
         this.water = new ArrayList<>();
         this.houses = new ArrayList<>();
         this.zones = new ArrayList<>();
+        World.dimension = dimension;
     }
 
     public HashMap<AID,AgentData> getFireman() {
@@ -101,6 +103,24 @@ public class World {
         return -1;
     }
 
+    public void updateOcupationRate(){
+        for(Zone z: zones){
+            int fires = 0;
+            int firemen = 0;
+            for (Fire f: fire){
+                if(f.getZone_id() == z.getId()) {
+                    fires++;
+                }
+            }
+            for (AgentData a: fireman.values()){
+                if(z.equals(a.getZone())){
+                    firemen++;
+                }
+            }
+            z.setOcupation_rate(Math.round(firemen/fires));
+        }
+    }
+  
     @Override
     public String toString() {
         StringBuilder a = new StringBuilder("\n----WORLD:----\n");
@@ -118,5 +138,5 @@ public class World {
         }
 
         return a.toString();
-    }
+    } 
 }

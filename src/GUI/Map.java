@@ -11,6 +11,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,24 +24,25 @@ public class Map {
     private DefaultTableModel model_table;
     private String[][] data;
     private HashMap<String,String> objects;
+    private HashMap<Position,String> zones;
 
 
     public Map(World world) {
         String[] colors = {
-                 "#f9ebea",
+                "#f9ebea",
                 "#ebdef0",
                 "#e8daef",
-                 "#fdedec",
+                "#fdedec",
                 "#f5b7b1",
                 "#d7bde2",
                 "#f5eef8",
-                 "#f4ecf7",
-                 "#f2d7d5",
-                 "#fadbd8",
-                 "#ebdef0",
-                 "#e8daef",
-                 "#e6b0aa",
-                 "#d2b4de",
+                "#f4ecf7",
+                "#f2d7d5",
+                "#fadbd8",
+                "#ebdef0",
+                "#e8daef",
+                "#e6b0aa",
+                "#d2b4de",
         };
         objects = new HashMap<>();
         objects.put("water", "#1446e2");
@@ -50,31 +52,25 @@ public class Map {
         objects.put("drone", "#f7e52b");
         objects.put("aircraft", "#1de8cc");
         objects.put("truck", "#a336f9");
+        this.zones = new HashMap<>();
 
         this.frame = new JFrame("Fire Simulation");
         this.panel = new JPanel();
         this.panel.setLayout(new BorderLayout());
         this.data = new String[World.dimension][World.dimension];
         this.model_table = new DefaultTableModel(World.dimension,World.dimension);
-        update(world);
-        this.table = new JTable(this.model_table)
-        {
-            public Class getColumnClass(int column)
-            {
-                return Icon.class;
-            }
-        };
-
-        HashMap<Position,String> zones = new HashMap<>();
         int j = 0;
         for(Zone z : world.getZones()){
             ArrayList<Position> pos = z.getAllPositions();
             for (Position p : pos) {
-                zones.put(p, colors[j]);
+                this.zones.put(p, colors[j]);
             }
             j++;
         }
-        CellColorRenderer renderer = new CellColorRenderer(zones, this.data);
+        update(world);
+        this.table = new JTable(this.model_table);
+
+        CellColorRenderer renderer = new CellColorRenderer(this.data);
         this.table.setRowHeight(15);
         TableColumnModel columnModel = this.table.getColumnModel();
         for(int i = 0; i < World.dimension; i++){
@@ -95,12 +91,9 @@ public class Map {
     }
 
     public void update(World world) {
-        for(int i = 0; i < World.dimension; i++){
-            for(int j = 0; j < World.dimension; j++) {
-                this.data[i][j] = null;
-            }
+        for(Position p : this.zones.keySet()){
+            this.data[p.getY()][p.getX()] = this.zones.get(p);
         }
-
         //Populate Buildings
         for(Position p : world.getHouses()){
             this.data[p.getY()][p.getX()] = this.objects.get("house");
@@ -113,11 +106,7 @@ public class Map {
         for(Position p : world.getFuel()){
             this.data[p.getY()][p.getX()] = this.objects.get("fuel");
         }
-        //Populate Fires
-        for(Fire f : world.getFire()){
-            for(Position p : f.getPositions())
-                this.data[p.getY()][p.getX()] = this.objects.get("fire");
-        }
+
         //Populate Firemans
         for(AgentData a : world.getFireman().values()){
             Position p = a.getActual_position();
@@ -128,22 +117,34 @@ public class Map {
             else
                 this.data[p.getY()][p.getX()] = this.objects.get("truck");
         }
+        //Populate Fires
+        for(Fire f : world.getFire()){
+            for(Position p : f.getPositions())
+                this.data[p.getY()][p.getX()] = this.objects.get("fire");
+        }
+    }
+
+    public void updateGUI(){
+        CellColorRenderer renderer = new CellColorRenderer(this.data);
+        TableColumnModel columnModel = this.table.getColumnModel();
+        for(int i = 0; i < World.dimension; i++){
+            columnModel.getColumn(i).setCellRenderer(renderer);
+        }
+        DefaultTableModel tableModel = (DefaultTableModel) this.table.getModel();
+        tableModel.fireTableDataChanged();
     }
 }
 
 class CellColorRenderer extends DefaultTableCellRenderer {
-    private HashMap<Position, String> zones;
     private String[][] data;
-    CellColorRenderer(HashMap<Position, String> zones, String[][] data) {
+    CellColorRenderer(String[][] data) {
         super();
-        this.zones = zones;
         this.data = data;
     }
 
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,   boolean hasFocus, int row, int column) {
         Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        String color = data[row][column] == null ? this.zones.get(new Position(row,column)) : data[row][column];
-        cell.setBackground(Color.decode(color));
+        cell.setBackground(Color.decode(this.data[row][column]));
         return cell;
     }
 }

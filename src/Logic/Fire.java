@@ -37,8 +37,7 @@ public class Fire implements Serializable {
                 this.risk.equals(fire.getRisk()) &&
                 this.duration_time == fire.getDuration_time() &&
                 this.base_expansion_rate == fire.getBase_expansion_rate() &&
-                this.zone_id == fire.getZone_id() &&
-                this.being_resolved_time == fire.getBeing_resolved_time();
+                this.zone_id == fire.getZone_id();
     }
 
     public int getZone_id() {
