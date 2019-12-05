@@ -10,6 +10,7 @@ import Util.Position;
 import jade.core.AID;
 import jade.core.Agent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Fireman extends Agent {
@@ -20,6 +21,7 @@ public abstract class Fireman extends Agent {
     private List<Position> fuel;
     private List<Position> water;
     private List<Position> houses;
+    private ArrayList<Fire> fires;
     private int cap_max_water;
     private int cap_max_fuel;
     private int cap_water;
@@ -35,6 +37,7 @@ public abstract class Fireman extends Agent {
         this.fuel = world.getFuel();
         this.water = world.getWater();
         this.houses = world.getHouses();
+        this.fires = new ArrayList<>();
         this.std_position = new Position(0,0);
         this.actual_position = new Position(0,0);
         this.ocupation = Ocupation.RESTING;
@@ -44,6 +47,10 @@ public abstract class Fireman extends Agent {
 
     public void takeDown(){
         //System.out.println(fuel.toString());
+    }
+
+    public ArrayList<Fire> getFires() {
+        return fires;
     }
 
     public Position getStd_position() {

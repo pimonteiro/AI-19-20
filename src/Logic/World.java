@@ -10,7 +10,7 @@ import java.util.List;
 
 public class World {
     private HashMap<AID,AgentData> fireman;
-    private List<Fire> fire;                //TODO REDUNDANTE?
+    private List<Fire> fire;
     private List<Position> fuel;
     private List<Position> water;
     private List<Position> houses;

@@ -23,6 +23,7 @@ public class Map {
     private JScrollPane tableContainer;
     private DefaultTableModel model_table;
     private String[][] data;
+    private int[][] firemans;
     private HashMap<String,String> objects;
     private HashMap<Position,String> zones;
 
@@ -58,6 +59,7 @@ public class Map {
         this.panel = new JPanel();
         this.panel.setLayout(new BorderLayout());
         this.data = new String[World.dimension][World.dimension];
+        this.firemans = new int[World.dimension][World.dimension];
         this.model_table = new DefaultTableModel(World.dimension,World.dimension);
         int j = 0;
         for(Zone z : world.getZones()){
@@ -91,6 +93,11 @@ public class Map {
     }
 
     public void update(World world) {
+        for(int i = 0; i < World.dimension; i++){
+            for(int j = 0; j < World.dimension; j++){
+                this.firemans[i][j] = -1;
+            }
+        }
         for(Position p : this.zones.keySet()){
             this.data[p.getY()][p.getX()] = this.zones.get(p);
         }
@@ -110,6 +117,8 @@ public class Map {
         //Populate Firemans
         for(AgentData a : world.getFireman().values()){
             Position p = a.getActual_position();
+            String[] s = a.getAid().getName().split("@");
+            this.firemans[p.getY()][p.getX()] = Integer.parseInt(s[0].replaceAll("[^0-9]", ""));
             if(a.getFiremanType() == FiremanType.AIRCRAFT)
                 this.data[p.getY()][p.getX()] = this.objects.get("aircraft");
             else if(a.getFiremanType() == FiremanType.DRONE)
@@ -129,6 +138,12 @@ public class Map {
         TableColumnModel columnModel = this.table.getColumnModel();
         for(int i = 0; i < World.dimension; i++){
             columnModel.getColumn(i).setCellRenderer(renderer);
+            for(int j = 0; j < World.dimension; j++){
+                if(this.firemans[j][i] != -1)
+                    this.table.setValueAt(this.firemans[j][i],j,i);
+                else
+                    this.table.setValueAt("",j,i);
+            }
         }
         DefaultTableModel tableModel = (DefaultTableModel) this.table.getModel();
         tableModel.fireTableDataChanged();

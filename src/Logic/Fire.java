@@ -34,8 +34,6 @@ public class Fire implements Serializable {
         Fire fire = (Fire) object;
 
         return  this.positions.equals(fire.getPositions()) &&
-                this.risk.equals(fire.getRisk()) &&
-                this.duration_time == fire.getDuration_time() &&
                 this.base_expansion_rate == fire.getBase_expansion_rate() &&
                 this.zone_id == fire.getZone_id();
     }

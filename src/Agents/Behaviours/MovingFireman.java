@@ -143,9 +143,8 @@ public class MovingFireman extends TickerBehaviour {
         Position actual_position = f.getActual_position();
 
         // Descobrir bomba de gasolina mais próxima do bombeiro
-        Tuple<Integer, Position, Position> destiny_fuel_path = maxPairValue(actual_position, velocity, new ArrayList<>(),
+        Tuple<Integer, Position, Position> destiny_fuel_path = maxPairValue(actual_position, velocity, f.getFires(),
                 f.getFuel(), f.getWater(), f.getHouses(), new ArrayList<>(), false);
-        //FIXME bombeiro precisa de saber onde estão os outros fogos
         int distance_fuel = destiny_fuel_path.getFirst();
         Position destiny_fuel = destiny_fuel_path.getSecond();
         System.out.println("[FIREMAN] A bomba de gasolina " + destiny_fuel_path.getThird() + " mais próxima está a " + distance_fuel + " posições");
@@ -162,17 +161,15 @@ public class MovingFireman extends TickerBehaviour {
     public Position goingToGoalPosition(Fireman f, Position goal, Position actual_position, int velocity,
                                         int actual_cap_fuel, Position destiny_fuel, boolean home){
         // Informações bombeiro ir para goal (posição fogo ou standard position->home)
-        Pair<Integer, Position> destiny_path = fsp.findShortestPath(actual_position, goal, velocity, new ArrayList<>(),
+        Pair<Integer, Position> destiny_path = fsp.findShortestPath(actual_position, goal, velocity, f.getFires(),
                 f.getFuel(), f.getWater(), f.getHouses(), new ArrayList<>());
-        //FIXME bombeiro precisa de saber onde estão os outros fogos
         int distance_destiny = destiny_path.getFirst();
         Position next_to_destiny = destiny_path.getSecond();
         System.out.println("[FIREMAN] O goal está a " + distance_destiny + " posições");
 
         // Informações bombeiro abastecer na bomba de gasolina mais próxima do goal
-        Tuple<Integer, Position, Position> information_destiny_fuel_path = maxPairValue(goal, velocity, new ArrayList<>(),
+        Tuple<Integer, Position, Position> information_destiny_fuel_path = maxPairValue(goal, velocity, f.getFires(),
                 f.getFuel(), f.getWater(), f.getHouses(), new ArrayList<>(), false);
-        //FIXME bombeiro precisa de saber onde estão os outros fogos
         Position fuel_position = information_destiny_fuel_path.getThird();
         int distance_fuel_nearest_goal = information_destiny_fuel_path.getFirst();
         System.out.println("[FIREMAN] A bomba de gasolina mais próxima do goal está a " + distance_fuel_nearest_goal + " posições do goal");
@@ -183,8 +180,7 @@ public class MovingFireman extends TickerBehaviour {
         fuel_copy.remove(fuel_position);
 
         Pair<Integer, Position> distance_destiny_fuel_path = fsp.findShortestPath(actual_position, fuel_position, velocity,
-                new ArrayList<>(), fuel_copy, f.getWater(), f.getHouses(), new ArrayList<>());
-        //FIXME bombeiro precisa de saber onde estão os outros fogos
+                f.getFires(), fuel_copy, f.getWater(), f.getHouses(), new ArrayList<>());
         Position destiny_fuel_goal = distance_destiny_fuel_path.getSecond();
         int distance_fuel_goal = distance_destiny_fuel_path.getFirst();
         System.out.println("[FIREMAN] A bomba de gasolina mais próxima do goal está a " + distance_fuel_goal + " posições do bombeiro\n");
@@ -217,18 +213,16 @@ public class MovingFireman extends TickerBehaviour {
 
     public Position goingRefillWater(Fireman f, Position actual_position, int velocity, int actual_cap_fuel, Position destiny_fuel){
         // Informações caminho para posto de água mais próximo do bombeiro
-        Tuple<Integer, Position, Position> destiny_water_path = maxPairValue(actual_position, velocity, new ArrayList<>(),
+        Tuple<Integer, Position, Position> destiny_water_path = maxPairValue(actual_position, velocity, f.getFires(),
                 f.getFuel(), f.getWater(), f.getHouses(), new ArrayList<>(), true);
-        //FIXME bombeiro precisa de saber onde estão os outros fogos
         int distance_water = destiny_water_path.getFirst();
         Position destiny_water = destiny_water_path.getSecond();
         Position water_position = destiny_water_path.getThird();
         System.out.println("[FIREMAN] O posto de água " + water_position + " mais próximo está a " + distance_water + " posições");
 
         // Informações bombeiro abastecer na bomba de gasolina mais próxima da água
-        Tuple<Integer, Position, Position> information_destiny_fuel_path = maxPairValue(water_position, velocity, new ArrayList<>(),
+        Tuple<Integer, Position, Position> information_destiny_fuel_path = maxPairValue(water_position, velocity, f.getFires(),
                 f.getFuel(), f.getWater(), f.getHouses(), new ArrayList<>(), false);
-        //FIXME bombeiro precisa de saber onde estão os outros fogos
         Position fuel_position = information_destiny_fuel_path.getThird();
         int distance_fuel_nearest_goal = information_destiny_fuel_path.getFirst();
         System.out.println("[FIREMAN] A bomba de gasolina " + fuel_position + " mais próxima da água " + water_position + " está a " + distance_fuel_nearest_goal + " posições da água");
@@ -238,8 +232,7 @@ public class MovingFireman extends TickerBehaviour {
         fuel_copy.addAll(f.getFuel());
         fuel_copy.remove(fuel_position);
         Pair<Integer, Position> information_destiny_water_path = fsp.findShortestPath(actual_position, fuel_position, velocity,
-                new ArrayList<>(), fuel_copy, f.getWater(), f.getHouses(), new ArrayList<>());
-        //FIXME bombeiro precisa de saber onde estão os outros fogos
+                f.getFires(), fuel_copy, f.getWater(), f.getHouses(), new ArrayList<>());
         Position destiny_fuel_nearest_water = information_destiny_water_path.getSecond();
         int distance_fuel_nearest_water = information_destiny_water_path.getFirst();
         System.out.println("[FIREMAN] A bomba de gasolina mais próxima do posto de água (goal) está a " + distance_fuel_nearest_water + " posições do bombeiro");

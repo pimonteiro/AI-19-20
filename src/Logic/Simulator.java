@@ -30,7 +30,7 @@ public class Simulator {
                 zones.add(z);
 
                 int j = 0;
-                while(j < n_water / n){
+                while(j < n_water){
                     int tx = r.nextInt(((x+n) - x)) + x;
                     int ty = r.nextInt(((y+n) - y)) + y;
                     Position p = new Position(tx,ty);
@@ -40,7 +40,7 @@ public class Simulator {
                     }
                 }
                 j = 0;
-                while(j < n_fuel / n){
+                while(j < n_fuel){
                     int tx = r.nextInt(((x+n) - x)) + x;
                     int ty = r.nextInt(((y+n) - y)) + y;
                     Position p = new Position(tx,ty);
@@ -50,7 +50,7 @@ public class Simulator {
                     }
                 }
                 j = 0;
-                while(j < n_houses / n){
+                while(j < n_houses){
                     int tx = r.nextInt(((x+n) - x)) + x;
                     int ty = r.nextInt(((y+n) - y)) + y;
                     Position p = new Position(tx,ty);
