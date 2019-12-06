@@ -187,6 +187,9 @@ public class HandleStationMessages extends CyclicBehaviour {
 
                 //eliminar o fire do World
                 s.getWorld().getFire().remove(f);
+                System.out.println("==================================================");
+                s.getWorld().toString();
+                System.out.println("==================================================");
                 //eliminar o par agente&fire do treatment_fire
                 s.getTreatment_fire().remove(aid);
                 //alterar o estado do fireman para "a regressar"
