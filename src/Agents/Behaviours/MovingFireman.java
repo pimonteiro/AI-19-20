@@ -9,6 +9,8 @@ import Logic.Fire;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
+
+import java.awt.desktop.SystemSleepEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +32,14 @@ public class MovingFireman extends TickerBehaviour {
         System.out.println(f.toString());
 
         if (f.getCap_fuel() >= 0) {
+            if(f.getOcupation().equals(Ocupation.MOVING) && f.getTreating_fire() != null && this.destiny.equals(f.getActual_position())) {
+                this.destiny = f.getTreating_fire().getPositions().get(0);
+            }
+
             //Se está na posição de um FIRE combate-o
-            if (f.getActual_position().equals(this.destiny) && f.getTreating_fire().getPositions().size() > 0) {
+            if (f.getTreating_fire() != null && f.getTreating_fire().getPositions().size() > 0 &&
+                    (f.getActual_position().equals(f.getTreating_fire().getPositions().get(0)) ||
+                            f.getActual_position().equals(this.destiny))) {
                 System.out.println("Vou mesmo agora apagar o fogo!\n");
                 f.setOcupation(Ocupation.IN_ACTION);
                 this.myAgent.addBehaviour(new HandleFire(this.myAgent, 1000));
