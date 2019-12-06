@@ -55,7 +55,7 @@ public class HandleFiremanMessages extends CyclicBehaviour {
                     break;
             }
         } catch (UnreadableException e) {
-            System.out.println("Error on msg: " + msg.getPerformative() + " -> " + msg.getContent());
+            System.out.println("Error Fireman on msg: " + msg.getPerformative() + " -> " + msg.getContent());
         }
     }
 }

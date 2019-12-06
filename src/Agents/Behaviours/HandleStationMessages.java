@@ -56,7 +56,7 @@ public class HandleStationMessages extends CyclicBehaviour {
                     break;
             }
         } catch (UnreadableException e) {
-            e.printStackTrace();
+            System.out.println("Error Station on msg: " + msg.getPerformative() + " -> " + msg.getContent());
         }
     }
 }
