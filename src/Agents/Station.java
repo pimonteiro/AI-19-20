@@ -164,6 +164,11 @@ public class Station extends Agent {
                     Position p = new Position(x,y);
                     if(p.isValid(world.getFire(), world.getFuel(), world.getWater(), world.getHouses(),
                             new ArrayList<>(world.getFireman().values()))){
+                        for(Fire fire: world.getFire()){
+                            if(fire.equals(f)){
+                                fire.getPositions().add(p);
+                            }
+                        }
                         f.getPositions().add(p);
                     }
                 }
