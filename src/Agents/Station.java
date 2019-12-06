@@ -6,6 +6,7 @@ import Logic.Metric;
 import Logic.World;
 
 import Logic.Zone;
+import Util.BestFireManComparator;
 import Util.Position;
 import jade.core.AID;
 import jade.core.Agent;
@@ -100,7 +101,6 @@ public class Station extends Agent {
         return metrics;
     }
 
-    // TODO o que acontece quando um fogo expande e alguem está a caminho/a tratar dele?
     public AID findBestFireman(Fire f, List<AID> unavailable){
         List<Position> p = f.getPositions();
         int size_of_fire = p.size();
@@ -108,50 +108,29 @@ public class Station extends Agent {
         int fire_x = p.stream().map(Position::getX).reduce(0, Integer::sum) / size_of_fire;
         int fire_y = p.stream().map(Position::getY).reduce(0, Integer::sum) / size_of_fire;
 
-
         List<AgentData> firemans = this.world.getFireman().values().stream().filter(b -> b.getZone().getId() == z.getId()).collect(Collectors.toList());
         for(AID d : unavailable){
             firemans.removeIf(a -> a.getAid().equals(d));
         }
-        firemans.sort((a1, a2) -> {
-            Position p_a1 = a1.getActual_position();
-            Position p_a2 = a2.getActual_position();
-            int dist_a1 = (int) Math.sqrt(Math.sqrt(p_a1.getX() - fire_x) + Math.sqrt(p_a1.getY() - fire_y));
-            int dist_a2 = (int) Math.sqrt(Math.sqrt(p_a2.getX() - fire_x) + Math.sqrt(p_a2.getY() - fire_y));
-            int val1 = (dist_a1 / a1.getVel()) - (dist_a2 / a2.getVel());
-
-            int w_a1 = a1.getCap_max_water();
-            int w_a2 = a2.getCap_max_water();
-            int r_a1 = w_a1 - size_of_fire;
-            int r_a2 = w_a2 - size_of_fire;
-            int val2;
-            if (r_a1 > 0) {
-                if (r_a2 > 0)
-                    val2 = r_a1 - r_a2;
-                else
-                    val2 = r_a1;
-            } else {
-                val2 = Math.max(r_a2, 0);
-            }
-            return (int)(val1 * 0.9 + val2 * 0.1);
-        });
-
+        List<AgentData> bad_firemans = firemans.stream().filter(c -> c.getCap_max_water() < size_of_fire).collect(Collectors.toList());
+        firemans = firemans.stream().filter(c -> c.getCap_max_water() >= size_of_fire).collect(Collectors.toList());
         if(firemans.size() == 0){
-            ArrayList<Zone> t = new ArrayList<>(world.getZones());
-            t.sort((c1,c2) -> (int)(c1.getOcupation_rate() - c2.getOcupation_rate()));
-            Zone n = t.get(0);
-            List<AgentData> remaining = this.world.getFireman().values().stream().filter(b -> b.getZone().getId() == n.getId()).collect(Collectors.toList());
-            remaining.sort((a1, a2) -> {
-                Position p_a1 = a1.getActual_position();
-                Position p_a2 = a2.getActual_position();
-                int dist_a1 = (int) Math.sqrt(Math.sqrt(p_a1.getX() - fire_x) + Math.sqrt(p_a1.getY() - fire_y));
-                int dist_a2 = (int) Math.sqrt(Math.sqrt(p_a2.getX() - fire_x) + Math.sqrt(p_a2.getY() - fire_y));
-
-                return (dist_a1 / a1.getVel()) - (dist_a2 / a2.getVel());
-            });
-            return remaining.get(0).getAid();
+            if(bad_firemans.size() == 0){
+                ArrayList<Zone> t = new ArrayList<>(world.getZones());
+                t.sort((c1,c2) -> (int)(c1.getOcupation_rate() - c2.getOcupation_rate()));
+                Zone n = t.get(0);
+                List<AgentData> remaining = this.world.getFireman().values().stream().filter(b -> b.getZone().getId() == n.getId()).collect(Collectors.toList());
+                remaining.sort(new BestFireManComparator(fire_x,fire_y));
+                return remaining.get(0).getAid();
+            }
+            else {
+                bad_firemans.sort(new BestFireManComparator(fire_x,fire_y));
+                return bad_firemans.get(0).getAid();
+            }
         }
-        else
+        else{
+            firemans.sort(new BestFireManComparator(fire_x,fire_y));
             return firemans.get(0).getAid();
+        }
     }
 }
