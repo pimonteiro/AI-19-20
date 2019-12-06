@@ -57,8 +57,9 @@ public class Station extends Agent {
         this.addBehaviour(new TickerBehaviour(this,1000) {
             @Override
             protected void onTick() {
-                //TODO expandir fogo
-                //para cada fogo da lista, calcula a probabilidade de expandir e se sim expande
+                expandFire(waiting_fire);
+                expandFire(treatment_fire.values());
+                expandFire(questioning.keySet());
                 treatment_fire.values().forEach(Fire::increaseTime);
                 treatment_fire.values().forEach(Fire::increaseTimeBeingResolved);
                 waiting_fire.forEach(Fire::increaseTime);
@@ -150,5 +151,28 @@ public class Station extends Agent {
         }
         else
             return firemans.get(0).getAid();
+    }
+
+    private void expandFire(Collection<Fire> fires){
+        for(Fire f: fires){
+            if(((new Random()).nextInt(10)+1) > 7){
+                int randx = (new Random().nextInt(3))-1; //gera int entre -1 e 1
+                int randy = (new Random().nextInt(3))-1; // same
+                if(randx!= 0 || randy!= 0){
+                    int x = f.getPositions().get(f.getPositions().size()-1).getX()+randx;
+                    int y = f.getPositions().get(f.getPositions().size()-1).getY()+randy;
+                    Position p = new Position(x,y);
+                    if(p.isValid(world.getFire(), world.getFuel(), world.getWater(), world.getHouses(),
+                            new ArrayList<>(world.getFireman().values()))){
+                        for(Fire fire: world.getFire()){
+                            if(fire.equals(f)){
+                                fire.getPositions().add(p);
+                            }
+                        }
+                        f.getPositions().add(p);
+                    }
+                }
+            }
+        }
     }
 }
