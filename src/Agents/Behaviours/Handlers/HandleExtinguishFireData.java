@@ -25,7 +25,7 @@ public class HandleExtinguishFireData extends OneShotBehaviour {
     public void action() {
         try {
             ExtinguishFireData cont = (ExtinguishFireData) msg.getContentObject();
-            ACLMessage res = new ACLMessage();
+            ACLMessage res = new ACLMessage(ACLMessage.AGREE);
             res.setContentObject(cont);
             res.addReceiver(msg.getSender());
 
