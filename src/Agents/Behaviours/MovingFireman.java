@@ -79,6 +79,7 @@ public class MovingFireman extends TickerBehaviour {
 
                 //Mover para o fogo
                 } else {
+                    System.out.println("Quero apagar o fogo que está na posição " + this.destiny);
                     next = decideNewPosition(f, this.destiny, true, false);
                     System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
                     f.setActual_position(next);
@@ -102,8 +103,7 @@ public class MovingFireman extends TickerBehaviour {
         List<Position> places;
         List<Position> places_without_destiny;
         Pair<Integer, Position> path;
-        Tuple<Integer, Position, Position> tuple_min = null;
-        Tuple<Integer, Position, Position> tuple = new Tuple<>(0, new Position(0,0), new Position(0,0));
+        Tuple<Integer, Position, Position> tuple_min = new Tuple<>(0, actual_position, actual_position);
         int distance_fuel_min = 0;
 
         if(searching_water){
@@ -123,13 +123,11 @@ public class MovingFireman extends TickerBehaviour {
                 path = fsp.findShortestPath(actual_position, p, velocity, fire, places_without_destiny, water, houses, fireman);
             }
 
-            tuple.setFirst(path.getFirst());
-            tuple.setSecond(path.getSecond());
-            tuple.setThird(p);
-
             if (distance_fuel_min == 0 || path.getFirst() < distance_fuel_min) {
-                tuple_min = tuple;
-                distance_fuel_min = tuple.getFirst();
+                tuple_min.setFirst(path.getFirst());
+                tuple_min.setSecond(path.getSecond());
+                tuple_min.setThird(p);
+                distance_fuel_min = tuple_min.getFirst();
             }
         }
 
@@ -233,6 +231,7 @@ public class MovingFireman extends TickerBehaviour {
         List<Position> fuel_copy = new ArrayList<>();
         fuel_copy.addAll(f.getFuel());
         fuel_copy.remove(fuel_position);
+
         Pair<Integer, Position> information_destiny_water_path = fsp.findShortestPath(actual_position, fuel_position, velocity,
                 f.getFires(), fuel_copy, f.getWater(), f.getHouses(), new ArrayList<>());
         Position destiny_fuel_nearest_water = information_destiny_water_path.getSecond();
