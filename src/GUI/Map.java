@@ -106,14 +106,6 @@ public class Map {
         for(Position p : world.getHouses()){
             this.data[p.getY()][p.getX()] = this.objects.get("house");
         }
-        //Populate Water
-        for(Position p : world.getWater()){
-            this.data[p.getY()][p.getX()] = this.objects.get("water");
-        }
-        //Populate Gas
-        for(Position p : world.getFuel()){
-            this.data[p.getY()][p.getX()] = this.objects.get("fuel");
-        }
 
         //Populate Firemans
         for(AgentData a : world.getFireman().values()){
@@ -127,6 +119,16 @@ public class Map {
             else
                 this.data[p.getY()][p.getX()] = this.objects.get("truck");
         }
+
+        //Populate Water
+        for(Position p : world.getWater()){
+            this.data[p.getY()][p.getX()] = this.objects.get("water");
+        }
+        //Populate Gas
+        for(Position p : world.getFuel()){
+            this.data[p.getY()][p.getX()] = this.objects.get("fuel");
+        }
+
         //Populate Fires
         for(Fire f : world.getFire()){
             for(Position p : f.getPositions())

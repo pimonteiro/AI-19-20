@@ -10,6 +10,7 @@ import Util.BestFireManComparator;
 import Util.Position;
 import jade.core.AID;
 import jade.core.Agent;
+import jade.core.AgentState;
 import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -25,6 +26,7 @@ public class Station extends Agent {
     private List<Fire> waiting_fire;
     private Map<Fire,List<AID>> questioning;
     private GUI.Map map_gui;
+    private GUI.AgentState agent_gui;
     private Metric metrics;
 
     public void setup() {
@@ -36,6 +38,7 @@ public class Station extends Agent {
         this.metrics = new Metric();
         questioning = new HashMap<>();
         this.map_gui = new GUI.Map(world);
+        this.agent_gui = new GUI.AgentState(world);
 
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
@@ -73,6 +76,8 @@ public class Station extends Agent {
                 questioning.keySet().forEach(f -> System.out.println(f.toString()));
                 map_gui.update(world);
                 map_gui.updateGUI();
+                agent_gui.update(world);
+                agent_gui.updateGUI();
             }
         });
     }
