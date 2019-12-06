@@ -153,7 +153,7 @@ public class Station extends Agent {
             return firemans.get(0).getAid();
     }
 
-    void expandFire(Collection<Fire> fires){
+    private void expandFire(Collection<Fire> fires){
         for(Fire f: fires){
             if(((new Random()).nextInt(10)+1) > 7){
                 int randx = (new Random().nextInt(3))-1; //gera int entre -1 e 1
