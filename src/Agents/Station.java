@@ -58,6 +58,15 @@ public class Station extends Agent {
         this.addBehaviour(new CheckWaitingFires());
         this.addBehaviour(new MetricController(this, 5000));
         this.addBehaviour(new CalculateRisk(this));
+        this.addBehaviour(new TickerBehaviour(this,500) {
+            @Override
+            protected void onTick() {
+                map_gui.update(world);
+                map_gui.updateGUI();
+                agent_gui.update(world);
+                agent_gui.updateGUI();
+            }
+        });
         this.addBehaviour(new TickerBehaviour(this,1000) {
             @Override
             protected void onTick() {
@@ -74,10 +83,6 @@ public class Station extends Agent {
                 waiting_fire.forEach(f -> System.out.println(f.toString()));
                 System.out.println("-------Fires being questioned-------");
                 questioning.keySet().forEach(f -> System.out.println(f.toString()));
-                map_gui.update(world);
-                map_gui.updateGUI();
-                agent_gui.update(world);
-                agent_gui.updateGUI();
             }
         });
     }
