@@ -3,7 +3,6 @@ package Logic;
 import Agents.AgentData;
 import Util.Position;
 import jade.core.AID;
-import jade.core.Agent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +10,7 @@ import java.util.List;
 
 public class World {
     private HashMap<AID,AgentData> fireman;
-    private List<Fire> fire;                //TODO REDUNDANTE?
+    private List<Fire> fire;
     private List<Position> fuel;
     private List<Position> water;
     private List<Position> houses;
@@ -93,10 +92,9 @@ public class World {
     }
 
     public int getZoneOfPosition(Position position) {
-        ArrayList<Position> positions = new ArrayList<>();
-        positions.add(position);
         for(Zone z : zones){
-            if(z.contains(positions) > 0){
+            ArrayList<Position> t = z.getAllPositions();
+            if(t.contains(position)){
                 return z.getId();
             }
         }
@@ -119,5 +117,24 @@ public class World {
             }
             z.setOcupation_rate(Math.round(firemen/fires));
         }
+    }
+  
+    @Override
+    public String toString() {
+        StringBuilder a = new StringBuilder("\n----WORLD:----\n");
+        a.append("[FUELS]:\n");
+        for (Position p : fuel) {
+            a.append("[Fuel] em (" + p.getX() + "," + p.getY() + ")\n");
+        }
+        a.append("[WATER]:\n");
+        for (Position p : water) {
+            a.append("[Water] em (" + p.getX() + "," + p.getY() + ")\n");
+        }
+        a.append("[HOUSES]:\n");
+        for (Position p : houses) {
+            a.append("[Houses] em (" + p.getX() + "," + p.getY() + ")\n");
+        }
+
+        return a.toString();
     }
 }

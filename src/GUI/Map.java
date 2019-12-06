@@ -1,6 +1,7 @@
 package GUI;
 
 import Agents.AgentData;
+import Agents.Station;
 import Logic.Fire;
 import Logic.World;
 import Logic.Zone;
@@ -23,11 +24,12 @@ public class Map {
     private JScrollPane tableContainer;
     private DefaultTableModel model_table;
     private String[][] data;
+    private int[][] firemans;
     private HashMap<String,String> objects;
     private HashMap<Position,String> zones;
 
 
-    public Map(World world) {
+    public Map(World world, Station s) {
         String[] colors = {
                 "#f9ebea",
                 "#ebdef0",
@@ -58,6 +60,7 @@ public class Map {
         this.panel = new JPanel();
         this.panel.setLayout(new BorderLayout());
         this.data = new String[World.dimension][World.dimension];
+        this.firemans = new int[World.dimension][World.dimension];
         this.model_table = new DefaultTableModel(World.dimension,World.dimension);
         int j = 0;
         for(Zone z : world.getZones()){
@@ -67,7 +70,7 @@ public class Map {
             }
             j++;
         }
-        update(world);
+        update(world, s);
         this.table = new JTable(this.model_table);
 
         CellColorRenderer renderer = new CellColorRenderer(this.data);
@@ -88,9 +91,15 @@ public class Map {
 
         this.frame.pack();
         this.frame.setVisible(true);
+        this.frame.setAlwaysOnTop(true);
     }
 
-    public void update(World world) {
+    public void update(World world, Station ss) {
+        for(int i = 0; i < World.dimension; i++){
+            for(int j = 0; j < World.dimension; j++){
+                this.firemans[i][j] = -1;
+            }
+        }
         for(Position p : this.zones.keySet()){
             this.data[p.getY()][p.getX()] = this.zones.get(p);
         }
@@ -98,6 +107,20 @@ public class Map {
         for(Position p : world.getHouses()){
             this.data[p.getY()][p.getX()] = this.objects.get("house");
         }
+
+        //Populate Firemans
+        for(AgentData a : world.getFireman().values()){
+            Position p = a.getActual_position();
+            String[] s = a.getAid().getName().split("@");
+            this.firemans[p.getY()][p.getX()] = Integer.parseInt(s[0].replaceAll("[^0-9]", ""));
+            if(a.getFiremanType() == FiremanType.AIRCRAFT)
+                this.data[p.getY()][p.getX()] = this.objects.get("aircraft");
+            else if(a.getFiremanType() == FiremanType.DRONE)
+                this.data[p.getY()][p.getX()] = this.objects.get("drone");
+            else
+                this.data[p.getY()][p.getX()] = this.objects.get("truck");
+        }
+
         //Populate Water
         for(Position p : world.getWater()){
             this.data[p.getY()][p.getX()] = this.objects.get("water");
@@ -107,18 +130,12 @@ public class Map {
             this.data[p.getY()][p.getX()] = this.objects.get("fuel");
         }
 
-        //Populate Firemans
-        for(AgentData a : world.getFireman().values()){
-            Position p = a.getActual_position();
-            if(a.getFiremanType() == FiremanType.AIRCRAFT)
-                this.data[p.getY()][p.getX()] = this.objects.get("aircraft");
-            else if(a.getFiremanType() == FiremanType.DRONE)
-                this.data[p.getY()][p.getX()] = this.objects.get("drone");
-            else
-                this.data[p.getY()][p.getX()] = this.objects.get("truck");
-        }
         //Populate Fires
-        for(Fire f : world.getFire()){
+        ArrayList<Fire> all = new ArrayList<>();
+        all.addAll(ss.getWaiting_fire());
+        all.addAll(ss.getTreatment_fire().values());
+        all.addAll(ss.getQuestioning().keySet());
+        for(Fire f : all){
             for(Position p : f.getPositions())
                 this.data[p.getY()][p.getX()] = this.objects.get("fire");
         }
@@ -129,6 +146,12 @@ public class Map {
         TableColumnModel columnModel = this.table.getColumnModel();
         for(int i = 0; i < World.dimension; i++){
             columnModel.getColumn(i).setCellRenderer(renderer);
+            for(int j = 0; j < World.dimension; j++){
+                if(this.firemans[j][i] != -1)
+                    this.table.setValueAt(this.firemans[j][i],j,i);
+                else
+                    this.table.setValueAt("",j,i);
+            }
         }
         DefaultTableModel tableModel = (DefaultTableModel) this.table.getModel();
         tableModel.fireTableDataChanged();

@@ -11,6 +11,7 @@ import Logic.Zone;
 import Util.FiremanType;
 import Util.Ocupation;
 import Util.Position;
+
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.DFService;
@@ -18,7 +19,6 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -253,6 +253,7 @@ public class SendInitialInfo extends OneShotBehaviour {
                 }
             }
             this.world.setFireman(firemans);
+            System.out.println(this.world.toString());
         } catch (FIPAException | IOException e) {
             e.printStackTrace();
         }

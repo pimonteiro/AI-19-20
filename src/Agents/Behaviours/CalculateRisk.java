@@ -4,7 +4,6 @@ import Agents.Station;
 import Logic.Fire;
 import Util.Position;
 import Util.Risk;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;
 
 import java.util.ArrayList;
@@ -18,8 +17,6 @@ public class CalculateRisk extends CyclicBehaviour {
     @Override
     public void action() {
         Station s = (Station) this.myAgent;
-        ArrayList<Fire> all = new ArrayList<>();
-        all.addAll(s.getWaiting_fire());
         for (Fire f : s.getWaiting_fire()) {
             ArrayList<Position> risk1 = closePositions(f.getPositions(), 1);
             if (s.getWorld().getHouses().stream().filter(h -> risk1.contains(h)).count() > 0) {

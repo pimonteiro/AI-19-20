@@ -10,6 +10,7 @@ import Util.Position;
 import jade.core.AID;
 import jade.core.Agent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Fireman extends Agent {
@@ -19,6 +20,8 @@ public abstract class Fireman extends Agent {
     private Zone zone;
     private List<Position> fuel;
     private List<Position> water;
+    private List<Position> houses;
+    private ArrayList<Fire> fires;
     private int cap_max_water;
     private int cap_max_fuel;
     private int cap_water;
@@ -33,6 +36,8 @@ public abstract class Fireman extends Agent {
         World world = (World) args[0];
         this.fuel = world.getFuel();
         this.water = world.getWater();
+        this.houses = world.getHouses();
+        this.fires = new ArrayList<>();
         this.std_position = new Position(0,0);
         this.actual_position = new Position(0,0);
         this.ocupation = Ocupation.RESTING;
@@ -42,6 +47,10 @@ public abstract class Fireman extends Agent {
 
     public void takeDown(){
         //System.out.println(fuel.toString());
+    }
+
+    public ArrayList<Fire> getFires() {
+        return fires;
     }
 
     public Position getStd_position() {
@@ -66,6 +75,10 @@ public abstract class Fireman extends Agent {
 
     public List<Position> getWater() {
         return water;
+    }
+
+    public List<Position> getHouses() {
+        return houses;
     }
 
     public int getCap_max_water() {
@@ -116,6 +129,10 @@ public abstract class Fireman extends Agent {
         this.water = water;
     }
 
+    public void setHouses(List<Position> houses) {
+        this.houses = houses;
+    }
+
     public void setCap_max_water(int cap_max_water) {
         this.cap_max_water = cap_max_water;
     }
@@ -146,5 +163,17 @@ public abstract class Fireman extends Agent {
 
     public void setStation(AID station) {
         this.station = station;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\nFireman Information: \n");
+        sb.append("- Std position: " + this.getStd_position() + "\n");
+        sb.append("- Actual position: " + this.getActual_position() + "\n");
+        sb.append("- Actual Fuel: " + this.getCap_fuel() + "\n");
+        sb.append("- Actual Water: " + this.getCap_water() + "\n\n");
+
+        return sb.toString();
     }
 }

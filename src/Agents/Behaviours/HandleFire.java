@@ -2,6 +2,8 @@ package Agents.Behaviours;
 
 import Agents.Fireman;
 import Agents.Messages.FireExtinguished;
+import Logic.Fire;
+import Util.Ocupation;
 import Util.Position;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
@@ -23,35 +25,43 @@ public class HandleFire extends TickerBehaviour {
     @Override
     protected void onTick() {
         Fireman f = (Fireman) myAgent;
-        List<Position> pos = f.getTreating_fire().getPositions();
-        if(pos.size() > 1){
-            System.out.println("[FIREMAN " + f.getName() + "] Cleaning " + pos.get(pos.size()-1).toString());
-            pos.remove(pos.size()-1);
-        } else {
-            if (pos.size() == 1) {
-                System.out.println("[FIREMAN " + f.getName() + "] Finishing Cleaning " + pos.get(pos.size()-1).toString());
-                pos.remove(pos.size() - 1);
-                DFAgentDescription template = new DFAgentDescription();
-                ServiceDescription sd1 = new ServiceDescription();
-                sd1.setType("Station");
-                template.addServices(sd1);
+        Fire fire =  f.getTreating_fire();
 
-                DFAgentDescription[] station;
+        if (fire != null) {
+            List<Position> pos = fire.getPositions();
+            f.setCap_water(f.getCap_water() - 1);
 
-                try {
-                    station = DFService.search(myAgent, template);
-                    ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-                    msg.setContentObject(new FireExtinguished());
-                    msg.addReceiver(station[0].getName());
-                    myAgent.send(msg);
+            if (f.getTreating_fire().getPositions().size() > 1) {
+                System.out.println("[FIREMAN " + f.getName() + "] Cleaning " + pos.get(pos.size() - 1).toString());
+                f.getTreating_fire().getPositions().remove(pos.size() - 1);
+            } else {
+                if (f.getTreating_fire().getPositions().size() == 1) {
+                    System.out.println("[FIREMAN " + f.getName() + "] Finishing Cleaning " + pos.get(pos.size() - 1).toString());
+                    f.getTreating_fire().getPositions().remove(pos.size() - 1);
+                    DFAgentDescription template = new DFAgentDescription();
+                    ServiceDescription sd1 = new ServiceDescription();
+                    sd1.setType("Station");
+                    template.addServices(sd1);
 
-                } catch (FIPAException | IOException e) {
-                    e.printStackTrace();
+                    DFAgentDescription[] station;
+
+                    try {
+                        station = DFService.search(myAgent, template);
+                        ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+                        msg.setContentObject(new FireExtinguished());
+                        msg.addReceiver(station[0].getName());
+                        myAgent.send(msg);
+
+                    } catch (FIPAException | IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    f.setOcupation(Ocupation.RETURNING);
+                    f.setTreating_fire(null);
+                    this.myAgent.addBehaviour(new MovingFireman(this.myAgent, f.getStd_position()));
+                    this.myAgent.removeBehaviour(this);
                 }
-                myAgent.removeBehaviour(this);
-                //TODO add movement to the standard position
             }
         }
-
     }
 }

@@ -1,20 +1,19 @@
 package Agents.Behaviours;
 
 import Agents.AgentData;
-import Agents.Fireman;
 import Agents.Messages.*;
 import Agents.Station;
 import Logic.Fire;
 import Logic.Metric;
-import Util.FiremanType;
 import Util.Ocupation;
+
+import Util.Position;
 import jade.core.AID;
-import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 import java.io.IOException;
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -156,32 +155,50 @@ public class HandleStationMessages extends CyclicBehaviour {
             StartedFire cont = (StartedFire) msg.getContentObject();
             s.getWaiting_fire().add(cont.getFire());
             System.out.println("[STATION] Novo fogo: " + cont.getFire().toString());
-        } catch (UnreadableException e) {
+
+            UpdateFire co = new UpdateFire(cont.getFire(),true);
+            ACLMessage message = new ACLMessage(ACLMessage.INFORM);
+            message.setContentObject(co);
+            for(AID ag : s.getWorld().getFireman().keySet()){
+                message.addReceiver(ag);
+            }
+            this.myAgent.send(message);
+        } catch (UnreadableException | IOException e) {
             e.printStackTrace();
         }
     }
                 
     private void handleFireExtinguished(Station s, ACLMessage msg){
         AID aid = msg.getSender();
+        Fire f = s.getTreatment_fire().get(aid);
+        if(f != null){
+            try {
+                Metric c = s.getMetrics();
+                c.addNewFireResolved(f);
+                AgentData agentData = s.getWorld().getFireman().get(aid);
 
-        Map<AID, Fire> agentAndFire = s.getTreatment_fire().entrySet().stream()
-                .filter(a -> a.getKey() == aid)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                UpdateFire co = new UpdateFire(f,false);
+                ACLMessage message = new ACLMessage(ACLMessage.INFORM);
+                message.setContentObject(co);
+                for(AID ag : s.getWorld().getFireman().keySet()){
+                    message.addReceiver(ag);
+                }
+                this.myAgent.send(message);
 
-        if (!agentAndFire.isEmpty()) {
-            Fire extinguishedFire = agentAndFire.get(0);
-            Metric c = s.getMetrics();
-            c.addNewFireResolved(extinguishedFire);
-            AgentData agentData = s.getWorld().getFireman().get(aid);
-
-            //eliminar o fire do World
-            s.getWorld().getFire().remove(extinguishedFire);
-            //eliminar o par agente&fire do treatment_fire
-            s.getTreatment_fire().remove(aid);
-            //alterar o estado do fireman para "a regressar"
-            agentData.setOcupation(Ocupation.RETURNING);
-            //eliminar treatment fire do fireman
-            agentData.setTreating_fire(null);
+                //eliminar o fire do World
+                s.getWorld().getFire().remove(f);
+                System.out.println("==================================================");
+                s.getWorld().toString();
+                System.out.println("==================================================");
+                //eliminar o par agente&fire do treatment_fire
+                s.getTreatment_fire().remove(aid);
+                //alterar o estado do fireman para "a regressar"
+                agentData.setOcupation(Ocupation.RETURNING);
+                //eliminar treatment fire do fireman
+                agentData.setTreating_fire(null);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

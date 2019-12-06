@@ -7,7 +7,7 @@ import jade.domain.FIPAException;
 
 public class Drone extends Fireman {
     public final static int MAX_WATER = 2;
-    public final static int MAX_FUEL = 5;
+    public final static int MAX_FUEL = 12;
     public final static int VEL = 10;
 
     public void setup(){

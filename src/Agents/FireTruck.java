@@ -8,7 +8,7 @@ import jade.domain.FIPAException;
 
 public class FireTruck extends Fireman {
     public final static int MAX_WATER = 10;
-    public final static int MAX_FUEL = 10;
+    public final static int MAX_FUEL = 20;
     public final static int VEL = 5;
 
     public void setup(){

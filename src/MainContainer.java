@@ -67,14 +67,14 @@ public class MainContainer {
         a.initMainContainerInPlatform("localhost", "9090", "MainContainer");
 
         //Agents and World Initialization
-        int n_aircraft = 9;
-        int n_drone = 9;
-        int n_truck = 9;
+        int n_aircraft = 5;
+        int n_drone = 5;
+        int n_truck = 5;
         int n_water = 3;
-        int n_fuel = 1;
-        int n_houses = 2;
+        int n_fuel = 3;
+        int n_houses = 1;
         int n_zones = 4;
-        World world = new World(10);
+        World world = new World(20);
         Simulator.startSimulation_v1(world,n_fuel,n_houses,n_water,n_zones);
         ContainerController agentContainer = a.initContainerInPlatform("localhost", "9888", "AgentsContainer");
 
@@ -93,9 +93,14 @@ public class MainContainer {
             }
             AgentController ag1 = agentContainer.createNewAgent("station", "Agents.Station", new Object[] {world});// arguments
             ag1.start();
+
+            Thread.sleep(5000);
+
             AgentController ag2 = agentContainer.createNewAgent("firestarter", "Agents.FireStarter", new Object[] {world});// arguments
             ag2.start();
         } catch (StaleProxyException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
 

@@ -4,13 +4,16 @@ import Agents.Messages.CancelFire;
 import Agents.Messages.ExtinguishFireData;
 import Agents.Messages.InitialData;
 import Agents.Fireman;
+import Agents.Messages.UpdateFire;
 import Logic.Fire;
 import Util.Ocupation;
+import Util.Position;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class HandleFiremanMessages extends CyclicBehaviour {
 
@@ -29,6 +32,10 @@ public class HandleFiremanMessages extends CyclicBehaviour {
                     if(content instanceof InitialData) {
                         handleInitialData(f, msg);
                     }
+                    else if(content instanceof UpdateFire){
+                        handleUpdateFire(f, msg);
+                    }
+
                     break;
                 case(ACLMessage.REQUEST):
                     if(content instanceof ExtinguishFireData){
@@ -42,6 +49,21 @@ public class HandleFiremanMessages extends CyclicBehaviour {
                 default:
                     System.out.println("Wrong message content.");
                     break;
+            }
+        } catch (UnreadableException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleUpdateFire(Fireman f, ACLMessage msg) {
+        try {
+            ArrayList<Fire> pos = f.getFires();
+            UpdateFire cont = (UpdateFire) msg.getContentObject();
+            if(cont.isType()){
+                pos.add(cont.getFire());
+            }
+            else{
+                pos.remove(cont.getFire());
             }
         } catch (UnreadableException e) {
             e.printStackTrace();
@@ -62,6 +84,7 @@ public class HandleFiremanMessages extends CyclicBehaviour {
 
                 f.setOcupation(Ocupation.MOVING);
                 Fire fire = ((ExtinguishFireData) msg.getContentObject()).getFire();
+                f.setTreating_fire(fire);
                 this.myAgent.addBehaviour(new MovingFireman(this.myAgent, fire.getPositions().get(0)));
 
             }
@@ -92,8 +115,8 @@ public class HandleFiremanMessages extends CyclicBehaviour {
             Fire fire = ((CancelFire) msg.getContentObject()).getFire();
             if(f.getTreating_fire().equals(fire)) {
                 f.setTreating_fire(null);
-                f.addBehaviour(new MovingFireman(myAgent, f.getStd_position()));
                 f.setOcupation(Ocupation.RETURNING);
+                f.addBehaviour(new MovingFireman(myAgent, f.getStd_position()));
             }
         } catch (UnreadableException e) {
             e.printStackTrace();
