@@ -113,8 +113,7 @@ public class FindShortestPath {
             }
         } else {
             System.out.println("Destination not found");
-            System.exit(5); //FIXME melhorar isto
-            return null;
+            return new Pair<>(Integer.MAX_VALUE, current);
         }
     }
 }
