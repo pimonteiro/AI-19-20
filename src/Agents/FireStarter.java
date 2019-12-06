@@ -41,9 +41,9 @@ public class FireStarter extends Agent {
             e.printStackTrace();
         }
 
-        this.addBehaviour(new OneShotBehaviour(this) {
+        this.addBehaviour(new TickerBehaviour(this, 4000) {
             @Override
-            public void action() {
+            protected void onTick() {
                 Random randomGenerator = new Random();
                 boolean startFire = randomGenerator.nextFloat() < startFireProbability;
 

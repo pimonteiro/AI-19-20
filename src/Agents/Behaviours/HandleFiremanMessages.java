@@ -115,8 +115,8 @@ public class HandleFiremanMessages extends CyclicBehaviour {
             Fire fire = ((CancelFire) msg.getContentObject()).getFire();
             if(f.getTreating_fire().equals(fire)) {
                 f.setTreating_fire(null);
-                f.addBehaviour(new MovingFireman(myAgent, f.getStd_position()));
                 f.setOcupation(Ocupation.RETURNING);
+                f.addBehaviour(new MovingFireman(myAgent, f.getStd_position()));
             }
         } catch (UnreadableException e) {
             e.printStackTrace();

@@ -9,6 +9,8 @@ import Logic.Fire;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
+
+import java.awt.desktop.SystemSleepEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,71 +31,77 @@ public class MovingFireman extends TickerBehaviour {
         Fireman f = (Fireman) this.myAgent;
         System.out.println(f.toString());
 
-        //Se está na posição de um FIRE combate-o
-        if(f.getActual_position().equals(this.destiny) && f.getTreating_fire().getPositions().size() > 0) {
-            System.out.println("Vou mesmo agora apagar o fogo!\n");
-            f.setOcupation(Ocupation.IN_ACTION);
-            this.myAgent.addBehaviour(new HandleFire(this.myAgent,1000));
-            this.myAgent.removeBehaviour(this);
-        }
-
-        //Se está na posição standard repousa
-        else if(f.getActual_position().equals(this.destiny)) {
-            System.out.println("Estou em casa!\n");
-            f.setOcupation(Ocupation.RESTING);
-            this.myAgent.removeBehaviour(this);
-        }
-
-        //Se está na posição de um FUEL abastece
-        else if(f.getFuel().stream().filter(p -> p.equals(f.getActual_position())).count() > 0
-                && (f.getCap_fuel() != f.getCap_max_fuel())){
-            System.out.println("Abasteci fuel!\n");
-            f.setCap_fuel(f.getCap_max_fuel());
-        }
-
-        //Se está na posição de um WATER abastece
-        else if(f.getWater().stream().filter(p -> p.equals(f.getActual_position())).count() > 0
-                && (f.getCap_water() != f.getCap_max_water())){
-            System.out.println("\nAbasteci água!\n");
-            f.setCap_water(f.getCap_max_water());
-        }
-        else {
-            try {
-                Position next;
-
-                //Reabastecer ÁGUA antes de ir para a posição standard
-                if ((f.getOcupation().equals(Ocupation.RETURNING)) && (f.getCap_water() * 2 <= f.getCap_max_water())){
-                    next = decideNewPosition(f, this.destiny, false, true);
-                    System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
-                    f.setActual_position(next);
-                    f.setCap_fuel(f.getCap_fuel() - 1);
-                    f.setOcupation(Ocupation.RETURNING);
-                }
-
-                //Mover para a posição standard
-                else if (f.getOcupation().equals(Ocupation.RETURNING)){
-                    next = decideNewPosition(f, this.destiny, false, false);
-                    System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
-                    f.setActual_position(next);
-                    f.setCap_fuel(f.getCap_fuel() - 1);
-
-                //Mover para o fogo
-                } else {
-                    System.out.println("Quero apagar o fogo que está na posição " + this.destiny);
-                    next = decideNewPosition(f, this.destiny, true, false);
-                    System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
-                    f.setActual_position(next);
-                    f.setCap_fuel(f.getCap_fuel() - 1);
-                }
-
-                ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-                msg.setContentObject(new UpdateData(next,f.getCap_fuel(),f.getCap_water(),f.getOcupation()));
-                msg.addReceiver(f.getStation());
-                this.myAgent.send(msg);
-            } catch (IOException e) {
-                e.printStackTrace();
+        if (f.getCap_fuel() >= 0) {
+            if(f.getOcupation().equals(Ocupation.MOVING) && f.getTreating_fire() != null && this.destiny.equals(f.getActual_position())) {
+                this.destiny = f.getTreating_fire().getPositions().get(0);
             }
 
+            //Se está na posição de um FIRE combate-o
+            if (f.getTreating_fire() != null && f.getTreating_fire().getPositions().size() > 0 &&
+                    (f.getActual_position().equals(f.getTreating_fire().getPositions().get(0)) ||
+                            f.getActual_position().equals(this.destiny))) {
+                System.out.println("Vou mesmo agora apagar o fogo!\n");
+                f.setOcupation(Ocupation.IN_ACTION);
+                this.myAgent.addBehaviour(new HandleFire(this.myAgent, 1000));
+                this.myAgent.removeBehaviour(this);
+            }
+
+            //Se está na posição standard repousa
+            else if (f.getActual_position().equals(this.destiny)) {
+                System.out.println("Estou em casa!\n");
+                f.setOcupation(Ocupation.RESTING);
+                this.myAgent.removeBehaviour(this);
+            }
+
+            //Se está na posição de um FUEL abastece
+            else if (f.getFuel().stream().filter(p -> p.equals(f.getActual_position())).count() > 0
+                    && (f.getCap_fuel() != f.getCap_max_fuel())) {
+                System.out.println("Abasteci fuel!\n");
+                f.setCap_fuel(f.getCap_max_fuel());
+            }
+
+            //Se está na posição de um WATER abastece
+            else if (f.getWater().stream().filter(p -> p.equals(f.getActual_position())).count() > 0
+                    && (f.getCap_water() != f.getCap_max_water())) {
+                System.out.println("\nAbasteci água!\n");
+                f.setCap_water(f.getCap_max_water());
+            } else {
+                try {
+                    Position next;
+
+                    //Reabastecer ÁGUA antes de ir para a posição standard
+                    if ((f.getOcupation().equals(Ocupation.RETURNING)) && (f.getCap_water() * 2 <= f.getCap_max_water())) {
+                        next = decideNewPosition(f, this.destiny, false, true);
+                        System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
+                        f.setActual_position(next);
+                        f.setCap_fuel(f.getCap_fuel() - 1);
+                        f.setOcupation(Ocupation.RETURNING);
+                    }
+
+                    //Mover para a posição standard
+                    else if (f.getOcupation().equals(Ocupation.RETURNING)) {
+                        next = decideNewPosition(f, this.destiny, false, false);
+                        System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
+                        f.setActual_position(next);
+                        f.setCap_fuel(f.getCap_fuel() - 1);
+
+                        //Mover para o fogo
+                    } else {
+                        System.out.println("Quero apagar o fogo que está na posição " + this.destiny);
+                        next = decideNewPosition(f, this.destiny, true, false);
+                        System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
+                        f.setActual_position(next);
+                        f.setCap_fuel(f.getCap_fuel() - 1);
+                    }
+
+                    ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+                    msg.setContentObject(new UpdateData(next, f.getCap_fuel(), f.getCap_water(), f.getOcupation()));
+                    msg.addReceiver(f.getStation());
+                    this.myAgent.send(msg);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
