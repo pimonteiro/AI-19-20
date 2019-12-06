@@ -41,7 +41,7 @@ public class FireStarter extends Agent {
             e.printStackTrace();
         }
 
-        this.addBehaviour(new TickerBehaviour(this, 1000) {
+        this.addBehaviour(new TickerBehaviour(this, 4000) {
             @Override
             protected void onTick() {
                 Random randomGenerator = new Random();
