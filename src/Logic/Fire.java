@@ -94,6 +94,7 @@ public class Fire implements Serializable {
                 ", duration_time=" + duration_time +
                 ", base_expansion_rate=" + base_expansion_rate +
                 ", being_resolved_time=" + being_resolved_time +
+                ", zone_id=" + zone_id +
                 '}';
     }
 
