@@ -37,7 +37,7 @@ public class Station extends Agent {
         this.waiting_fire = new ArrayList<>();
         this.metrics = new Metric();
         questioning = new HashMap<>();
-        this.map_gui = new GUI.Map(world);
+        this.map_gui = new GUI.Map(world, this);
         this.agent_gui = new GUI.AgentState(world);
 
         DFAgentDescription dfd = new DFAgentDescription();
@@ -61,7 +61,7 @@ public class Station extends Agent {
         this.addBehaviour(new TickerBehaviour(this,500) {
             @Override
             protected void onTick() {
-                map_gui.update(world);
+                map_gui.update(world, (Station) this.myAgent);
                 map_gui.updateGUI();
                 agent_gui.update(world);
                 agent_gui.updateGUI();

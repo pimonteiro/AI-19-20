@@ -1,6 +1,7 @@
 package GUI;
 
 import Agents.AgentData;
+import Agents.Station;
 import Logic.Fire;
 import Logic.World;
 import Logic.Zone;
@@ -28,7 +29,7 @@ public class Map {
     private HashMap<Position,String> zones;
 
 
-    public Map(World world) {
+    public Map(World world, Station s) {
         String[] colors = {
                 "#f9ebea",
                 "#ebdef0",
@@ -69,7 +70,7 @@ public class Map {
             }
             j++;
         }
-        update(world);
+        update(world, s);
         this.table = new JTable(this.model_table);
 
         CellColorRenderer renderer = new CellColorRenderer(this.data);
@@ -93,7 +94,7 @@ public class Map {
         this.frame.setAlwaysOnTop(true);
     }
 
-    public void update(World world) {
+    public void update(World world, Station ss) {
         for(int i = 0; i < World.dimension; i++){
             for(int j = 0; j < World.dimension; j++){
                 this.firemans[i][j] = -1;
@@ -130,7 +131,11 @@ public class Map {
         }
 
         //Populate Fires
-        for(Fire f : world.getFire()){
+        ArrayList<Fire> all = new ArrayList<>();
+        all.addAll(ss.getWaiting_fire());
+        all.addAll(ss.getTreatment_fire().values());
+        all.addAll(ss.getQuestioning().keySet());
+        for(Fire f : all){
             for(Position p : f.getPositions())
                 this.data[p.getY()][p.getX()] = this.objects.get("fire");
         }
