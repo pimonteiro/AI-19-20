@@ -22,7 +22,7 @@ public class MovingFireman extends TickerBehaviour {
 
 
     public MovingFireman(Agent myagent, Position position) {
-        super(myagent,1000);
+        super(myagent,500);
         this.destiny = position;
     }
 
