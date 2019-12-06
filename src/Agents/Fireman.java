@@ -30,6 +30,8 @@ public abstract class Fireman extends Agent {
     private int vel;
     private Ocupation ocupation;
     private AID station;
+    private int dimension;
+
 
     private Position destiny;
 
@@ -44,6 +46,7 @@ public abstract class Fireman extends Agent {
         this.std_position = new Position(0,0);
         this.actual_position = new Position(0,0);
         this.ocupation = Ocupation.RESTING;
+        this.dimension = World.dimension;
 
         this.destiny = null;
 
@@ -177,6 +180,18 @@ public abstract class Fireman extends Agent {
 
     public void setStation(AID station) {
         this.station = station;
+    }
+
+    public void setFires(ArrayList<Fire> fires) {
+        this.fires = fires;
+    }
+
+    public int getDimension() {
+        return dimension;
+    }
+
+    public void setDimension(int dimension) {
+        this.dimension = dimension;
     }
 
     @Override

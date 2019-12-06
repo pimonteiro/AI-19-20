@@ -92,7 +92,7 @@ public class SendInitialInfo extends OneShotBehaviour {
                     //Posição válida para um bombeiro
                     if(position.isValid(fire, fuel, water, houses, new ArrayList<>(firemans.values()))){
                         AgentData f = new AgentData(trucks[tr].getName(),FiremanType.FIRETRUCK,new Position(tx,ty),new Position(tx,ty),
-                                                    z,FireTruck.MAX_WATER, FireTruck.MAX_FUEL,FireTruck.VEL,Ocupation.RESTING);
+                                                    z, FireTruck.MAX_WATER, FireTruck.MAX_FUEL,FireTruck.VEL,Ocupation.RESTING);
                         firemans.put(trucks[tr].getName(),f);
                         System.out.println("[STATION] Posição inicial para agente " + trucks[tr].getName() + ": (" + tx + "," + ty + ")");
                         //Send Message with data
