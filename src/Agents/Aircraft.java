@@ -6,12 +6,15 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 
 public class Aircraft extends Fireman {
-    public final static int MAX_WATER = 15;
-    public final static int MAX_FUEL = 40;
-    public final static int VEL = 2;
+    public static int MAX_WATER;
+    public static int MAX_FUEL;
+    public static int VEL;
 
     public void setup(){
         super.setup();
+        MAX_FUEL = super.getDimension();
+        MAX_WATER = super.getDimension()/3;
+        VEL = super.getDimension()/4;
         super.setCap_fuel(MAX_FUEL);
         super.setCap_max_fuel(MAX_FUEL);
         super.setCap_max_water(MAX_WATER);

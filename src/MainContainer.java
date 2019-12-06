@@ -74,7 +74,19 @@ public class MainContainer {
         int n_fuel = 3;
         int n_houses = 1;
         int n_zones = 4;
-        World world = new World(20);
+        World world;
+        if(args.length > 0) {
+            world = new World(Integer.parseInt(args[0]));
+            n_aircraft = World.dimension/4;
+            n_drone = World.dimension/5;
+            n_truck = World.dimension/3;
+            n_fuel = World.dimension/6;
+            n_houses = World.dimension/7;
+            //n_zones = World.dimension/4;
+        } else {
+            world = new World(20);
+        }
+
         Simulator.startSimulation_v1(world,n_fuel,n_houses,n_water,n_zones);
         ContainerController agentContainer = a.initContainerInPlatform("localhost", "9888", "AgentsContainer");
 
