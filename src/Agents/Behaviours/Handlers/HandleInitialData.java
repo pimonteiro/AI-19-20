@@ -7,11 +7,11 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 
-public class HandleIntialData extends OneShotBehaviour {
+public class HandleInitialData extends OneShotBehaviour {
     private Fireman f;
     private ACLMessage msg;
 
-    public HandleIntialData(Fireman f, ACLMessage msg) {
+    public HandleInitialData(Fireman f, ACLMessage msg) {
         super(f);
         this.f = f;
         this.msg = msg;
