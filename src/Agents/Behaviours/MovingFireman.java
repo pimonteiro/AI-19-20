@@ -50,7 +50,7 @@ public class MovingFireman extends TickerBehaviour {
         }
 
         //Se está na posição standard repousa
-        else if (f.getActual_position().equals(f.getDestiny())) {
+        else if (f.getActual_position().equals(f.getDestiny()) && f.getOcupation().equals(Ocupation.RETURNING)) {
             System.out.println("Estou em casa!\n");
             f.setOcupation(Ocupation.RESTING);
             f.setDestiny(null);
