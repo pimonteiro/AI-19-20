@@ -17,63 +17,70 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MovingFireman extends TickerBehaviour {
-    private Position destiny;
     private FindShortestPath fsp = new FindShortestPath();
 
 
-    public MovingFireman(Agent myagent, Position position) {
+    public MovingFireman(Agent myagent) {
         super(myagent,500);
-        this.destiny = position;
     }
 
     @Override
     protected void onTick() {
         Fireman f = (Fireman) this.myAgent;
+
+        if(f.getDestiny() == null){
+            block();
+            return;
+        }
+
         System.out.println(f.toString());
 
-        if (f.getCap_fuel() >= 0) {
-            if(f.getOcupation().equals(Ocupation.MOVING) && f.getTreating_fire() != null && this.destiny.equals(f.getActual_position())) {
-                this.destiny = f.getTreating_fire().getPositions().get(0);
+        //Se está na posição de um FUEL abastece
+        if (f.getFuel().stream().filter(p -> p.equals(f.getActual_position())).count() > 0
+                    && (f.getCap_fuel() != f.getCap_max_fuel())) {
+            System.out.println("Abasteci fuel!\n");
+            f.setCap_fuel(f.getCap_max_fuel());
+        }
+
+        //Se está na posição de um WATER abastece
+        else if (f.getWater().stream().filter(p -> p.equals(f.getActual_position())).count() > 0
+                && (f.getCap_water() != f.getCap_max_water())) {
+            System.out.println("\nAbasteci água!\n");
+            f.setCap_water(f.getCap_max_water());
+        }
+
+        //Se está na posição standard repousa
+        else if (f.getActual_position().equals(f.getDestiny()) && f.getOcupation().equals(Ocupation.RETURNING)) {
+            System.out.println("Estou em casa!\n");
+            f.setOcupation(Ocupation.RESTING);
+            f.setDestiny(null);
+            return;
+        }
+
+        if (f.getCap_fuel() > 0) {
+            if(f.getOcupation().equals(Ocupation.MOVING) && f.getTreating_fire() != null && f.getDestiny().equals(f.getActual_position())) {
+                System.out.println("Weird error?");
+                //TODO FIXE ME f.getDestiny() = f.getTreating_fire().getPositions().get(0);
             }
 
             //Se está na posição de um FIRE combate-o
             if (f.getTreating_fire() != null && f.getTreating_fire().getPositions().size() > 0 &&
                     (f.getActual_position().equals(f.getTreating_fire().getPositions().get(0)) ||
-                            f.getActual_position().equals(this.destiny))) {
+                            f.getActual_position().equals(f.getDestiny()))) {
                 System.out.println("Vou mesmo agora apagar o fogo!\n");
                 f.setOcupation(Ocupation.IN_ACTION);
                 this.myAgent.addBehaviour(new HandleFire(this.myAgent, 1000));
-                this.myAgent.removeBehaviour(this);
+                f.setDestiny(null);
                 return;
             }
 
-            //Se está na posição standard repousa
-            else if (f.getActual_position().equals(this.destiny)) {
-                System.out.println("Estou em casa!\n");
-                f.setOcupation(Ocupation.RESTING);
-                this.myAgent.removeBehaviour(this);
-                return;
-            }
-
-            //Se está na posição de um FUEL abastece
-            else if (f.getFuel().stream().filter(p -> p.equals(f.getActual_position())).count() > 0
-                    && (f.getCap_fuel() != f.getCap_max_fuel())) {
-                System.out.println("Abasteci fuel!\n");
-                f.setCap_fuel(f.getCap_max_fuel());
-            }
-
-            //Se está na posição de um WATER abastece
-            else if (f.getWater().stream().filter(p -> p.equals(f.getActual_position())).count() > 0
-                    && (f.getCap_water() != f.getCap_max_water())) {
-                System.out.println("\nAbasteci água!\n");
-                f.setCap_water(f.getCap_max_water());
-            } else {
+            else {
                 try {
                     Position next;
 
                     //Reabastecer ÁGUA antes de ir para a posição standard
                     if ((f.getOcupation().equals(Ocupation.RETURNING)) && (f.getCap_water() * 2 <= f.getCap_max_water())) {
-                        next = decideNewPosition(f, this.destiny, false, true);
+                        next = decideNewPosition(f, f.getDestiny(), false, true);
                         System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
                         f.setActual_position(next);
                         f.setCap_fuel(f.getCap_fuel() - 1);
@@ -82,15 +89,15 @@ public class MovingFireman extends TickerBehaviour {
 
                     //Mover para a posição standard
                     else if (f.getOcupation().equals(Ocupation.RETURNING)) {
-                        next = decideNewPosition(f, this.destiny, false, false);
+                        next = decideNewPosition(f, f.getDestiny(), false, false);
                         System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
                         f.setActual_position(next);
                         f.setCap_fuel(f.getCap_fuel() - 1);
 
                         //Mover para o fogo
                     } else {
-                        System.out.println("Quero apagar o fogo que está na posição " + this.destiny);
-                        next = decideNewPosition(f, this.destiny, true, false);
+                        System.out.println("Quero apagar o fogo que está na posição " + f.getDestiny());
+                        next = decideNewPosition(f, f.getDestiny(), true, false);
                         System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
                         f.setActual_position(next);
                         f.setCap_fuel(f.getCap_fuel() - 1);
@@ -201,9 +208,9 @@ public class MovingFireman extends TickerBehaviour {
         // Se bombeiro tem fuel suficiente para ir ao goal e abastecer
         if (actual_cap_fuel >= distance_fuel_after_goal) {
             if(home){
-                System.out.println("\nVOU PARA CASAAAAA (" + destiny.toString() + "): " + next_to_destiny.toString() + "\n");
+                System.out.println("\nVOU PARA CASAAAAA (" + f.getDestiny().toString() + "): " + next_to_destiny.toString() + "\n");
             } else {
-                System.out.println("\nVOU APAGAR O FOGOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO (pos " + destiny.toString() + "): " + next_to_destiny.toString() + "\n");
+                System.out.println("\nVOU APAGAR O FOGOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO (pos " + f.getDestiny().toString() + "): " + next_to_destiny.toString() + "\n");
             }
             return next_to_destiny;
         }

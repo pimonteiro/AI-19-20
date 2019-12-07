@@ -18,7 +18,7 @@ public class AgentState {
         this.frame = new JFrame("Agent State");
         this.panel = new JPanel();
         this.panel.setLayout(new BorderLayout());
-        this.model_table = new DefaultTableModel(world.getFireman().size(),4);
+        this.model_table = new DefaultTableModel(world.getFireman().size(),6);
         this.table = new JTable(this.model_table);
         update(world);
 
@@ -39,13 +39,13 @@ public class AgentState {
     public void update(World world) {
         DefaultTableModel model = (DefaultTableModel) this.table.getModel();
         model.setNumRows(0);
-        model.addRow(new String[]{"Agent AID", "Ocupation", "Actual Position","Treating Fire?"});
+        model.addRow(new String[]{"Agent AID", "Water", "Fuel", "Ocupation", "Actual Position","Treating Fire?"});
 
         for(AgentData ag : world.getFireman().values()){
             if(ag.getTreating_fire() != null)
-                model.addRow(new String[]{ag.getAid().getName(), ag.getOcupation().toString(), ag.getActual_position().toString(), ag.getTreating_fire().getPositions().get(0).toString()});
+                model.addRow(new String[]{ag.getAid().getName(), Integer.toString(ag.getCap_water()), Integer.toString(ag.getCap_fuel()), ag.getOcupation().toString(), ag.getActual_position().toString(), ag.getTreating_fire().getPositions().get(0).toString()});
             else
-                model.addRow(new String[]{ag.getAid().getName(), ag.getOcupation().toString(), ag.getActual_position().toString(), "Null"});
+                model.addRow(new String[]{ag.getAid().getName(), Integer.toString(ag.getCap_water()), Integer.toString(ag.getCap_fuel()), ag.getOcupation().toString(), ag.getActual_position().toString(), "Null"});
         }
     }
 
