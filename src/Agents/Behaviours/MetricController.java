@@ -55,7 +55,7 @@ public class MetricController extends TickerBehaviour {
                 PlotOrientation.VERTICAL,
                 true,true,false);
         ChartPanel chartPanel_fires_chart = new ChartPanel( fires_chart );
-        chartPanel_fires_chart.setPreferredSize( new java.awt.Dimension( 560 , 367 ) );
+        chartPanel_fires_chart.setPreferredSize( new java.awt.Dimension( 460 , 267 ) );
         window.getContentPane().add(chartPanel_fires_chart, BorderLayout.SOUTH);
 
         //Fogos por zona
@@ -71,7 +71,7 @@ public class MetricController extends TickerBehaviour {
                 true, true, false);
         ChartPanel chartPanel_firesZones_chart = new ChartPanel( fires_zones_chart );
 
-        chartPanel_firesZones_chart.setPreferredSize( new java.awt.Dimension( 560 , 367 ) );
+        chartPanel_firesZones_chart.setPreferredSize( new java.awt.Dimension( 460 , 267 ) );
         window.getContentPane().add(chartPanel_firesZones_chart, BorderLayout.EAST);
 
         //Utilizaçao de cada tipo de veiculo
@@ -86,7 +86,7 @@ public class MetricController extends TickerBehaviour {
                 true, true, false);
         ChartPanel chartPanel_fireman_types_chart = new ChartPanel( fireman_types_chart );
 
-        chartPanel_fireman_types_chart.setPreferredSize( new java.awt.Dimension( 560 , 367 ) );
+        chartPanel_fireman_types_chart.setPreferredSize( new java.awt.Dimension( 460 , 267 ) );
         window.getContentPane().add(chartPanel_fireman_types_chart, BorderLayout.WEST);
 
         //Quantidade de combustível usado
@@ -111,12 +111,11 @@ public class MetricController extends TickerBehaviour {
                 PlotOrientation.VERTICAL,
                 true,true,false);
         ChartPanel chartPanel_fires_time_chart = new ChartPanel( fires_time_chart );
-        chartPanel_fires_time_chart.setPreferredSize( new java.awt.Dimension( 560 , 367 ) );
+        chartPanel_fires_time_chart.setPreferredSize( new java.awt.Dimension( 460 , 267 ) );
         window.getContentPane().add(chartPanel_fires_time_chart, BorderLayout.NORTH);
 
 
         this.window.setSize( 1024 , 768 );
-        this.window.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         this.window.setVisible( true );
     }
 }
