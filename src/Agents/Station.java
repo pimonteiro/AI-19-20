@@ -58,6 +58,7 @@ public class Station extends Agent {
         this.addBehaviour(new CheckWaitingFires());
         this.addBehaviour(new MetricController(this, 5000));
         this.addBehaviour(new CalculateRisk(this));
+        this.addBehaviour(new UpdateOcupationRate(this, 1000));
         this.addBehaviour(new TickerBehaviour(this,500) {
             @Override
             protected void onTick() {
@@ -84,6 +85,8 @@ public class Station extends Agent {
                 waiting_fire.forEach(f -> System.out.println(f.toString()));
                 System.out.println("-------Fires being questioned-------");
                 questioning.keySet().forEach(f -> System.out.println(f.toString()));
+                System.out.println("-------Zone Status----------");
+                world.getZones().forEach(z -> System.out.println("Zone " + z.getId() + ": " + z.getOcupation_rate()));
             }
         });
     }

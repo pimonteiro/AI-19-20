@@ -44,6 +44,7 @@ public class MovingFireman extends TickerBehaviour {
                 f.setOcupation(Ocupation.IN_ACTION);
                 this.myAgent.addBehaviour(new HandleFire(this.myAgent, 1000));
                 this.myAgent.removeBehaviour(this);
+                return;
             }
 
             //Se está na posição standard repousa
@@ -51,6 +52,7 @@ public class MovingFireman extends TickerBehaviour {
                 System.out.println("Estou em casa!\n");
                 f.setOcupation(Ocupation.RESTING);
                 this.myAgent.removeBehaviour(this);
+                return;
             }
 
             //Se está na posição de um FUEL abastece
