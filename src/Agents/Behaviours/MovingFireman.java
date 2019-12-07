@@ -35,7 +35,29 @@ public class MovingFireman extends TickerBehaviour {
 
         System.out.println(f.toString());
 
-        if (f.getCap_fuel() >= 0) {
+        //Se está na posição de um FUEL abastece
+        if (f.getFuel().stream().filter(p -> p.equals(f.getActual_position())).count() > 0
+                    && (f.getCap_fuel() != f.getCap_max_fuel())) {
+            System.out.println("Abasteci fuel!\n");
+            f.setCap_fuel(f.getCap_max_fuel());
+        }
+
+        //Se está na posição de um WATER abastece
+        else if (f.getWater().stream().filter(p -> p.equals(f.getActual_position())).count() > 0
+                && (f.getCap_water() != f.getCap_max_water())) {
+            System.out.println("\nAbasteci água!\n");
+            f.setCap_water(f.getCap_max_water());
+        }
+
+        //Se está na posição standard repousa
+        else if (f.getActual_position().equals(f.getDestiny())) {
+            System.out.println("Estou em casa!\n");
+            f.setOcupation(Ocupation.RESTING);
+            f.setDestiny(null);
+            return;
+        }
+
+        if (f.getCap_fuel() > 0) {
             if(f.getOcupation().equals(Ocupation.MOVING) && f.getTreating_fire() != null && f.getDestiny().equals(f.getActual_position())) {
                 System.out.println("Weird error?");
                 //TODO FIXE ME f.getDestiny() = f.getTreating_fire().getPositions().get(0);
@@ -52,27 +74,7 @@ public class MovingFireman extends TickerBehaviour {
                 return;
             }
 
-            //Se está na posição standard repousa
-            else if (f.getActual_position().equals(f.getDestiny())) {
-                System.out.println("Estou em casa!\n");
-                f.setOcupation(Ocupation.RESTING);
-                f.setDestiny(null);
-                return;
-            }
-
-            //Se está na posição de um FUEL abastece
-            else if (f.getFuel().stream().filter(p -> p.equals(f.getActual_position())).count() > 0
-                    && (f.getCap_fuel() != f.getCap_max_fuel())) {
-                System.out.println("Abasteci fuel!\n");
-                f.setCap_fuel(f.getCap_max_fuel());
-            }
-
-            //Se está na posição de um WATER abastece
-            else if (f.getWater().stream().filter(p -> p.equals(f.getActual_position())).count() > 0
-                    && (f.getCap_water() != f.getCap_max_water())) {
-                System.out.println("\nAbasteci água!\n");
-                f.setCap_water(f.getCap_max_water());
-            } else {
+            else {
                 try {
                     Position next;
 
