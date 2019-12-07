@@ -58,7 +58,8 @@ public class HandleFire extends TickerBehaviour {
 
                     f.setOcupation(Ocupation.RETURNING);
                     f.setTreating_fire(null);
-                    this.myAgent.addBehaviour(new MovingFireman(this.myAgent, f.getStd_position()));
+                    f.setDestiny(f.getStd_position());
+                    //TODO this.myAgent.addBehaviour(new MovingFireman(this.myAgent, f.getStd_position()));
                     this.myAgent.removeBehaviour(this);
                 }
             }

@@ -38,6 +38,8 @@ public class MainContainer {
         prof.setParameter(Profile.MAIN_PORT, port);
         prof.setParameter(Profile.MAIN, "true");
         prof.setParameter(Profile.GUI, "true");
+        prof.setParameter("jade_core_messaging_MessageManager_enablemultipledelivery", "false");
+
 
         // create a main agent container
         this.container = rt.createMainContainer(prof);
@@ -45,9 +47,9 @@ public class MainContainer {
 
     }
 
-    public void startAgentInPlatform(String name, String classpath) {
+    public void startAgentInPlatform(String name, String classpath, Object[] args) {
         try {
-            AgentController ac = container.createNewAgent(name, classpath, new Object[0]);
+            AgentController ac = container.createNewAgent(name, classpath, args);
             ac.start();
         } catch (Exception e) {
             e.printStackTrace();
@@ -80,26 +82,28 @@ public class MainContainer {
 
         try {
             for(int i = 0; i < n_aircraft; i++){
-                AgentController ag = agentContainer.createNewAgent("aircraft_"+i, "Agents.Aircraft", new Object[] {world});// arguments
-                ag.start();
+                a.startAgentInPlatform("aircraft_"+i, "Agents.Aircraft", new Object[] {world});
+                //AgentController ag = agentContainer.createNewAgent();// arguments
+                //ag.start();
             }
             for(int i = 0; i < n_drone; i++){
-                AgentController ag = agentContainer.createNewAgent("drone_"+i, "Agents.Drone", new Object[] {world});// arguments
-                ag.start();
+                a.startAgentInPlatform("drone_"+i, "Agents.Drone", new Object[] {world});
+                //AgentController ag = agentContainer.createNewAgent("drone_"+i, "Agents.Drone", new Object[] {world});// arguments
+                //ag.start();
             }
             for(int i = 0; i < n_truck; i++){
-                AgentController ag = agentContainer.createNewAgent("truck_"+i, "Agents.FireTruck", new Object[] {world});// arguments
-                ag.start();
+                a.startAgentInPlatform("truck_"+i, "Agents.FireTruck", new Object[] {world});// arguments
+                //AgentController ag = agentContainer.createNewAgent("truck_"+i, "Agents.FireTruck", new Object[] {world});// arguments
+                //ag.start();
             }
-            AgentController ag1 = agentContainer.createNewAgent("station", "Agents.Station", new Object[] {world});// arguments
-            ag1.start();
+            a.startAgentInPlatform("station", "Agents.Station", new Object[] {world});// arguments
+            //AgentController ag1 = agentContainer.createNewAgent("station", "Agents.Station", new Object[] {world});// arguments
+            //ag1.start();
 
             Thread.sleep(5000);
-
-            AgentController ag2 = agentContainer.createNewAgent("firestarter", "Agents.FireStarter", new Object[] {world});// arguments
-            ag2.start();
-        } catch (StaleProxyException e) {
-            e.printStackTrace();
+            a.startAgentInPlatform("firestarter", "Agents.FireStarter", new Object[] {world});// arguments
+            //AgentController ag2 = agentContainer.createNewAgent("firestarter", "Agents.FireStarter", new Object[] {world});// arguments
+            //ag2.start();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

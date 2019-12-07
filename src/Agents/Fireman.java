@@ -2,6 +2,7 @@ package Agents;
 
 import Agents.Behaviours.HandleFiremanMessages;
 
+import Agents.Behaviours.MovingFireman;
 import Logic.Fire;
 import Logic.World;
 import Logic.Zone;
@@ -30,6 +31,8 @@ public abstract class Fireman extends Agent {
     private Ocupation ocupation;
     private AID station;
 
+    private Position destiny;
+
     public void setup(){
         super.setup();
         Object[] args = getArguments();
@@ -42,7 +45,10 @@ public abstract class Fireman extends Agent {
         this.actual_position = new Position(0,0);
         this.ocupation = Ocupation.RESTING;
 
+        this.destiny = null;
+
         this.addBehaviour(new HandleFiremanMessages());
+        this.addBehaviour(new MovingFireman(this));
     }
 
     public void takeDown(){
@@ -175,5 +181,13 @@ public abstract class Fireman extends Agent {
         sb.append("- Actual Water: " + this.getCap_water() + "\n\n");
 
         return sb.toString();
+    }
+
+    public Position getDestiny(){
+        return this.destiny;
+    }
+
+    public void setDestiny(Position pos) {
+        this.destiny = pos;
     }
 }

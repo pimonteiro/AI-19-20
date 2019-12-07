@@ -37,7 +37,8 @@ public class HandleExtinguishFireData extends OneShotBehaviour {
                 f.setOcupation(Ocupation.MOVING);
                 Fire fire = ((ExtinguishFireData) msg.getContentObject()).getFire();
                 f.setTreating_fire(fire);
-                this.myAgent.addBehaviour(new MovingFireman(this.myAgent, fire.getPositions().get(0)));
+                f.setDestiny(fire.getPositions().get(0));
+                //TODO this.myAgent.addBehaviour(new MovingFireman(this.myAgent, fire.getPositions().get(0)));
 
             }
             else{
