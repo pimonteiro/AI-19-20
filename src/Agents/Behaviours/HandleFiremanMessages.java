@@ -2,22 +2,16 @@ package Agents.Behaviours;
 
 import Agents.Behaviours.Handlers.HandleCancelFire;
 import Agents.Behaviours.Handlers.HandleExtinguishFireData;
-import Agents.Behaviours.Handlers.HandleIntialData;
+import Agents.Behaviours.Handlers.HandleInitialData;
 import Agents.Behaviours.Handlers.HandleUpdateFire;
 import Agents.Messages.CancelFire;
 import Agents.Messages.ExtinguishFireData;
 import Agents.Messages.InitialData;
 import Agents.Fireman;
 import Agents.Messages.UpdateFire;
-import Logic.Fire;
-import Util.Ocupation;
-import Util.Position;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
-
-import java.io.IOException;
-import java.util.ArrayList;
 
 public class HandleFiremanMessages extends CyclicBehaviour {
 
@@ -34,7 +28,7 @@ public class HandleFiremanMessages extends CyclicBehaviour {
             switch (msg.getPerformative()){
                 case(ACLMessage.INFORM):
                     if(content instanceof InitialData) {
-                        f.addBehaviour(new HandleIntialData(f, msg));
+                        f.addBehaviour(new HandleInitialData(f, msg));
                     }
                     else if(content instanceof UpdateFire){
                         f.addBehaviour(new HandleUpdateFire(f,msg));
