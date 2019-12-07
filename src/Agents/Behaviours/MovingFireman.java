@@ -35,7 +35,7 @@ public class MovingFireman extends TickerBehaviour {
 
         System.out.println(f.toString());
 
-        if (f.getCap_fuel() > 0) {
+        if (f.getCap_fuel() >= 0) {
             if(f.getOcupation().equals(Ocupation.MOVING) && f.getTreating_fire() != null && f.getDestiny().equals(f.getActual_position())) {
                 System.out.println("Weird error?");
                 //TODO FIXE ME f.getDestiny() = f.getTreating_fire().getPositions().get(0);
