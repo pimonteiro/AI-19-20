@@ -55,6 +55,14 @@ public abstract class Fireman extends Agent {
         //System.out.println(fuel.toString());
     }
 
+    public Position getDestiny(){
+        return this.destiny;
+    }
+
+    public void setDestiny(Position pos) {
+        this.destiny = pos;
+    }
+
     public ArrayList<Fire> getFires() {
         return fires;
     }
@@ -181,13 +189,5 @@ public abstract class Fireman extends Agent {
         sb.append("- Actual Water: " + this.getCap_water() + "\n\n");
 
         return sb.toString();
-    }
-
-    public Position getDestiny(){
-        return this.destiny;
-    }
-
-    public void setDestiny(Position pos) {
-        this.destiny = pos;
     }
 }

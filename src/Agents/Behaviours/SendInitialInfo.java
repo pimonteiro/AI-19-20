@@ -78,7 +78,7 @@ public class SendInitialInfo extends OneShotBehaviour {
             HashMap<AID, AgentData> firemans = new HashMap<>();
             for(Zone z : world.getZones()) {
                 int i = 0;
-                while(i < per_zone_truck){ //TODO what if it is an odd number of agents per zone?
+                while(i < per_zone_truck){
                     int x_max = z.getP2().getX();
                     int x_min = z.getP1().getX();
                     int y_max = z.getP2().getY();

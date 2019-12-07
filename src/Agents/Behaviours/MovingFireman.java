@@ -37,8 +37,8 @@ public class MovingFireman extends TickerBehaviour {
 
         if (f.getCap_fuel() >= 0) {
             if(f.getOcupation().equals(Ocupation.MOVING) && f.getTreating_fire() != null && f.getDestiny().equals(f.getActual_position())) {
-                System.out.println("ERROR ON FUCKING MOVMENT");
-                //f.getDestiny() = f.getTreating_fire().getPositions().get(0);
+                System.out.println("Weird error?");
+                //TODO FIXE ME f.getDestiny() = f.getTreating_fire().getPositions().get(0);
             }
 
             //Se está na posição de um FIRE combate-o
@@ -48,7 +48,6 @@ public class MovingFireman extends TickerBehaviour {
                 System.out.println("Vou mesmo agora apagar o fogo!\n");
                 f.setOcupation(Ocupation.IN_ACTION);
                 this.myAgent.addBehaviour(new HandleFire(this.myAgent, 1000));
-                //TODO this.myAgent.removeBehaviour(this);
                 f.setDestiny(null);
                 return;
             }
@@ -57,7 +56,6 @@ public class MovingFireman extends TickerBehaviour {
             else if (f.getActual_position().equals(f.getDestiny())) {
                 System.out.println("Estou em casa!\n");
                 f.setOcupation(Ocupation.RESTING);
-                //TODO this.myAgent.removeBehaviour(this);
                 f.setDestiny(null);
                 return;
             }

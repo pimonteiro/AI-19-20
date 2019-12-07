@@ -38,8 +38,6 @@ public class HandleExtinguishFireData extends OneShotBehaviour {
                 Fire fire = ((ExtinguishFireData) msg.getContentObject()).getFire();
                 f.setTreating_fire(fire);
                 f.setDestiny(fire.getPositions().get(0));
-                //TODO this.myAgent.addBehaviour(new MovingFireman(this.myAgent, fire.getPositions().get(0)));
-
             }
             else{
                 res.setPerformative(ACLMessage.REFUSE);

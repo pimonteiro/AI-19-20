@@ -27,7 +27,6 @@ public class HandleCancelFire extends OneShotBehaviour {
                 f.setTreating_fire(null);
                 f.setOcupation(Ocupation.RETURNING);
                 f.setDestiny(f.getStd_position());
-                //TODO f.addBehaviour(new MovingFireman(myAgent, f.getStd_position()));
             }
         } catch (UnreadableException e) {
             e.printStackTrace();

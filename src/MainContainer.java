@@ -62,7 +62,6 @@ public class MainContainer {
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -78,32 +77,21 @@ public class MainContainer {
         int n_zones = 4;
         World world = new World(20);
         Simulator.startSimulation_v1(world,n_fuel,n_houses,n_water,n_zones);
-        ContainerController agentContainer = a.initContainerInPlatform("localhost", "9888", "AgentsContainer");
 
         try {
             for(int i = 0; i < n_aircraft; i++){
                 a.startAgentInPlatform("aircraft_"+i, "Agents.Aircraft", new Object[] {world});
-                //AgentController ag = agentContainer.createNewAgent();// arguments
-                //ag.start();
             }
             for(int i = 0; i < n_drone; i++){
                 a.startAgentInPlatform("drone_"+i, "Agents.Drone", new Object[] {world});
-                //AgentController ag = agentContainer.createNewAgent("drone_"+i, "Agents.Drone", new Object[] {world});// arguments
-                //ag.start();
             }
             for(int i = 0; i < n_truck; i++){
                 a.startAgentInPlatform("truck_"+i, "Agents.FireTruck", new Object[] {world});// arguments
-                //AgentController ag = agentContainer.createNewAgent("truck_"+i, "Agents.FireTruck", new Object[] {world});// arguments
-                //ag.start();
             }
             a.startAgentInPlatform("station", "Agents.Station", new Object[] {world});// arguments
-            //AgentController ag1 = agentContainer.createNewAgent("station", "Agents.Station", new Object[] {world});// arguments
-            //ag1.start();
 
             Thread.sleep(5000);
             a.startAgentInPlatform("firestarter", "Agents.FireStarter", new Object[] {world});// arguments
-            //AgentController ag2 = agentContainer.createNewAgent("firestarter", "Agents.FireStarter", new Object[] {world});// arguments
-            //ag2.start();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
