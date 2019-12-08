@@ -59,13 +59,13 @@ public class MovingFireman extends TickerBehaviour {
 
         if (f.getCap_fuel() > 0) {
             if(f.getOcupation().equals(Ocupation.MOVING) && f.getTreating_fire() != null && f.getDestiny().equals(f.getActual_position())) {
-                System.out.println("Weird");
+                //System.out.println("Weird");
                 //f.setDestiny(f.getTreating_fire().getPositions().get(0));
             }
 
-            if(f.getCap_water() == 0){
+            if(f.getCap_water() <= 0){
                 next = decideNewPosition(f, f.getDestiny(), false, true);
-                System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
+                //System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
                 f.setActual_position(next);
                 f.setCap_fuel(f.getCap_fuel() - 1);
             }
@@ -85,7 +85,7 @@ public class MovingFireman extends TickerBehaviour {
                 try {
                     //Proatividade
                     if(newFire != null) {
-                        System.out.println("Vou apagar um fogo só porque posso!");
+                        //System.out.println("Vou apagar um fogo só porque posso!");
                         f.setCap_fuel(f.getCap_fuel() - 1);
                         f.setCap_water(f.getCap_water() - 1);
                         f.setActual_position(newFire.getPositions().get(0));
@@ -98,7 +98,7 @@ public class MovingFireman extends TickerBehaviour {
                     //Reabastecer ÁGUA antes de ir para a posição standard
                     else if ((f.getOcupation().equals(Ocupation.RETURNING)) && (f.getCap_water() * 2 <= f.getCap_max_water())) {
                         next = decideNewPosition(f, f.getDestiny(), false, true);
-                        System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
+                        //System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
                         f.setActual_position(next);
                         f.setCap_fuel(f.getCap_fuel() - 1);
                         f.setOcupation(Ocupation.RETURNING);
@@ -107,16 +107,16 @@ public class MovingFireman extends TickerBehaviour {
                     //Mover para a posição standard
                     else if (f.getOcupation().equals(Ocupation.RETURNING)) {
                         next = decideNewPosition(f, f.getDestiny(), false, false);
-                        System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
+                        //System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
                         f.setActual_position(next);
                         f.setCap_fuel(f.getCap_fuel() - 1);
                     }
 
                     //Mover para o fogo
                     else {
-                        System.out.println("Quero apagar o fogo que está na posição " + f.getDestiny());
+                        //System.out.println("Quero apagar o fogo que está na posição " + f.getDestiny());
                         next = decideNewPosition(f, f.getDestiny(), true, false);
-                        System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
+                        //System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
                         f.setActual_position(next);
                         f.setCap_fuel(f.getCap_fuel() - 1);
                     }
@@ -224,23 +224,23 @@ public class MovingFireman extends TickerBehaviour {
 
         // Se bombeiro tem fuel suficiente para ir ao goal e abastecer
         if (actual_cap_fuel >= distance_fuel_after_goal) {
-            if(home){
+            /*if(home){
                 System.out.println("\nVOU PARA CASAAAAA (" + f.getDestiny().toString() + "): " + next_to_destiny.toString() + "\n");
             } else {
                 System.out.println("\nVOU APAGAR O FOGOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO (pos " + f.getDestiny().toString() + "): " + next_to_destiny.toString() + "\n");
-            }
+            }*/
             return next_to_destiny;
         }
         // Caso o bombeiro consiga ir abastecer à bomba mais próxima do goal
         else if (actual_cap_fuel >= distance_fuel_goal) {
-            if(home){
+            /*if(home){
                 System.out.println("\nVOU METER GASOLINAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA (maix próx casa " + fuel_position.toString() + ") :" + destiny_fuel_goal.toString() + "\n");
             } else{
                 System.out.println("\nVOU METER GASOLINAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA (maix próx fogo " + fuel_position.toString() + ") :" + destiny_fuel_goal.toString() + "\n");
-            }
+            }*/
             return destiny_fuel_goal;
         } else {
-            System.out.println("\nVOU METER GASOLINAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA (mais próx bombeiro): " + destiny_fuel.toString() + "\n");
+            //System.out.println("\nVOU METER GASOLINAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA (mais próx bombeiro): " + destiny_fuel.toString() + "\n");
             return destiny_fuel;
         }
     }
@@ -277,15 +277,15 @@ public class MovingFireman extends TickerBehaviour {
 
         // Se bombeiro tem fuel suficiente para reabastecer água e reabastecer combustível
         if (actual_cap_fuel >= distance_fuel_after_water) {
-            System.out.println("\nVOU REABASTECER ÁGUAAAAAAAA: " + destiny_water.toString() + "\n");
+            //System.out.println("\nVOU REABASTECER ÁGUAAAAAAAA: " + destiny_water.toString() + "\n");
             return destiny_water;
         }
         // Caso o bombeiro consiga ir abastecer ao posto mais próximo da água
         else if (actual_cap_fuel >= distance_fuel_nearest_water) {
-            System.out.println("\nVOU METER GASOLINAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA (mais próx da água " + water_position.toString() + ") :" + destiny_fuel_nearest_water.toString() + "\n");
+            //System.out.println("\nVOU METER GASOLINAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA (mais próx da água " + water_position.toString() + ") :" + destiny_fuel_nearest_water.toString() + "\n");
             return destiny_fuel_nearest_water;
         } else {
-            System.out.println("\nVOU METER GASOLINAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA (mais próx bombeiro): " + destiny_fuel.toString() + "\n");
+            //System.out.println("\nVOU METER GASOLINAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA (mais próx bombeiro): " + destiny_fuel.toString() + "\n");
             return destiny_fuel;
         }
     }
