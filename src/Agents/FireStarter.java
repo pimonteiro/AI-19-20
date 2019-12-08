@@ -65,14 +65,8 @@ public class FireStarter extends Agent {
     }
 
     public void startFire(Position position) {
-        int x = position.getX();
-        int y = position.getY();
-
         //averiguar se já existe um fogo vizinho
-        Fire fire = world.getFire().stream()
-                .filter(f -> f.getPositions().stream().
-                        anyMatch(p -> (p.getX() >= x - 1 && p.getX() <= x + 1 && p.getY() >= y - 1 && p.getY() <= y + 1)))
-                .findFirst().orElse(null);
+        Fire fire = position.haveNeighborFire(world.getFire(), 1);
 
         if (fire != null) {
             //expandir fogo
@@ -81,7 +75,8 @@ public class FireStarter extends Agent {
             //criar novo fogo
             List<Position> l = new ArrayList<>();
             l.add(position);
-            Fire newFire = new Fire(l, calculateBaseExpansionRate(x, y), this.world.getZoneOfPosition(position));
+            Fire newFire = new Fire(l, calculateBaseExpansionRate(position.getX(), position.getY()),
+                                    this.world.getZoneOfPosition(position));
             world.getFire().add(newFire);
             this.addBehaviour(new SendFirePosition(newFire));
         }
