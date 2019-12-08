@@ -59,11 +59,7 @@ public class MovingFireman extends TickerBehaviour {
         System.out.println("Fireman: " + f.getAID().toString() + ", destiny = " + f.getDestiny());
 
         if (f.getCap_fuel() > 0) {
-            if(f.getOcupation().equals(Ocupation.MOVING) && f.getTreating_fire() != null && f.getDestiny().equals(f.getActual_position())) {
-                //System.out.println("Weird");
-                //f.setDestiny(f.getTreating_fire().getPositions().get(0));
-            }
-
+            //Se está sem água vai abastecer
             if(f.getCap_water() <= 0){
                 next = decideNewPosition(f, f.getDestiny(), false, true);
                 //System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
@@ -85,7 +81,7 @@ public class MovingFireman extends TickerBehaviour {
 
             else {
                 //Proatividade
-                if(newFire != null) {
+                if(newFire != null && (f.getCap_fuel() * 2 > f.getCap_max_fuel())) {
                     //System.out.println("Vou apagar um fogo só porque posso!");
                     f.setCap_fuel(f.getCap_fuel() - 1);
                     f.setCap_water(f.getCap_water() - 1);
@@ -108,7 +104,7 @@ public class MovingFireman extends TickerBehaviour {
                 //Mover para a posição standard
                 else if (f.getOcupation().equals(Ocupation.RETURNING)) {
                     next = decideNewPosition(f, f.getDestiny(), false, false);
-                    System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
+                    //System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
                     f.setActual_position(next);
                     f.setCap_fuel(f.getCap_fuel() - 1);
                 }
@@ -143,8 +139,7 @@ public class MovingFireman extends TickerBehaviour {
         }
 
         for (Position p: places) {
-            places_without_destiny = new ArrayList<>();
-            places_without_destiny.addAll(places);
+            places_without_destiny = new ArrayList<>(places);
             places_without_destiny.remove(p);
 
             if (searching_water) {
@@ -169,8 +164,7 @@ public class MovingFireman extends TickerBehaviour {
         int velocity = f.getVel();
         Position actual_position = f.getActual_position();
 
-        List<Fire> fires_without_goal = new ArrayList<>();
-        fires_without_goal.addAll(f.getFires());
+        List<Fire> fires_without_goal = new ArrayList<>(f.getFires());
         fires_without_goal.stream().filter(a -> a.getPositions().
                 removeIf(b -> b.getX() == goal.getX() && b.getY() == goal.getY())).collect(Collectors.toList());
 
@@ -206,8 +200,7 @@ public class MovingFireman extends TickerBehaviour {
         //System.out.println("[FIREMAN] A bomba de gasolina mais próxima do goal está a " + distance_fuel_nearest_goal + " posições do goal");
 
         // Informação caminho do bombeiro até à bomba de gasolina mais próxima do goal
-        List<Position> fuel_copy = new ArrayList<>();
-        fuel_copy.addAll(f.getFuel());
+        List<Position> fuel_copy = new ArrayList<>(f.getFuel());
         fuel_copy.remove(fuel_position);
 
         Pair<Integer, Position> distance_destiny_fuel_path = fsp.findShortestPath(actual_position, fuel_position, velocity,
@@ -259,8 +252,7 @@ public class MovingFireman extends TickerBehaviour {
         //System.out.println("[FIREMAN] A bomba de gasolina " + fuel_position + " mais próxima da água " + water_position + " está a " + distance_fuel_nearest_goal + " posições da água");
 
         // Informações caminho bomba de gasolina até à água mais próxima da água
-        List<Position> fuel_copy = new ArrayList<>();
-        fuel_copy.addAll(f.getFuel());
+        List<Position> fuel_copy = new ArrayList<>(f.getFuel());
         fuel_copy.remove(fuel_position);
 
         Pair<Integer, Position> information_destiny_water_path = fsp.findShortestPath(actual_position, fuel_position, velocity,
