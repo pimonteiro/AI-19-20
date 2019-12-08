@@ -73,15 +73,17 @@ public class Map2 extends MapType {
         this.table = new JTable(this.model_table);
 
         CellColorRenderer2 renderer = new CellColorRenderer2(this.data);
-        this.table.setRowHeight(15);
+        this.table.setRowHeight(CELL_SIZE);
         TableColumnModel columnModel = this.table.getColumnModel();
         for(int i = 0; i < World.dimension; i++){
             columnModel.getColumn(i).setCellRenderer(renderer);
-            columnModel.getColumn(i).setPreferredWidth(15);
+            columnModel.getColumn(i).setPreferredWidth(CELL_SIZE);
         }
         this.table.setPreferredScrollableViewportSize(table.getPreferredSize());
 
         this.table.setDefaultEditor(Object.class, null);
+        this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
         this.tableContainer = new JScrollPane(table);
         this.table.setTableHeader(null);
 

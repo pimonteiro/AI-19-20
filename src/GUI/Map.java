@@ -48,43 +48,43 @@ public class Map extends MapType {
         objects = new HashMap<>();
         ImageIcon water = new ImageIcon(getClass().getResource("assets/water.png")); // load the image to a imageIcon
         Image image = water.getImage(); // transform it
-        Image newimg = image.getScaledInstance(15, 15,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+        Image newimg = image.getScaledInstance(CELL_SIZE, CELL_SIZE,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
         water = new ImageIcon(newimg);  // transform it back
         objects.put("water", water);
 
         ImageIcon fuel = new ImageIcon(getClass().getResource("assets/fuel.png")); // load the image to a imageIcon
         image = fuel.getImage();
-        newimg = image.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        newimg = image.getScaledInstance(CELL_SIZE, CELL_SIZE, Image.SCALE_SMOOTH);
         fuel = new ImageIcon(newimg);
         objects.put("fuel", fuel);
 
         ImageIcon house = new ImageIcon(getClass().getResource("assets/house.png")); // load the image to a imageIcon
         image = house.getImage();
-        newimg = image.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        newimg = image.getScaledInstance(CELL_SIZE, CELL_SIZE, Image.SCALE_SMOOTH);
         house = new ImageIcon(newimg);
         objects.put("house", house);
 
         ImageIcon fire = new ImageIcon(getClass().getResource("assets/fire.png")); // load the image to a imageIcon
         image = fire.getImage();
-        newimg = image.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        newimg = image.getScaledInstance(CELL_SIZE, CELL_SIZE, Image.SCALE_SMOOTH);
         fire = new ImageIcon(newimg);
         objects.put("fire", fire);
 
         ImageIcon drone = new ImageIcon(getClass().getResource("assets/drone.png")); // load the image to a imageIcon
         image = drone.getImage();
-        newimg = image.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        newimg = image.getScaledInstance(CELL_SIZE, CELL_SIZE, Image.SCALE_SMOOTH);
         drone = new ImageIcon(newimg);
         objects.put("drone", drone);
 
         ImageIcon aircraft = new ImageIcon(getClass().getResource("assets/aircraft.png")); // load the image to a imageIcon
         image = aircraft.getImage();
-        newimg = image.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        newimg = image.getScaledInstance(CELL_SIZE, CELL_SIZE, Image.SCALE_SMOOTH);
         aircraft = new ImageIcon(newimg);
         objects.put("aircraft", aircraft);
 
         ImageIcon truck = new ImageIcon(getClass().getResource("assets/truck.png")); // load the image to a imageIcon
         image = truck.getImage();
-        newimg = image.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        newimg = image.getScaledInstance(CELL_SIZE, CELL_SIZE, Image.SCALE_SMOOTH);
         truck = new ImageIcon(newimg);
         objects.put("aircraft", truck);
 
@@ -108,15 +108,17 @@ public class Map extends MapType {
         this.table = new JTable(this.model_table);
 
         CellColorRenderer renderer = new CellColorRenderer(this.data_colors);
-        this.table.setRowHeight(15);
+        this.table.setRowHeight(CELL_SIZE);
         TableColumnModel columnModel = this.table.getColumnModel();
         for(int i = 0; i < World.dimension; i++){
             columnModel.getColumn(i).setCellRenderer(renderer);
-            columnModel.getColumn(i).setPreferredWidth(15);
+            columnModel.getColumn(i).setPreferredWidth(CELL_SIZE);
         }
         this.table.setPreferredScrollableViewportSize(table.getPreferredSize());
 
         this.table.setDefaultEditor(Object.class, null);
+        this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
         this.tableContainer = new JScrollPane(table);
         this.table.setTableHeader(null);
 
