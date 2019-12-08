@@ -7,12 +7,14 @@ import java.io.Serializable;
 
 public class UpdateData implements Serializable {
     private Position p;
+    private Position destiny;
     private int fuel;
     private int water;
     private Ocupation ocupation;
 
-    public UpdateData(Position p, int fuel, int water, Ocupation ocu) {
+    public UpdateData(Position p, Position destiny, int fuel, int water, Ocupation ocu) {
         this.p = p;
+        this.destiny = destiny;
         this.fuel = fuel;
         this.water = water;
         this.ocupation = ocu;
@@ -48,5 +50,13 @@ public class UpdateData implements Serializable {
 
     public void setOcupation(Ocupation ocupation) {
         this.ocupation = ocupation;
+    }
+
+    public Position getDestiny() {
+        return destiny;
+    }
+
+    public void setDestiny(Position destiny) {
+        this.destiny = destiny;
     }
 }

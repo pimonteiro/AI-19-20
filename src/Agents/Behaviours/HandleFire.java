@@ -32,7 +32,7 @@ public class HandleFire extends TickerBehaviour {
 
         if(exceptionFire != null){
             fire = exceptionFire;
-        } else if (treatingFire != null){
+        } else if(treatingFire != null){
             fire = treatingFire;
         }
 

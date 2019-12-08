@@ -44,9 +44,18 @@ public class MovingFireman extends TickerBehaviour {
 
         //Se está na posição standard repousa
         else if (f.getActual_position().equals(f.getDestiny()) && f.getOcupation().equals(Ocupation.RETURNING)) {
-            //System.out.println("Estou em casa!\n");
+            System.out.println(f.getAID().toString() + "-> Estou em casa!\n");
             f.setOcupation(Ocupation.RESTING);
             f.setDestiny(null);
+            try {
+                ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+                msg.setContentObject(new UpdateData(f.getActual_position(), f.getDestiny(),
+                        f.getCap_fuel(), f.getCap_water(), f.getOcupation()));
+                msg.addReceiver(f.getStation());
+                this.myAgent.send(msg);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return;
         }
 
@@ -54,6 +63,8 @@ public class MovingFireman extends TickerBehaviour {
             block();
             return;
         }
+
+        System.out.println("Fireman: " + f.getAID().toString() + ", destiny = " + f.getDestiny());
 
         if (f.getCap_fuel() > 0) {
             if(f.getOcupation().equals(Ocupation.MOVING) && f.getTreating_fire() != null && f.getDestiny().equals(f.getActual_position())) {
@@ -80,53 +91,62 @@ public class MovingFireman extends TickerBehaviour {
             }
 
             else {
-                try {
-                    //Proatividade
-                    if(newFire != null) {
-                        //System.out.println("Vou apagar um fogo só porque posso!");
-                        f.setCap_fuel(f.getCap_fuel() - 1);
-                        f.setCap_water(f.getCap_water() - 1);
-                        f.setActual_position(newFire.getPositions().get(0));
-                        f.setException_fire(newFire);
-                        this.myAgent.addBehaviour(new HandleFire(this.myAgent, 1000));
-                        this.myAgent.removeBehaviour(this);
-                        return;
+                //Proatividade
+                if(newFire != null) {
+                    //System.out.println("Vou apagar um fogo só porque posso!");
+                    f.setCap_fuel(f.getCap_fuel() - 1);
+                    f.setCap_water(f.getCap_water() - 1);
+                    f.setActual_position(newFire.getPositions().get(0));
+                    f.setException_fire(newFire);
+                    this.myAgent.addBehaviour(new HandleFire(this.myAgent, 1000));
+                    try {
+                        ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+                        msg.setContentObject(new UpdateData(f.getActual_position(), f.getDestiny(),
+                                f.getCap_fuel(), f.getCap_water(), f.getOcupation()));
+                        msg.addReceiver(f.getStation());
+                        this.myAgent.send(msg);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
+                    return;
+                }
 
-                    //Reabastecer ÁGUA antes de ir para a posição standard
-                    else if ((f.getOcupation().equals(Ocupation.RETURNING)) && (f.getCap_water() * 2 <= f.getCap_max_water())) {
-                        next = decideNewPosition(f, f.getDestiny(), false, true);
-                        //System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
-                        f.setActual_position(next);
-                        f.setCap_fuel(f.getCap_fuel() - 1);
-                        f.setOcupation(Ocupation.RETURNING);
-                    }
+                //Reabastecer ÁGUA antes de ir para a posição standard
+                else if ((f.getOcupation().equals(Ocupation.RETURNING)) && (f.getCap_water() * 2 <= f.getCap_max_water())) {
+                    next = decideNewPosition(f, f.getDestiny(), false, true);
+                    //System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
+                    f.setActual_position(next);
+                    f.setCap_fuel(f.getCap_fuel() - 1);
+                    f.setOcupation(Ocupation.RETURNING);
+                }
 
-                    //Mover para a posição standard
-                    else if (f.getOcupation().equals(Ocupation.RETURNING)) {
-                        next = decideNewPosition(f, f.getDestiny(), false, false);
-                        //System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
-                        f.setActual_position(next);
-                        f.setCap_fuel(f.getCap_fuel() - 1);
-                    }
+                //Mover para a posição standard
+                else if (f.getOcupation().equals(Ocupation.RETURNING)) {
+                    next = decideNewPosition(f, f.getDestiny(), false, false);
+                    System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
+                    f.setActual_position(next);
+                    f.setCap_fuel(f.getCap_fuel() - 1);
+                }
 
-                    //Mover para o fogo
-                    else {
-                        //System.out.println("Quero apagar o fogo que está na posição " + f.getDestiny());
-                        next = decideNewPosition(f, f.getDestiny(), true, false);
-                        //System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
-                        f.setActual_position(next);
-                        f.setCap_fuel(f.getCap_fuel() - 1);
-                    }
-
-                    ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-                    msg.setContentObject(new UpdateData(next, f.getCap_fuel(), f.getCap_water(), f.getOcupation()));
-                    msg.addReceiver(f.getStation());
-                    this.myAgent.send(msg);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                //Mover para o fogo
+                else {
+                    //System.out.println("Quero apagar o fogo que está na posição " + f.getDestiny());
+                    next = decideNewPosition(f, f.getDestiny(), true, false);
+                    //System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
+                    f.setActual_position(next);
+                    f.setCap_fuel(f.getCap_fuel() - 1);
                 }
             }
+        }
+
+        try {
+            ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+            msg.setContentObject(new UpdateData(f.getActual_position(), f.getDestiny(),
+                    f.getCap_fuel(), f.getCap_water(), f.getOcupation()));
+            msg.addReceiver(f.getStation());
+            this.myAgent.send(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
