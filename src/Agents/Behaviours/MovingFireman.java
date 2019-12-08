@@ -85,8 +85,8 @@ public class MovingFireman extends TickerBehaviour {
                             f.getActual_position().equals(f.getDestiny()))) {
                 //System.out.println("Vou mesmo agora apagar o fogo!\n");
                 f.setOcupation(Ocupation.IN_ACTION);
-                this.myAgent.addBehaviour(new HandleFire(this.myAgent, 1000));
                 f.setDestiny(null);
+                this.myAgent.addBehaviour(new HandleFire(this.myAgent, 1000));
                 try {
                     ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
                     msg.setContentObject(new UpdateData(f.getActual_position(), f.getDestiny(),
