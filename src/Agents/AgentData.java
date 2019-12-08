@@ -5,6 +5,7 @@ import Logic.Zone;
 import Util.FiremanType;
 import Util.Ocupation;
 import Util.Position;
+
 import jade.core.AID;
 
 public class AgentData {

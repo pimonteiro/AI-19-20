@@ -1,11 +1,11 @@
 import Logic.World;
 import Logic.Simulator;
+
 import jade.core.Runtime;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
-import jade.wrapper.StaleProxyException;
 
 public class MainContainer {
 

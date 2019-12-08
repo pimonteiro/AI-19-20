@@ -1,16 +1,15 @@
 package Agents;
 
 import Agents.Behaviours.HandleFiremanMessages;
-
 import Agents.Behaviours.MovingFireman;
 import Logic.Fire;
 import Logic.World;
 import Logic.Zone;
 import Util.Ocupation;
 import Util.Position;
+
 import jade.core.AID;
 import jade.core.Agent;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -5,6 +5,7 @@ import Agents.Messages.FireExtinguished;
 import Logic.Fire;
 import Util.Ocupation;
 import Util.Position;
+
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
@@ -12,7 +13,6 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
-
 import java.io.IOException;
 import java.util.List;
 

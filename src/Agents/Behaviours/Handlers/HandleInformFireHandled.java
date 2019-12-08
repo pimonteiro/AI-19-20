@@ -2,11 +2,11 @@ package Agents.Behaviours.Handlers;
 
 import Agents.Messages.FireAlreadyHandled;
 import Agents.Station;
+
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
-
 import java.util.Set;
 
 public class HandleInformFireHandled extends OneShotBehaviour {
