@@ -25,7 +25,7 @@ public class Station extends Agent {
     private Map<AID, Fire> treatment_fire;
     private List<Fire> waiting_fire;
     private Map<Fire,List<AID>> questioning;
-    private GUI.Map map_gui;
+    private GUI.MapType map_gui;
     private GUI.AgentState agent_gui;
     private Metric metrics;
 
@@ -37,7 +37,10 @@ public class Station extends Agent {
         this.waiting_fire = new ArrayList<>();
         this.metrics = new Metric();
         questioning = new HashMap<>();
-        this.map_gui = new GUI.Map(world, this);
+        if((boolean) args[1])
+            this.map_gui = new GUI.Map2(world, this);
+        else
+            this.map_gui = new GUI.Map(world, this);
         this.agent_gui = new GUI.AgentState(world);
 
         DFAgentDescription dfd = new DFAgentDescription();

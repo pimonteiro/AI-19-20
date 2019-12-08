@@ -16,7 +16,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Map {
+public class Map extends MapType {
     private JFrame frame;
     private JPanel panel;
     private JTable table;
@@ -128,6 +128,7 @@ public class Map {
         this.frame.setAlwaysOnTop(true);
     }
 
+    @Override
     public void update(World world, Station ss) {
         for(int i = 0; i < World.dimension; i++){
             for(int j = 0; j < World.dimension; j++){
@@ -173,6 +174,7 @@ public class Map {
         }
     }
 
+    @Override
     public void updateGUI(){
         CellColorRenderer renderer = new CellColorRenderer(this.data_colors);
         TableColumnModel columnModel = this.table.getColumnModel();
