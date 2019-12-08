@@ -70,9 +70,9 @@ public class Station extends Agent {
         this.addBehaviour(new TickerBehaviour(this,1000) {
             @Override
             protected void onTick() {
-                expandFire(waiting_fire);
-                expandFire(treatment_fire.values());
-                expandFire(questioning.keySet());
+                //expandFire(waiting_fire);
+                //expandFire(treatment_fire.values()); //TODO avisar os bombeiros
+                //expandFire(questioning.keySet());
                 treatment_fire.values().forEach(Fire::increaseTime);
                 treatment_fire.values().forEach(Fire::increaseTimeBeingResolved);
                 waiting_fire.forEach(Fire::increaseTime);

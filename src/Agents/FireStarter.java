@@ -70,13 +70,17 @@ public class FireStarter extends Agent {
 
         if (fire != null) {
             //expandir fogo
+            System.out.println(fire);
             world.expandFire(fire, position);
+            System.out.println("-----------------\n" + fire);
+            //TODO mencionar a expansao ao station
         } else {
             //criar novo fogo
             List<Position> l = new ArrayList<>();
             l.add(position);
             Fire newFire = new Fire(l, calculateBaseExpansionRate(position.getX(), position.getY()),
                                     this.world.getZoneOfPosition(position));
+            assert(newFire.getPositions().get(0) == null);
             world.getFire().add(newFire);
             this.addBehaviour(new SendFirePosition(newFire));
         }

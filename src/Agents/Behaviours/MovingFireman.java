@@ -174,8 +174,10 @@ public class MovingFireman extends TickerBehaviour {
         int velocity = f.getVel();
         Position actual_position = f.getActual_position();
 
-        List<Fire> fires_without_goal = f.getFires().stream().filter(a -> a.getPositions().
-                removeIf(b -> b.getX() == goal.getX() && b.getY() == goal.getY())).collect(Collectors.toList());
+        //TODO CATARINA LOOK tas a editar o ORIGINAL
+        List<Fire> fires_without_goal = new ArrayList<>();
+        //List<Fire> fires_without_goal = f.getFires().stream().filter(a -> a.getPositions().
+        //        removeIf(b -> b.getX() == goal.getX() && b.getY() == goal.getY())).collect(Collectors.toList());
 
         // Descobrir bomba de gasolina mais próxima do bombeiro
         Tuple<Integer, Position, Position> destiny_fuel_path = maxPairValue(actual_position, velocity, fires_without_goal,
