@@ -1,6 +1,5 @@
 package Agents.Behaviours.Handlers;
 
-import Agents.Behaviours.MovingFireman;
 import Agents.Fireman;
 import Agents.Messages.CancelFire;
 import Logic.Fire;

@@ -39,8 +39,6 @@ public class HandleStationMessages extends CyclicBehaviour {
                         s.addBehaviour(new HandleFireExtinguished(s, msg));
                     } else if (content instanceof StartedFire) {
                         s.addBehaviour(new HandleFireStarted(s, msg));
-                    } else if (content instanceof FireOnTheWay){
-                        s.addBehaviour(new HandleFireOnTheWay(s, msg));
                     }
                     break;
                 case (ACLMessage.AGREE):
