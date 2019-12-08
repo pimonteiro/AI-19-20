@@ -72,7 +72,7 @@ public class HandleFire extends TickerBehaviour {
                         f.setTreating_fire(null);
                         f.setDestiny(f.getStd_position());
                         this.myAgent.removeBehaviour(this);
-                    } else if(fire.equals(exceptionFire)){
+                    } else {
                         f.setException_fire(null);
                         this.myAgent.removeBehaviour(this);
                     }

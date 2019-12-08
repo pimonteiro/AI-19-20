@@ -35,7 +35,6 @@ public class HandleFireExtinguished extends OneShotBehaviour {
 
         try {
             FireExtinguished fireExtinguished = (FireExtinguished) msg.getContentObject();
-
             List<Fire> fires = s.getWorld().getFire().stream().filter(a -> a.getId().equals(fireExtinguished.getId()))
                                            .collect(Collectors.toList());
             if(fires.size() > 0) {
@@ -89,15 +88,10 @@ public class HandleFireExtinguished extends OneShotBehaviour {
                                     this.myAgent.send(ms);
                                     s.getWorld().getFireman().get(aid_sender).setException_fire(null);
                                 }
-
-                                System.out.println("O fogo estava nos treating fires");
                             }
                         } else {
-                            System.out.println("O fogo não estava nos treating fires");
-
                             //se está na list waiting_fire
                             s.getWaiting_fire().remove(f);
-
                             //se é uma key do map questioning
                             s.getQuestioning().remove(f);
 

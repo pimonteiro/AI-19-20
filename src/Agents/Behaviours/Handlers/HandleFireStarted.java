@@ -27,7 +27,7 @@ public class HandleFireStarted extends OneShotBehaviour {
         try {
             StartedFire cont = (StartedFire) msg.getContentObject();
             Fire f = cont.getFire();
-            if(s.getQuestioning().keySet().contains(f)){
+            if(s.getQuestioning().containsKey(f)){
                 for(Fire tmp : s.getQuestioning().keySet()){
                     if(tmp.equals(f))
                         tmp.setPositions(f.getPositions());
