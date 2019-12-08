@@ -4,13 +4,12 @@ import Agents.Behaviours.*;
 import Logic.Fire;
 import Logic.Metric;
 import Logic.World;
-
 import Logic.Zone;
 import Util.BestFireManComparator;
 import Util.Position;
+
 import jade.core.AID;
 import jade.core.Agent;
-import jade.core.AgentState;
 import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -84,11 +83,11 @@ public class Station extends Agent {
                 System.out.println("-------Fires waiting to be treated-------");
                 waiting_fire.forEach(f -> System.out.println(f.toString()));
                 System.out.println("-------Fires being questioned-------");
-                for(Fire f : questioning.keySet()){
-                    System.out.println(f.toString() + " " + questioning.get(f).size());
-                }
-                System.out.println("-------Zone Status----------");
-                world.getZones().forEach(z -> System.out.println("Zone " + z.getId() + ": " + z.getOcupation_rate()));
+                //for(Fire f : questioning.keySet()){
+                //    System.out.println(f.toString() + " " + questioning.get(f).size());
+                //}
+                //System.out.println("-------Zone Status----------");
+                //world.getZones().forEach(z -> System.out.println("Zone " + z.getId() + ": " + z.getOcupation_rate()));
             }
         });
     }
