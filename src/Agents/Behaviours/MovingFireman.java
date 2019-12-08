@@ -47,15 +47,7 @@ public class MovingFireman extends TickerBehaviour {
             System.out.println(f.getAID().toString() + "-> Estou em casa!\n");
             f.setOcupation(Ocupation.RESTING);
             f.setDestiny(null);
-            try {
-                ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-                msg.setContentObject(new UpdateData(f.getActual_position(), f.getDestiny(),
-                        f.getCap_fuel(), f.getCap_water(), f.getOcupation()));
-                msg.addReceiver(f.getStation());
-                this.myAgent.send(msg);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            saveData(f);
             return;
         }
 
@@ -87,15 +79,7 @@ public class MovingFireman extends TickerBehaviour {
                 f.setOcupation(Ocupation.IN_ACTION);
                 f.setDestiny(null);
                 this.myAgent.addBehaviour(new HandleFire(this.myAgent, 1000));
-                try {
-                    ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-                    msg.setContentObject(new UpdateData(f.getActual_position(), f.getDestiny(),
-                            f.getCap_fuel(), f.getCap_water(), f.getOcupation()));
-                    msg.addReceiver(f.getStation());
-                    this.myAgent.send(msg);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                saveData(f);
                 return;
             }
 
@@ -108,15 +92,7 @@ public class MovingFireman extends TickerBehaviour {
                     f.setActual_position(newFire.getPositions().get(0));
                     f.setException_fire(newFire);
                     this.myAgent.addBehaviour(new HandleFire(this.myAgent, 1000));
-                    try {
-                        ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-                        msg.setContentObject(new UpdateData(f.getActual_position(), f.getDestiny(),
-                                f.getCap_fuel(), f.getCap_water(), f.getOcupation()));
-                        msg.addReceiver(f.getStation());
-                        this.myAgent.send(msg);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    saveData(f);
                     return;
                 }
 
@@ -148,15 +124,7 @@ public class MovingFireman extends TickerBehaviour {
             }
         }
 
-        try {
-            ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-            msg.setContentObject(new UpdateData(f.getActual_position(), f.getDestiny(),
-                    f.getCap_fuel(), f.getCap_water(), f.getOcupation()));
-            msg.addReceiver(f.getStation());
-            this.myAgent.send(msg);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        saveData(f);
     }
 
     public Tuple<Integer, Position, Position> maxPairValue(Position actual_position, int velocity, List<Fire> fire,
@@ -316,6 +284,18 @@ public class MovingFireman extends TickerBehaviour {
         } else {
             //System.out.println("\nVOU METER GASOLINAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA (mais próx bombeiro): " + destiny_fuel.toString() + "\n");
             return destiny_fuel;
+        }
+    }
+
+    public void saveData(Fireman f){
+        try {
+            ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+            msg.setContentObject(new UpdateData(f.getActual_position(), f.getDestiny(),
+                    f.getCap_fuel(), f.getCap_water(), f.getOcupation()));
+            msg.addReceiver(f.getStation());
+            this.myAgent.send(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
