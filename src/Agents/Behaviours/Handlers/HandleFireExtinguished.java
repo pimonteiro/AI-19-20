@@ -66,11 +66,6 @@ public class HandleFireExtinguished extends OneShotBehaviour {
                             AID aid_fireman = aids.get(0);
 
                             if (aid_fireman != null) {
-                                ACLMessage ms = new ACLMessage(ACLMessage.CANCEL);
-                                ms.addReceiver(aid_fireman);
-                                ms.setContentObject(new CancelFire(f));
-                                this.myAgent.send(ms);
-
                                 AgentData agentData = s.getWorld().getFireman().get(aid_fireman);
 
                                 //eliminar o par agente&fire do treatment_fire
@@ -82,6 +77,10 @@ public class HandleFireExtinguished extends OneShotBehaviour {
 
                                 //se quem apagou não era o atribuído
                                 if (!aid_fireman.equals(aid_sender)) {
+                                    ACLMessage ms = new ACLMessage(ACLMessage.CANCEL);
+                                    ms.addReceiver(aid_fireman);
+                                    ms.setContentObject(new CancelFire(f));
+                                    this.myAgent.send(ms);
                                     s.getWorld().getFireman().get(aid_sender).setException_fire(null);
                                 }
 

@@ -22,7 +22,7 @@ public class HandleCancelFire extends OneShotBehaviour {
     public void action() {
         try {
             Fire fire = ((CancelFire) msg.getContentObject()).getFire();
-            if(f.getTreating_fire().equals(fire)) {
+            if(f.getTreating_fire() != null && f.getTreating_fire().equals(fire)) {
                 f.setTreating_fire(null);
                 f.setOcupation(Ocupation.RETURNING);
                 f.setDestiny(f.getStd_position());
