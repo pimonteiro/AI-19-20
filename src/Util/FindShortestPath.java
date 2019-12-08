@@ -112,7 +112,7 @@ public class FindShortestPath {
                 return new Pair<>(len, this.path.get(0));
             }
         } else {
-            System.out.println("Destination not found");
+            //System.out.println("Destination not found");
             return new Pair<>(Integer.MAX_VALUE, current);
         }
     }
