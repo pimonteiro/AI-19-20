@@ -135,6 +135,7 @@ public class Map extends MapType {
         for(int i = 0; i < World.dimension; i++){
             for(int j = 0; j < World.dimension; j++){
                 this.data_images[i][j] = null;
+                this.data_colors[i][j] = "#00ff00";
             }
         }
         for(Position p : this.zones.keySet()){
@@ -201,6 +202,7 @@ class CellColorRenderer extends DefaultTableCellRenderer {
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,   boolean hasFocus, int row, int column) {
         Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         ((JLabel) cell).setIcon( (ImageIcon) value );
+        System.out.println("(" + column + "," + row + ") -> " + this.data[row][column]);
         cell.setBackground(Color.decode(this.data[row][column]));
         return cell;
     }

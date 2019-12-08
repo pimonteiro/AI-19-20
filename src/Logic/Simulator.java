@@ -17,6 +17,10 @@ public class Simulator {
         List<Zone> zones = new ArrayList<>();
 
         int n = World.dimension / zone_side;
+        int difference = 0;
+        if(World.dimension != n * zone_side){
+            difference = World.dimension - (n * zone_side);
+        }
         int index = 0;
         for(int i = 0; i < zone_side; i++){
             int x = i * n;
@@ -26,6 +30,18 @@ public class Simulator {
                 Position p2 = new Position(x + n,y + n);
                 Position p3 = new Position(x + n,y);
                 Position p4 = new Position(x,y + n);
+                if(h == zone_side - 1) {
+                    p4 = new Position(x,y + n + difference);
+                    p2 = new Position(x + n, y + n + difference);
+                }
+                if( i == zone_side - 1){
+                    p3 = new Position(x + n + difference, y);
+                    p2 = new Position(x + n + difference, y + n);
+                }
+                if(h == zone_side - 1 && i == zone_side - 1){
+                    p2 = new Position(x + n + difference, y + n + difference);
+                }
+
                 Zone z = new Zone(index++,p1,p2,p3,p4);
                 zones.add(z);
 
