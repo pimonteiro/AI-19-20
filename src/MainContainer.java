@@ -68,7 +68,7 @@ public class MainContainer {
         a.initMainContainerInPlatform("localhost", "9090", "MainContainer");
 
         //Agents and World Initialization
-        boolean debug = false;
+        boolean debug = true;
         long n_aircraft = 5;
         long n_drone = 5;
         long n_truck = 5;
@@ -82,8 +82,9 @@ public class MainContainer {
             n_aircraft = Math.round(22.22881 + (4.164999 - 22.22881)/(1 + Math.pow(World.dimension/67.93381, 2.475386)));
             n_drone = Math.round(22.22881 + (4.164999 - 22.22881)/(1 + Math.pow(World.dimension/67.93381, 2.475386)));
             n_truck = Math.round(22.22881 + (4.164999 - 22.22881)/(1 + Math.pow(World.dimension/67.93381, 2.475386)));
-            n_fuel = Math.round(10 + (4.164999 - 15)/(1 + Math.pow(World.dimension/60.93381, 2.475386)));
-            n_houses = Math.round(10 + (4.164999 - 15)/(1 + Math.pow(World.dimension/60.93381, 2.475386)));
+            n_water = Math.round(15 + (3 - 15)/(1 + Math.pow(World.dimension/50, 2.475386)));
+            n_fuel = Math.round(15 + (3 - 15)/(1 + Math.pow(World.dimension/50, 2.475386)));
+            n_houses = Math.round(15 + (3 - 15)/(1 + Math.pow(World.dimension/50, 2.475386)));
             if(World.dimension < 60)
                 n_zones = 4;
             else if(World.dimension < 200)
