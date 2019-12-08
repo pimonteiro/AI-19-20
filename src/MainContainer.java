@@ -82,8 +82,8 @@ public class MainContainer {
             n_aircraft = Math.round(22.22881 + (4.164999 - 22.22881)/(1 + Math.pow(World.dimension/67.93381, 2.475386)));
             n_drone = Math.round(22.22881 + (4.164999 - 22.22881)/(1 + Math.pow(World.dimension/67.93381, 2.475386)));
             n_truck = Math.round(22.22881 + (4.164999 - 22.22881)/(1 + Math.pow(World.dimension/67.93381, 2.475386)));
-            n_fuel =  Math.round(178601.2 + (1.47171 - 178601.2)/(1 + Math.pow(World.dimension/616711200,0.6237023)));
-            n_houses = Math.round(178601.2 + (1.47171 - 178601.2)/(1 + Math.pow(World.dimension/616711200,0.6237023)));
+            n_fuel = Math.round(10 + (4.164999 - 15)/(1 + Math.pow(World.dimension/60.93381, 2.475386)));
+            n_houses = Math.round(10 + (4.164999 - 15)/(1 + Math.pow(World.dimension/60.93381, 2.475386)));
             if(World.dimension < 60)
                 n_zones = 4;
             else if(World.dimension < 200)
