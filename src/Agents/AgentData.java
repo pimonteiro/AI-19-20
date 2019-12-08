@@ -5,6 +5,7 @@ import Logic.Zone;
 import Util.FiremanType;
 import Util.Ocupation;
 import Util.Position;
+
 import jade.core.AID;
 
 public class AgentData {
@@ -13,6 +14,7 @@ public class AgentData {
     private Position std_position;
     private Position actual_position;
     private Fire treating_fire;
+    private Fire exception_fire;
     private Zone zone;
     private int cap_water;
     private int cap_fuel;
@@ -73,6 +75,14 @@ public class AgentData {
 
     public void setTreating_fire(Fire treating_fire) {
         this.treating_fire = treating_fire;
+    }
+
+    public Fire getException_fire() {
+        return exception_fire;
+    }
+
+    public void setException_fire(Fire exception_fire) {
+        this.exception_fire = exception_fire;
     }
 
     public Zone getZone() {

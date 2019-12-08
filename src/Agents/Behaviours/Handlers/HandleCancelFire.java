@@ -1,10 +1,10 @@
 package Agents.Behaviours.Handlers;
 
-import Agents.Behaviours.MovingFireman;
 import Agents.Fireman;
 import Agents.Messages.CancelFire;
 import Logic.Fire;
 import Util.Ocupation;
+
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
@@ -23,7 +23,7 @@ public class HandleCancelFire extends OneShotBehaviour {
     public void action() {
         try {
             Fire fire = ((CancelFire) msg.getContentObject()).getFire();
-            if(f.getTreating_fire().equals(fire)) {
+            if(f.getTreating_fire() != null && f.getTreating_fire().equals(fire)) {
                 f.setTreating_fire(null);
                 f.setOcupation(Ocupation.RETURNING);
                 f.setDestiny(f.getStd_position());

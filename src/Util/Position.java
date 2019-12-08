@@ -6,7 +6,6 @@ import static Logic.World.dimension;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.Objects;
 import java.util.List;
 
 public class Position implements Serializable {
@@ -43,6 +42,13 @@ public class Position implements Serializable {
                 (fireman.stream().filter(f -> f.getActual_position().getX() == x &&
                         f.getActual_position().getY() == y).count() > 0) ||
                 x < 0 || x > dimension - 1|| y < 0 || y > dimension - 1);
+    }
+
+    public Fire haveNeighborFire(List<Fire> fires, int perimeter){
+        return fires.stream().filter(f -> f.getPositions().stream().
+                        anyMatch(p -> (p.getX() >= this.x - perimeter && p.getX() <= this.x + perimeter &&
+                                       p.getY() >= this.y - perimeter && p.getY() <= this.y + perimeter)))
+                    .findFirst().orElse(null);
     }
 
     @Override

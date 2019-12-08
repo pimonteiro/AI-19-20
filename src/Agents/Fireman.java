@@ -1,7 +1,6 @@
 package Agents;
 
 import Agents.Behaviours.HandleFiremanMessages;
-
 import Agents.Behaviours.MovingFireman;
 import Logic.Fire;
 import Logic.World;
@@ -10,6 +9,7 @@ import Util.Ocupation;
 import Util.Position;
 import jade.core.AID;
 import jade.core.Agent;
+import jade.core.behaviours.TickerBehaviour;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +18,7 @@ public abstract class Fireman extends Agent {
     private Position std_position;
     private Position actual_position;
     private Fire treating_fire;
+    private Fire exception_fire;
     private Zone zone;
     private List<Position> fuel;
     private List<Position> water;
@@ -49,6 +50,16 @@ public abstract class Fireman extends Agent {
 
         this.addBehaviour(new HandleFiremanMessages());
         this.addBehaviour(new MovingFireman(this));
+        /*
+        this.addBehaviour(new TickerBehaviour(this,1000) {
+            @Override
+            protected void onTick() {
+                Fireman f = (Fireman)this.myAgent;
+                System.out.println(f.toString());
+            }
+        });
+
+         */
     }
 
     public void takeDown(){
@@ -77,6 +88,10 @@ public abstract class Fireman extends Agent {
 
     public Fire getTreating_fire() {
         return treating_fire;
+    }
+
+    public Fire getException_fire() {
+        return exception_fire;
     }
 
     public Zone getZone() {
@@ -131,6 +146,10 @@ public abstract class Fireman extends Agent {
         this.treating_fire = treating_fire;
     }
 
+    public void setException_fire(Fire exception_fire) {
+        this.exception_fire = exception_fire;
+    }
+
     public void setZone(Zone zone) {
         this.zone = zone;
     }
@@ -182,11 +201,14 @@ public abstract class Fireman extends Agent {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("\nFireman Information: \n");
+        sb.append("\nFireman " + getAID().getName() + " Information: \n");
         sb.append("- Std position: " + this.getStd_position() + "\n");
         sb.append("- Actual position: " + this.getActual_position() + "\n");
         sb.append("- Actual Fuel: " + this.getCap_fuel() + "\n");
-        sb.append("- Actual Water: " + this.getCap_water() + "\n\n");
+        sb.append("- Actual Water: " + this.getCap_water() + "\n");
+        sb.append("- Destiny: " + this.getDestiny() + "\n");
+        sb.append("- Treating fire: " + this.getTreating_fire() + "\n");
+        sb.append("- Exception fire: " + this.getException_fire() + "\n\n");
 
         return sb.toString();
     }

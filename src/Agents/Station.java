@@ -1,22 +1,24 @@
 package Agents;
 
 import Agents.Behaviours.*;
+import Agents.Messages.UpdateFire;
 import Logic.Fire;
 import Logic.Metric;
 import Logic.World;
-
 import Logic.Zone;
 import Util.BestFireManComparator;
 import Util.Position;
+
 import jade.core.AID;
 import jade.core.Agent;
-import jade.core.AgentState;
 import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
+import jade.lang.acl.ACLMessage;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -87,11 +89,11 @@ public class Station extends Agent {
                 System.out.println("-------Fires waiting to be treated-------");
                 waiting_fire.forEach(f -> System.out.println(f.toString()));
                 System.out.println("-------Fires being questioned-------");
-                for(Fire f : questioning.keySet()){
-                    System.out.println(f.toString() + " " + questioning.get(f).size());
-                }
-                System.out.println("-------Zone Status----------");
-                world.getZones().forEach(z -> System.out.println("Zone " + z.getId() + ": " + z.getOcupation_rate()));
+                //for(Fire f : questioning.keySet()){
+                //    System.out.println(f.toString() + " " + questioning.get(f).size());
+                //}
+                //System.out.println("-------Zone Status----------");
+                //world.getZones().forEach(z -> System.out.println("Zone " + z.getId() + ": " + z.getOcupation_rate()));
             }
         });
     }
@@ -164,12 +166,23 @@ public class Station extends Agent {
                     Position p = new Position(x,y);
                     if(p.isValid(world.getFire(), world.getFuel(), world.getWater(), world.getHouses(),
                             new ArrayList<>(world.getFireman().values()))){
-                        for(Fire fire: world.getFire()){
-                            if(fire.equals(f)){
-                                fire.getPositions().add(p);
+                        try {
+                            for(Fire fire: world.getFire()){
+                                if(fire.equals(f)){
+                                    fire.getPositions().add(p);
+                                }
                             }
+                            f.getPositions().add(p);
+                            UpdateFire co = new UpdateFire(f, true);
+                            ACLMessage message = new ACLMessage(ACLMessage.INFORM);
+                            message.setContentObject(co);
+                            for (AID ag : world.getFireman().keySet()) {
+                                message.addReceiver(ag);
+                            }
+                            send(message);
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-                        f.getPositions().add(p);
                     }
                 }
             }

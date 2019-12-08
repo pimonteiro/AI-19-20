@@ -31,7 +31,6 @@ public class SendFirePosition extends OneShotBehaviour {
             ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
             msg.setContentObject(new StartedFire(fire));
             msg.addReceiver(station[0].getName());
-            System.out.println("[FireStarter] Novo fogo: " + this.fire.toString());
             myAgent.send(msg);
         } catch (FIPAException | IOException e) {
             e.printStackTrace();

@@ -26,7 +26,7 @@ public class AgentState {
         this.frame = new JFrame("World State");
         this.panel = new JPanel();
         this.panel.setLayout(new BorderLayout());
-        this.model_table = new DefaultTableModel(world.getFireman().size(),6);
+        this.model_table = new DefaultTableModel(world.getFireman().size(),7);
         this.table = new JTable(this.model_table);
         this.panel2 = new JPanel();
         this.panel2.setLayout(new BorderLayout());
@@ -51,20 +51,20 @@ public class AgentState {
         this.frame.validate();
 
         this.frame.pack();
-        this.frame.setBounds(100,100,600,500);
+        this.frame.setBounds(100,100,800,500);
         this.frame.setVisible(true);
     }
 
     public void update(World world, Station s) {
         DefaultTableModel model = (DefaultTableModel) this.table.getModel();
         model.setNumRows(0);
-        model.addRow(new String[]{"Agent AID", "Water", "Fuel", "Ocupation", "Actual Position","Treating Fire?"});
+        model.addRow(new String[]{"Agent AID", "Water", "Fuel", "Ocupation", "Standard Position", "Actual Position", "Treating Fire?"});
 
         for(AgentData ag : world.getFireman().values()){
             if(ag.getTreating_fire() != null)
-                model.addRow(new String[]{ag.getAid().getName(), Integer.toString(ag.getCap_water()), Integer.toString(ag.getCap_fuel()), ag.getOcupation().toString(), ag.getActual_position().toString(), ag.getTreating_fire().getPositions().get(0).toString()});
+                model.addRow(new String[]{ag.getAid().getName(), Integer.toString(ag.getCap_water()), Integer.toString(ag.getCap_fuel()), ag.getOcupation().toString(), ag.getStd_position().toString(), ag.getActual_position().toString(), ag.getTreating_fire().getPositions().get(0).toString()});
             else
-                model.addRow(new String[]{ag.getAid().getName(), Integer.toString(ag.getCap_water()), Integer.toString(ag.getCap_fuel()), ag.getOcupation().toString(), ag.getActual_position().toString(), "Null"});
+                model.addRow(new String[]{ag.getAid().getName(), Integer.toString(ag.getCap_water()), Integer.toString(ag.getCap_fuel()), ag.getOcupation().toString(), ag.getStd_position().toString(), ag.getActual_position().toString(), "Null"});
         }
 
         DefaultTableModel model2 = (DefaultTableModel) this.table2.getModel();
