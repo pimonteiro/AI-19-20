@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Simulator {
-    public static void startSimulation_v1(World world, int n_fuel, int n_houses, int n_water, int n_zones){
+    public static void startSimulation_v1(World world, long n_fuel, long n_houses, long n_water, long n_zones){
         Random r = new Random();
         int zone_side = (int) Math.sqrt(n_zones);
         List<Position> water = new ArrayList<>();

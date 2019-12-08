@@ -67,22 +67,27 @@ public class MainContainer {
         a.initMainContainerInPlatform("localhost", "9090", "MainContainer");
 
         //Agents and World Initialization
-        int n_aircraft = 5;
-        int n_drone = 5;
-        int n_truck = 5;
-        int n_water = 3;
-        int n_fuel = 3;
-        int n_houses = 1;
-        int n_zones = 4;
+        long n_aircraft = 5;
+        long n_drone = 5;
+        long n_truck = 5;
+        long n_water = 3;
+        long n_fuel = 3;
+        long n_houses = 3;
+        long n_zones = 4;
         World world;
         if(args.length > 0) {
             world = new World(Integer.parseInt(args[0]));
-            n_aircraft = World.dimension/4;
-            n_drone = World.dimension/5;
-            n_truck = World.dimension/3;
-            n_fuel = World.dimension/6;
-            n_houses = World.dimension/7;
-            //n_zones = World.dimension/4;
+            n_aircraft = Math.round(22.22881 + (4.164999 - 22.22881)/(1 + Math.pow(World.dimension/67.93381, 2.475386)));
+            n_drone = Math.round(22.22881 + (4.164999 - 22.22881)/(1 + Math.pow(World.dimension/67.93381, 2.475386)));
+            n_truck = Math.round(22.22881 + (4.164999 - 22.22881)/(1 + Math.pow(World.dimension/67.93381, 2.475386)));
+            n_fuel =  Math.round(178601.2 + (1.47171 - 178601.2)/(1 + Math.pow(World.dimension/616711200,0.6237023)));
+            n_houses = Math.round(178601.2 + (1.47171 - 178601.2)/(1 + Math.pow(World.dimension/616711200,0.6237023)));
+            if(World.dimension < 60)
+                n_zones = 4;
+            else if(World.dimension < 200)
+                n_zones = 9;
+            else
+                n_zones = 25;
         } else {
             world = new World(20);
         }
