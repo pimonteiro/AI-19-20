@@ -41,7 +41,7 @@ public class Station extends Agent {
             this.map_gui = new GUI.Map2(world, this);
         else
             this.map_gui = new GUI.Map(world, this);
-        this.agent_gui = new GUI.AgentState(world);
+        this.agent_gui = new GUI.AgentState(world, this);
 
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
@@ -67,7 +67,7 @@ public class Station extends Agent {
             protected void onTick() {
                 map_gui.update(world, (Station) this.myAgent);
                 map_gui.updateGUI();
-                agent_gui.update(world);
+                agent_gui.update(world, (Station)this.myAgent);
                 agent_gui.updateGUI();
             }
         });
