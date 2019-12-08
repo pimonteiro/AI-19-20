@@ -34,9 +34,9 @@ public class HandleFireExtinguished extends OneShotBehaviour {
         AID aid_sender = msg.getSender();
 
         try {
-            FireExtinguished position = (FireExtinguished) msg.getContentObject();
+            FireExtinguished fireExtinguished = (FireExtinguished) msg.getContentObject();
 
-            List<Fire> fires = s.getWorld().getFire().stream().filter(a -> a.getId().equals(position.getId()))
+            List<Fire> fires = s.getWorld().getFire().stream().filter(a -> a.getId().equals(fireExtinguished.getId()))
                                            .collect(Collectors.toList());
             if(fires.size() > 0) {
                 Fire f = fires.get(0);
