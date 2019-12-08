@@ -1,17 +1,21 @@
 package Agents.Behaviours.Handlers;
 
 import Agents.AgentData;
+import Agents.Messages.FireExtinguished;
 import Agents.Messages.UpdateFire;
 import Agents.Station;
 import Logic.Fire;
 import Logic.Metric;
 import Util.Ocupation;
+import Util.Position;
+
 import jade.core.AID;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.UnreadableException;
 
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 public class HandleFireExtinguished extends OneShotBehaviour {
     private Station s;
@@ -25,33 +29,67 @@ public class HandleFireExtinguished extends OneShotBehaviour {
 
     @Override
     public void action() {
-        AID aid = msg.getSender();
-        Fire f = s.getTreatment_fire().get(aid);
-        if(f != null){
-            try {
-                Metric c = s.getMetrics();
-                c.addNewFireResolved(f);
-                AgentData agentData = s.getWorld().getFireman().get(aid);
+        AID aid_sender = msg.getSender();
 
-                UpdateFire co = new UpdateFire(f,false);
-                ACLMessage message = new ACLMessage(ACLMessage.INFORM);
-                message.setContentObject(co);
-                for(AID ag : s.getWorld().getFireman().keySet()){
-                    message.addReceiver(ag);
+        try {
+            FireExtinguished position = (FireExtinguished) msg.getContentObject();
+            Position p = position.getPosition();
+
+            Fire f = s.getWorld().getFire().stream().filter(a -> a.getPositions().get(0).equals(p))
+                      .collect(Collectors.toList()).get(0);
+
+            if (f != null) {
+                try {
+                    Metric c = s.getMetrics();
+                    c.addNewFireResolved(f);
+
+                    UpdateFire co = new UpdateFire(f, false);
+                    ACLMessage message = new ACLMessage(ACLMessage.INFORM);
+                    message.setContentObject(co);
+                    for (AID ag : s.getWorld().getFireman().keySet()) {
+                        message.addReceiver(ag);
+                    }
+                    this.myAgent.send(message);
+
+                    //eliminar o fire do World
+                    s.getWorld().getFire().remove(f);
+
+                    //se o fogo que apagou eram um treating fire
+                    AID aid_fireman = s.getTreatment_fire().entrySet().stream().filter(v -> v.getValue().equals(f)).
+                                        map(k -> k.getKey()).collect(Collectors.toList()).get(0);
+
+                    if(aid_fireman != null) {
+                        AgentData agentData = s.getWorld().getFireman().get(aid_fireman);
+
+                        //eliminar o par agente&fire do treatment_fire
+                        s.getTreatment_fire().remove(aid_fireman);
+                        //alterar o estado do fireman para "a regressar"
+                        agentData.setOcupation(Ocupation.RETURNING);
+                        //eliminar treatment fire do fireman
+                        agentData.setTreating_fire(null);
+
+                        //se quem apagou não era o atribuído
+                        if(!aid_fireman.equals(aid_sender)){
+                            s.getWorld().getFireman().get(aid_sender).setException_fire(null);
+                        }
+
+                        System.out.println("O fogo estava nos treating fires");
+                    } else {
+                        //se está na list waiting_fire
+                        s.getWaiting_fire().remove(f);
+
+                        //se é uma key do map questioning
+                        s.getQuestioning().remove(f);
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                this.myAgent.send(message);
-
-                //eliminar o fire do World
-                s.getWorld().getFire().remove(f);
-                //eliminar o par agente&fire do treatment_fire
-                s.getTreatment_fire().remove(aid);
-                //alterar o estado do fireman para "a regressar"
-                agentData.setOcupation(Ocupation.RETURNING);
-                //eliminar treatment fire do fireman
-                agentData.setTreating_fire(null);
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+
+        } catch (UnreadableException e) {
+            e.printStackTrace();
         }
+
     }
 }

@@ -25,19 +25,30 @@ public class HandleFire extends TickerBehaviour {
     @Override
     protected void onTick() {
         Fireman f = (Fireman) myAgent;
-        Fire fire =  f.getTreating_fire();
+        Fire fire = null;
+
+        Fire treatingFire =  f.getTreating_fire();
+        Fire exceptionFire = f.getException_fire();
+
+        if(exceptionFire != null){
+            fire = exceptionFire;
+        } else if (treatingFire != null){
+            fire = treatingFire;
+        }
 
         if (fire != null) {
             List<Position> pos = fire.getPositions();
             f.setCap_water(f.getCap_water() - 1);
 
-            if (f.getTreating_fire().getPositions().size() > 1) {
+            if (pos.size() > 1) {
                 System.out.println("[FIREMAN " + f.getName() + "] Cleaning " + pos.get(pos.size() - 1).toString());
-                f.getTreating_fire().getPositions().remove(pos.size() - 1);
+                pos.remove(pos.size() - 1);
             } else {
-                if (f.getTreating_fire().getPositions().size() == 1) {
+                if (pos.size() == 1) {
+                    Position p = pos.get(pos.size() - 1);
+
                     System.out.println("[FIREMAN " + f.getName() + "] Finishing Cleaning " + pos.get(pos.size() - 1).toString());
-                    f.getTreating_fire().getPositions().remove(pos.size() - 1);
+                    pos.remove(pos.size() - 1);
                     DFAgentDescription template = new DFAgentDescription();
                     ServiceDescription sd1 = new ServiceDescription();
                     sd1.setType("Station");
@@ -48,7 +59,7 @@ public class HandleFire extends TickerBehaviour {
                     try {
                         station = DFService.search(myAgent, template);
                         ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-                        msg.setContentObject(new FireExtinguished());
+                        msg.setContentObject(new FireExtinguished(p));
                         msg.addReceiver(station[0].getName());
                         myAgent.send(msg);
 
@@ -56,10 +67,15 @@ public class HandleFire extends TickerBehaviour {
                         e.printStackTrace();
                     }
 
-                    f.setOcupation(Ocupation.RETURNING);
-                    f.setTreating_fire(null);
-                    f.setDestiny(f.getStd_position());
-                    this.myAgent.removeBehaviour(this);
+                    if(fire.equals(treatingFire)){
+                        f.setOcupation(Ocupation.RETURNING);
+                        f.setTreating_fire(null);
+                        f.setDestiny(f.getStd_position());
+                        this.myAgent.removeBehaviour(this);
+                    } else if(fire.equals(exceptionFire)){
+                        f.setException_fire(null);
+                        this.myAgent.removeBehaviour(this);
+                    }
                 }
             }
         }
