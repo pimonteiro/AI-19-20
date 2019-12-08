@@ -68,15 +68,32 @@ public class MainContainer {
         a.initMainContainerInPlatform("localhost", "9090", "MainContainer");
 
         //Agents and World Initialization
-        int n_aircraft = 5;
-        int n_drone = 5;
-        int n_truck = 5;
-        int n_water = 3;
-        int n_fuel = 3;
-        int n_houses = 1;
-        int n_zones = 4;
         boolean debug = false;
-        World world = new World(20);
+        long n_aircraft = 5;
+        long n_drone = 5;
+        long n_truck = 5;
+        long n_water = 3;
+        long n_fuel = 3;
+        long n_houses = 3;
+        long n_zones = 4;
+        World world;
+        if(args.length > 0) {
+            world = new World(Integer.parseInt(args[0]));
+            n_aircraft = Math.round(22.22881 + (4.164999 - 22.22881)/(1 + Math.pow(World.dimension/67.93381, 2.475386)));
+            n_drone = Math.round(22.22881 + (4.164999 - 22.22881)/(1 + Math.pow(World.dimension/67.93381, 2.475386)));
+            n_truck = Math.round(22.22881 + (4.164999 - 22.22881)/(1 + Math.pow(World.dimension/67.93381, 2.475386)));
+            n_fuel = Math.round(10 + (4.164999 - 15)/(1 + Math.pow(World.dimension/60.93381, 2.475386)));
+            n_houses = Math.round(10 + (4.164999 - 15)/(1 + Math.pow(World.dimension/60.93381, 2.475386)));
+            if(World.dimension < 60)
+                n_zones = 4;
+            else if(World.dimension < 200)
+                n_zones = 9;
+            else
+                n_zones = 25;
+        } else {
+            world = new World(20);
+        }
+
         Simulator.startSimulation_v1(world,n_fuel,n_houses,n_water,n_zones);
 
         try {
