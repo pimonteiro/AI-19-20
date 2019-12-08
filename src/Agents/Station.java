@@ -84,11 +84,11 @@ public class Station extends Agent {
                 System.out.println("-------Fires waiting to be treated-------");
                 waiting_fire.forEach(f -> System.out.println(f.toString()));
                 System.out.println("-------Fires being questioned-------");
-                for(Fire f : questioning.keySet()){
-                    System.out.println(f.toString() + " " + questioning.get(f).size());
-                }
-                System.out.println("-------Zone Status----------");
-                world.getZones().forEach(z -> System.out.println("Zone " + z.getId() + ": " + z.getOcupation_rate()));
+                //for(Fire f : questioning.keySet()){
+                //    System.out.println(f.toString() + " " + questioning.get(f).size());
+                //}
+                //System.out.println("-------Zone Status----------");
+                //world.getZones().forEach(z -> System.out.println("Zone " + z.getId() + ": " + z.getOcupation_rate()));
             }
         });
     }
