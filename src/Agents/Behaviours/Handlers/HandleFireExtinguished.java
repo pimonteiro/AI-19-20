@@ -1,6 +1,7 @@
 package Agents.Behaviours.Handlers;
 
 import Agents.AgentData;
+import Agents.Messages.CancelFire;
 import Agents.Messages.FireExtinguished;
 import Agents.Messages.UpdateFire;
 import Agents.Station;
@@ -65,6 +66,11 @@ public class HandleFireExtinguished extends OneShotBehaviour {
                             AID aid_fireman = aids.get(0);
 
                             if (aid_fireman != null) {
+                                ACLMessage ms = new ACLMessage(ACLMessage.CANCEL);
+                                ms.addReceiver(aid_fireman);
+                                ms.setContentObject(new CancelFire(f));
+                                this.myAgent.send(ms);
+
                                 AgentData agentData = s.getWorld().getFireman().get(aid_fireman);
 
                                 //eliminar o par agente&fire do treatment_fire
