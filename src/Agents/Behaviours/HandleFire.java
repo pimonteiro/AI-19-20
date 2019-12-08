@@ -59,7 +59,7 @@ public class HandleFire extends TickerBehaviour {
                     try {
                         station = DFService.search(myAgent, template);
                         ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-                        msg.setContentObject(new FireExtinguished(p));
+                        msg.setContentObject(new FireExtinguished(fire.getId()));
                         msg.addReceiver(station[0].getName());
                         myAgent.send(msg);
 

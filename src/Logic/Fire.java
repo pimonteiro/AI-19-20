@@ -6,8 +6,10 @@ import Util.Risk;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class Fire implements Serializable {
+    private String id;
     private List<Position> positions;
     private int zone_id;
     private Risk risk;
@@ -16,6 +18,7 @@ public class Fire implements Serializable {
     private int being_resolved_time;
 
     public Fire(List<Position> positions, double base_expansion_rate, int zone_id) {
+        this.id = UUID.randomUUID().toString();
         this.zone_id = zone_id;
         this.positions = positions;
         this.risk = Risk.LOW;
@@ -32,10 +35,7 @@ public class Fire implements Serializable {
             return false;
 
         Fire fire = (Fire) object;
-
-        return  this.positions.equals(fire.getPositions()) &&
-                this.base_expansion_rate == fire.getBase_expansion_rate() &&
-                this.zone_id == fire.getZone_id();
+        return this.id.equals(fire.getId());
     }
 
     public int getZone_id() {
@@ -84,6 +84,14 @@ public class Fire implements Serializable {
 
     public void setBeing_resolved_time(int being_resolved_time) {
         this.being_resolved_time = being_resolved_time;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override

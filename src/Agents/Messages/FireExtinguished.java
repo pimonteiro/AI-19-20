@@ -5,13 +5,13 @@ import Util.Position;
 import java.io.Serializable;
 
 public class FireExtinguished implements Serializable {
-    Position position;
+    String id;
 
-    public FireExtinguished(Position p) {
-        this.position = p;
+    public FireExtinguished(String p) {
+        this.id = p;
     }
 
-    public Position getPosition() {
-        return position;
+    public String getId() {
+        return id;
     }
 }

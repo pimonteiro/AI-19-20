@@ -15,6 +15,7 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,9 +35,8 @@ public class HandleFireExtinguished extends OneShotBehaviour {
 
         try {
             FireExtinguished position = (FireExtinguished) msg.getContentObject();
-            Position p = position.getPosition();
 
-            List<Fire> fires = s.getWorld().getFire().stream().filter(a -> a.getPositions().get(0).equals(p))
+            List<Fire> fires = s.getWorld().getFire().stream().filter(a -> a.getId().equals(position.getId()))
                                            .collect(Collectors.toList());
             if(fires.size() > 0) {
                 Fire f = fires.get(0);
@@ -44,7 +44,14 @@ public class HandleFireExtinguished extends OneShotBehaviour {
                 if (f != null) {
                     try {
                         Metric c = s.getMetrics();
-                        c.addNewFireResolved(f);
+                        List<Fire> tmp = new ArrayList<>();
+                        tmp.addAll(s.getWaiting_fire());
+                        tmp.addAll(s.getTreatment_fire().values());
+                        tmp.addAll(s.getQuestioning().keySet());
+                        for(Fire old : tmp){
+                            if(old.equals(f))
+                                c.addNewFireResolved(f);
+                        }
 
                         UpdateFire co = new UpdateFire(f, false);
                         ACLMessage message = new ACLMessage(ACLMessage.INFORM);

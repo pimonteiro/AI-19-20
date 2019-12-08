@@ -1,6 +1,7 @@
 package Agents;
 
 import Agents.Behaviours.*;
+import Agents.Messages.UpdateFire;
 import Logic.Fire;
 import Logic.Metric;
 import Logic.World;
@@ -15,6 +16,9 @@ import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
+import jade.lang.acl.ACLMessage;
+
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -69,9 +73,9 @@ public class Station extends Agent {
         this.addBehaviour(new TickerBehaviour(this,1000) {
             @Override
             protected void onTick() {
-                //expandFire(waiting_fire);
-                //expandFire(treatment_fire.values()); //TODO avisar os bombeiros
-                //expandFire(questioning.keySet());
+                expandFire(waiting_fire);
+                expandFire(treatment_fire.values());
+                expandFire(questioning.keySet());
                 treatment_fire.values().forEach(Fire::increaseTime);
                 treatment_fire.values().forEach(Fire::increaseTimeBeingResolved);
                 waiting_fire.forEach(Fire::increaseTime);
@@ -159,12 +163,23 @@ public class Station extends Agent {
                     Position p = new Position(x,y);
                     if(p.isValid(world.getFire(), world.getFuel(), world.getWater(), world.getHouses(),
                             new ArrayList<>(world.getFireman().values()))){
-                        for(Fire fire: world.getFire()){
-                            if(fire.equals(f)){
-                                fire.getPositions().add(p);
+                        try {
+                            for(Fire fire: world.getFire()){
+                                if(fire.equals(f)){
+                                    fire.getPositions().add(p);
+                                }
                             }
+                            f.getPositions().add(p);
+                            UpdateFire co = new UpdateFire(f, true);
+                            ACLMessage message = new ACLMessage(ACLMessage.INFORM);
+                            message.setContentObject(co);
+                            for (AID ag : world.getFireman().keySet()) {
+                                message.addReceiver(ag);
+                            }
+                            send(message);
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-                        f.getPositions().add(p);
                     }
                 }
             }

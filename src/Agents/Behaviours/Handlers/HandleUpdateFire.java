@@ -25,11 +25,17 @@ public class HandleUpdateFire extends OneShotBehaviour {
             ArrayList<Fire> pos = f.getFires();
             UpdateFire cont = (UpdateFire) msg.getContentObject();
             if(cont.isType()){
+                if(pos.contains(cont.getFire()))
+                    pos.remove(cont.getFire());
                 pos.add(cont.getFire());
             }
             else{
                 pos.remove(cont.getFire());
             }
+            if(f.getTreating_fire() != null && f.getTreating_fire().equals(cont.getFire()))
+                f.setTreating_fire(cont.getFire());
+            else if(f.getException_fire() != null && f.getException_fire().equals(cont.getFire()))
+                f.setException_fire(cont.getFire());
         } catch (UnreadableException e) {
             e.printStackTrace();
         }
