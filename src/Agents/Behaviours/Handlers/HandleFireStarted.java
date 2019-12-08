@@ -3,12 +3,11 @@ package Agents.Behaviours.Handlers;
 import Agents.Messages.StartedFire;
 import Agents.Messages.UpdateFire;
 import Agents.Station;
+
 import jade.core.AID;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
-
 import java.io.IOException;
 
 public class HandleFireStarted extends OneShotBehaviour {

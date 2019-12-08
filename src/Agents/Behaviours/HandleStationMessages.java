@@ -1,24 +1,12 @@
 package Agents.Behaviours;
 
-import Agents.AgentData;
 import Agents.Behaviours.Handlers.*;
 import Agents.Messages.*;
 import Agents.Station;
-import Logic.Fire;
-import Logic.Metric;
-import Util.Ocupation;
 
-import Util.Position;
-import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class HandleStationMessages extends CyclicBehaviour {
     @Override

@@ -4,8 +4,8 @@ import Agents.Station;
 import Logic.Fire;
 import Util.Position;
 import Util.Risk;
-import jade.core.behaviours.CyclicBehaviour;
 
+import jade.core.behaviours.CyclicBehaviour;
 import java.util.ArrayList;
 import java.util.List;
 

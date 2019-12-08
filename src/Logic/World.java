@@ -2,8 +2,8 @@ package Logic;
 
 import Agents.AgentData;
 import Util.Position;
-import jade.core.AID;
 
+import jade.core.AID;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

@@ -2,7 +2,7 @@ package Agents.Behaviours.Handlers;
 
 import Agents.Fireman;
 import Agents.Messages.InitialData;
-import jade.core.Agent;
+
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;

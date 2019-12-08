@@ -14,7 +14,6 @@ import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;

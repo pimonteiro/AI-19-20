@@ -9,6 +9,7 @@ import Agents.Messages.ExtinguishFireData;
 import Agents.Messages.InitialData;
 import Agents.Fireman;
 import Agents.Messages.UpdateFire;
+
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
