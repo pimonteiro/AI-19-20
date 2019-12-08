@@ -5,7 +5,6 @@ import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
-import jade.wrapper.StaleProxyException;
 
 public class MainContainer {
 
@@ -75,6 +74,7 @@ public class MainContainer {
         int n_fuel = 3;
         int n_houses = 1;
         int n_zones = 4;
+        boolean debug = false;
         World world = new World(20);
         Simulator.startSimulation_v1(world,n_fuel,n_houses,n_water,n_zones);
 
@@ -88,7 +88,7 @@ public class MainContainer {
             for(int i = 0; i < n_truck; i++){
                 a.startAgentInPlatform("truck_"+i, "Agents.FireTruck", new Object[] {world});// arguments
             }
-            a.startAgentInPlatform("station", "Agents.Station", new Object[] {world});// arguments
+            a.startAgentInPlatform("station", "Agents.Station", new Object[] {world, debug});// arguments
 
             Thread.sleep(5000);
             a.startAgentInPlatform("firestarter", "Agents.FireStarter", new Object[] {world});// arguments
