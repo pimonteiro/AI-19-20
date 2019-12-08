@@ -35,14 +35,10 @@ public class AgentState {
 
         update(world, s);
 
-        //this.table.setPreferredScrollableViewportSize(table.getPreferredSize());
-        //this.table2.setPreferredScrollableViewportSize(table2.getPreferredSize());
-
         this.table.setDefaultEditor(Object.class, null);
         this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         this.table2.setDefaultEditor(Object.class, null);
-
-
+        
         this.tableContainer = new JScrollPane(table);
         this.tableContainer2 = new JScrollPane(table2);
 
