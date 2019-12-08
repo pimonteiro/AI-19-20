@@ -86,7 +86,7 @@ public class Map extends MapType {
         image = truck.getImage();
         newimg = image.getScaledInstance(CELL_SIZE, CELL_SIZE, Image.SCALE_SMOOTH);
         truck = new ImageIcon(newimg);
-        objects.put("aircraft", truck);
+        objects.put("truck", truck);
 
         this.zones = new HashMap<>();
 

@@ -49,7 +49,7 @@ public class HandleFireExtinguished extends OneShotBehaviour {
                         tmp.addAll(s.getQuestioning().keySet());
                         for(Fire old : tmp){
                             if(old.equals(f))
-                                c.addNewFireResolved(f);
+                                c.addNewFireResolved(old);
                         }
 
                         UpdateFire co = new UpdateFire(f, false);
