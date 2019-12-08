@@ -87,6 +87,15 @@ public class MovingFireman extends TickerBehaviour {
                 f.setOcupation(Ocupation.IN_ACTION);
                 this.myAgent.addBehaviour(new HandleFire(this.myAgent, 1000));
                 f.setDestiny(null);
+                try {
+                    ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+                    msg.setContentObject(new UpdateData(f.getActual_position(), f.getDestiny(),
+                            f.getCap_fuel(), f.getCap_water(), f.getOcupation()));
+                    msg.addReceiver(f.getStation());
+                    this.myAgent.send(msg);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 return;
             }
 
