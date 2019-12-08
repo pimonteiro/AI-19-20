@@ -4,13 +4,12 @@ import Agents.Behaviours.*;
 import Logic.Fire;
 import Logic.Metric;
 import Logic.World;
-
 import Logic.Zone;
 import Util.BestFireManComparator;
 import Util.Position;
+
 import jade.core.AID;
 import jade.core.Agent;
-import jade.core.AgentState;
 import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;

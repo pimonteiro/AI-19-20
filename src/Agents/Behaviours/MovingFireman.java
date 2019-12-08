@@ -28,15 +28,11 @@ public class MovingFireman extends TickerBehaviour {
     protected void onTick() {
         Fireman f = (Fireman) this.myAgent;
         Fire newFire = f.getActual_position().haveNeighborFire(f.getFires(), 2);
-
-        if(f.getDestiny() == null) {
-            block();
-            return;
-        }
+        Position next;
 
         //Se está na posição de um FUEL abastece
         if (f.getFuel().stream().anyMatch(p -> p.equals(f.getActual_position()))
-                    && (f.getCap_fuel() != f.getCap_max_fuel())) {
+                && (f.getCap_fuel() != f.getCap_max_fuel())) {
             //System.out.println("Abasteci fuel!\n");
             f.setCap_fuel(f.getCap_max_fuel());
         }
@@ -56,14 +52,26 @@ public class MovingFireman extends TickerBehaviour {
             return;
         }
 
+        if(f.getDestiny() == null) {
+            block();
+            return;
+        }
+
         if (f.getCap_fuel() > 0) {
             if(f.getOcupation().equals(Ocupation.MOVING) && f.getTreating_fire() != null && f.getDestiny().equals(f.getActual_position())) {
                 System.out.println("Weird");
                 //f.setDestiny(f.getTreating_fire().getPositions().get(0));
             }
 
+            if(f.getCap_water() == 0){
+                next = decideNewPosition(f, f.getDestiny(), false, true);
+                System.out.println("\n---------------------------------A ir para " + next.toString() + "------------------");
+                f.setActual_position(next);
+                f.setCap_fuel(f.getCap_fuel() - 1);
+            }
+
             //Se está na posição de um FIRE combate-o
-            if (f.getTreating_fire() != null && f.getTreating_fire().getPositions().size() > 0 &&
+            else if (f.getTreating_fire() != null && f.getTreating_fire().getPositions().size() > 0 &&
                     (f.getActual_position().equals(f.getTreating_fire().getPositions().get(0)) ||
                             f.getActual_position().equals(f.getDestiny()))) {
                 //System.out.println("Vou mesmo agora apagar o fogo!\n");
@@ -75,12 +83,11 @@ public class MovingFireman extends TickerBehaviour {
 
             else {
                 try {
-                    Position next;
-
                     //Proatividade
-                    if(newFire != null && f.getCap_water() > 1) {
-                        System.out.println("Vou apagar um fogo só porque posso!\n");
+                    if(newFire != null) {
+                        System.out.println("Vou apagar um fogo só porque posso!");
                         f.setCap_fuel(f.getCap_fuel() - 1);
+                        f.setCap_water(f.getCap_water() - 1);
                         f.setActual_position(newFire.getPositions().get(0));
                         f.setException_fire(newFire);
                         this.myAgent.addBehaviour(new HandleFire(this.myAgent, 1000));
