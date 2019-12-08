@@ -84,7 +84,6 @@ public class MovingFireman extends TickerBehaviour {
                 if(newFire != null && (f.getCap_fuel() * 2 > f.getCap_max_fuel())) {
                     //System.out.println("Vou apagar um fogo só porque posso!");
                     f.setCap_fuel(f.getCap_fuel() - 1);
-                    f.setCap_water(f.getCap_water() - 1);
                     f.setActual_position(newFire.getPositions().get(0));
                     f.setException_fire(newFire);
                     this.myAgent.addBehaviour(new HandleFire(this.myAgent, 1000));
